@@ -91,7 +91,7 @@ def execute(a, b, d, qa):
 			# if we haven't already processed this file, process it
 			if str(targets[e]) not in targdone:
 				# find the offset and align the waveforms
-				toff = offs(testers[t], targets[e], 0, 0)
+				toff = offs(testers[t], targets[e])
 				tX = Sndfile(testers[t], 'r')
 				tY = Sndfile(targets[e], 'r')
 				if toff > 0:

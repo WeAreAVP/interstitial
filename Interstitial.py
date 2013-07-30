@@ -6,7 +6,6 @@ from PyQt4.QtGui import *
 import sys
 from time import sleep
 import interstitialcore
-import keyhandler
 from os import path
 
 # printer
