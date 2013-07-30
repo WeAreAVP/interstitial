@@ -33,3 +33,9 @@ audiolab
 numpy
 
 PyQt4 (GUI only)
+
+Precompiled Binaries
+--------------------
+
++[Windows](http://www.avpreserve.com/wp-content/uploads/2013/07/interstitial-win.zip)
++[OSX](http://www.avpreserve.com/wp-content/uploads/2013/07/interstitial-osx.zip)
