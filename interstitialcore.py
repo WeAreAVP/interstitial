@@ -1,5 +1,5 @@
 # Interstitial Error Detector
-# Version 0.1, 2013-07-30
+# Version 0.2, 2013-08-26
 # Copyright (c) 2013 AudioVisual Preservation Solutions
 # All rights reserved.
 # Released under the BSD 3-clause license
@@ -21,12 +21,6 @@ def mono(ar):
 		return ar[:,0]
 	else:
 		return ar
-
-# inRange (1d numpy matrix x, 1d numpy matrix y y)
-# returns if x is approximately one-half to twice the value of y
-# this is done to accomodate for up to 6dB differences between workstation and reference devices
-def inRange(x, y):
-	return (np.absolute(x) <= (2.1 * np.absolute(y))).all() and (np.absolute(x) >= (0.4 * np.absolute(y))).all()
 
 # offs(audiofile track1, audiofile track2)
 # calculates the head offset between two (supposedly) otherwise identitical audio files
@@ -108,7 +102,7 @@ def execute(a, b, d, qa):
 				# if each sample is within 6dB of the other, we have a match and can begin processing
 				t1 = mono(tX.read_frames(1000))
 				t2 = mono(tY.read_frames(1000))
-				if inRange(t1, t2):
+				if np.array_equal(t1, t2):
 					print "MATCH: " + str(testers[t]) + " matches " + str(targets[e])
 					qa.processEvents()
 					
@@ -126,14 +120,13 @@ def execute(a, b, d, qa):
 							a1 = mono(tX.read_frames(tX.samplerate))
 							a2 = mono(tY.read_frames(tY.samplerate))
 							
-							# is this second of audio within 6dB of the other?
-							# if not, there's an error!
-							if not inRange(a1, a2):
+							# are these arrays equivalent? if not, there's an error
+							if not np.array_equal(a1, a2):
 								count += 1
 								# where's the error?
 								# we find it by comparing sample by sample across this second of audio
 								for m in xrange(len(a1)):
-									if not inRange(a1[m], a2[m]):
+									if not np.array_equal(a1[m], a2[m]):
 										# we found it! print a message and we're done with these files
 										errs = (n * tX.samplerate) + m + 1000
 										print "ERROR: Interstitial error found between " + str(testers[t]) + " and " + str(targets[e]) + " at sample " + str(errs)
