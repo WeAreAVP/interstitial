@@ -30,7 +30,7 @@ Requires
 
 * audiolab
 * numpy
-* PyQt4 (GUI only)
+* PySide
 
 Precompiled Binaries
 --------------------

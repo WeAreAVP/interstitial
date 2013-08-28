@@ -1,11 +1,11 @@
 # Interstitial Error Detector
-# Version 0.1, 2013-07-30
+# Version 0.2, 2013-08-28
 # Copyright (c) 2013 AudioVisual Preservation Solutions
 # All rights reserved.
-# Released under BSD 3-clause license
+# Released under the Apache license, v. 2.0
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PySide.QtCore import *
+from PySide.QtGui import *
 import sys
 from time import sleep
 import interstitialcore

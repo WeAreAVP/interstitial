@@ -1,8 +1,8 @@
 # Interstitial Error Detector
-# Version 0.2, 2013-08-26
+# Version 0.2, 2013-08-28
 # Copyright (c) 2013 AudioVisual Preservation Solutions
 # All rights reserved.
-# Released under the BSD 3-clause license
+# Released under the Apache license, v. 2.0
 
 import numpy as np
 from scikits.audiolab import Sndfile
