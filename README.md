@@ -35,5 +35,5 @@ Requires
 Precompiled Binaries
 --------------------
 
-* [Windows](http://www.avpreserve.com/wp-content/uploads/2013/07/interstitial-win.zip)
-* [OSX](http://www.avpreserve.com/wp-content/uploads/2013/07/interstitial-osx.zip)
+* [Windows](http://www.avpreserve.com/wp-content/uploads/2013/09/interstitial-win.zip)
+* [OSX](http://www.avpreserve.com/wp-content/uploads/2013/09/interstitial-osx.zip)
