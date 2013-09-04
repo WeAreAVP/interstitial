@@ -19,9 +19,8 @@ Once the two sets are generated, interstitial-errors can be pointed at the refer
 
 Sample audio files can be found here:
 
-[DAW](http://www.avpreserve.com/interstitialerrorsamples/201206081082_DAW.wav)
-
-[Ref](http://www.avpreserve.com/interstitialerrorsamples/201206081082_DDR.wav)
+* [Error WAV](http://www.avpreserve.com/wp-content/uploads/2013/09/gettysburg-error.wav) 
+* [Reference WAV](http://www.avpreserve.com/wp-content/uploads/2013/09/gettysburg-reference.wav)
 
 Note that, due to the nature of the tests performed by the tool, it may also highlight other issues in a digitization chain (e.g. timing problems).
 
