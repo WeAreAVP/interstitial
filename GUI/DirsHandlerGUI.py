@@ -20,42 +20,57 @@ class DirsHandlerGUI(QWidget):
         super(DirsHandlerGUI, self).__init__()
         pass
 
+
     def createDirectoriesInfo(self):
         """
         Create Directories
         """
-        self.daw_dir_selector = QPushButton("...", self)
-        self.ref_dir_selector = QPushButton("...", self)
-        self.manifest_dir_selector = QPushButton("...", self)
+        self.daw_dir_selector_gui = QPushButton("...", self)
+        self.ref_dir_selector_gui = QPushButton("...", self)
+
 
         self.daw_dir_text = QLineEdit()
         self.ref_dir_text = QLineEdit()
 
-    def AddWidgets(self, layout):
+
+    def AddWidgets(self, layout ):
         """
         Add Widget To Layout
         """
-        layout.addWidget(self.daw_dir_text, 0, 1)
-        layout.addWidget(self.ref_dir_text, 1, 1)
+        self.daw_dir_label = QLabel("DAW Directory")
+        self.ref_dir_label = QLabel("Reference Directory")
 
-        layout.addWidget(self.daw_dir_selector, 0, 2)
-        layout.addWidget(self.ref_dir_selector, 1, 2)
-        layout.addWidget(self.manifest_dir_selector, 2, 2)
+        #self.daw_dir_label.setFixedSize(130, 20)
+        #self.ref_dir_label.setFixedSize(130, 20)
+        #
+        #self.daw_dir_text.setFixedSize(180, 20)
+        #self.ref_dir_text.setFixedSize(180, 20)
+        #
+        #self.daw_dir_selector_gui.setFixedSize(30, 18)
+        #self.ref_dir_selector_gui.setFixedSize(30, 18)
 
-        layout.addWidget(QLabel("DAW Directory"), 0, 0)
-        layout.addWidget(QLabel("Reference Directory"), 1, 0)
+        layout.addWidget(self.daw_dir_label) #, 0, 0
+        layout.addWidget(self.ref_dir_label) #, 1, 0
+
+        layout.addWidget(self.daw_dir_text) #, 0, 1
+        layout.addWidget(self.ref_dir_text) #, 1, 1
+
+        layout.addWidget(self.daw_dir_selector_gui) #, 0, 2
+        layout.addWidget(self.ref_dir_selector_gui) #, 1, 2
+
         return layout
+
 
     def setTriggers(self):
         """
         Set GUI Triggers
         """
-        self.daw_dir_selector.clicked.connect(self.dawDirTrigger)
-        self.ref_dir_selector.clicked.connect(self.refDirTrigger)
-        self.manifest_dir_selector.clicked.connect(self.manifestTrigger)
+        self.daw_dir_selector_gui.clicked.connect(self.dawDirTrigger)
+        self.ref_dir_selector_gui.clicked.connect(self.refDirTrigger)
 
         self.daw_dir_text.setReadOnly(True)
         self.ref_dir_text.setReadOnly(True)
+
 
     def dawDirTrigger(self):
         """
@@ -64,6 +79,7 @@ class DirsHandlerGUI(QWidget):
         path_selected = QFileDialog.getExistingDirectory(directory=path.expanduser('~'))
         self.daw_dir_text.setText(path_selected)
 
+
     def refDirTrigger(self):
         """
         Get Reference Directory Trigger
@@ -71,9 +87,16 @@ class DirsHandlerGUI(QWidget):
         path_selected = QFileDialog.getExistingDirectory(directory=path.expanduser('~'))
         self.ref_dir_text.setText(path_selected)
 
-    def manifestTrigger(self):
+
+    def getDaw(self):
         """
-        get Manifest Trigger
+        Get DAW
         """
-        path_selected = QFileDialog.getExistingDirectory(directory=path.expanduser('~'))
-        self.manifest_dir_text.setText(path_selected)
+        return self.daw_dir_text.text()
+
+
+    def getRefDir(self):
+        """
+        Get Reference Directory
+        """
+        return self.ref_dir_selector_gui.text()

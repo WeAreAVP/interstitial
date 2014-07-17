@@ -12,41 +12,49 @@ from PySide.QtGui import *
 
 from Core import InterstitialCore
 from GUI import DirsHandlerGUI
-# printer
-# allows for writing to a QWindow
 
 
-class printer():
-
-
-    def __init__(self, t):
-        self.t = t
-
-    def write(self, m):
-        self.t.moveCursor(QTextCursor.End)
-        self.t.insertPlainText(m)
-
-'''
-Interstitial GUI Manager
-'''
 class InterstitialGUI(QWidget):
 
 
+    """
+    Interstitial GUI Manager
+    """
     def __init__(self):
         """
         Constructor
         """
         QWidget.__init__(self)
-        self.IntersCore = InterstitialCore.InterstitialCore()
+        self.number_of_scans = 2
+        self.inters_core = InterstitialCore.InterstitialCore()
+        self.dirs_handler_gui = {}
+
+        for index in xrange(0, self.number_of_scans):
+            self.dirs_handler_gui[index] = DirsHandlerGUI.DirsHandlerGUI()
+
+        self.setUpView()
+
+    def setUpView(self):
+        """
+        Set interstitial View Up
+        """
         self.setWindowTitle('Interstitial Error Detector')
         self.layout = QGridLayout(self)
-        self.dirsHandlerGui = DirsHandlerGUI.DirsHandlerGUI()
+
         self.createDirectories()
+
         self.go = QPushButton("Run!", self)
 
         self.addWidgetToLayout()
         self.setTriggers()
         self.setLayout(self.layout)
+        pass
+
+    def setUpDirs(self):
+        """
+        Set Up Dirs
+        """
+        pass
 
     def createDirectories(self):
         """
@@ -54,16 +62,40 @@ class InterstitialGUI(QWidget):
         """
         self.manifest_dir_text = QLineEdit()
         self.manifest_dir_text.setReadOnly(True)
-        self.dirsHandlerGui.createDirectoriesInfo()
+        self.manifest_dir_selector_gui = QPushButton("...", self)
+
+        for index in xrange(0, self.number_of_scans):
+            self.dirs_handler_gui[index].createDirectoriesInfo()
 
     def addWidgetToLayout(self):
+
         """
         Add Widget To Layout
         """
-        self.layout.addWidget(self.go, 4, 1)
-        self.layout.addWidget(self.manifest_dir_text, 2, 1)
-        self.layout.addWidget(QLabel("Manifest Destination"), 2, 0)
-        self.layout = self.dirsHandlerGui.AddWidgets(self.layout)
+
+        self.widget = QWidget(self)
+        self.main = QHBoxLayout()
+
+        #self.mail =  outer_box
+
+
+
+        for index in xrange(0, self.number_of_scans):
+            single_dirs_layout = QVBoxLayout()
+
+            outer_box = QGroupBox("Recipient Email Addresses")
+            outer_box.setFixedSize(400, 400)
+
+            single_dirs_layout = self.dirs_handler_gui[index].AddWidgets(single_dirs_layout)
+
+            outer_box.setLayout(single_dirs_layout)
+
+            self.main.addWidget(outer_box)
+
+        self.layout.addWidget(QLabel("Manifest Destination"))#, 2, 0
+        self.layout.addWidget(self.manifest_dir_text)#, 2, 1
+        self.layout.addWidget(self.manifest_dir_selector_gui)#, 2, 2
+        self.layout.addWidget(self.go)#, 4, 1
 
     def setTriggers(self):
         """
@@ -71,34 +103,58 @@ class InterstitialGUI(QWidget):
         """
         self.go.clicked.connect(self.newWin)
         self.manifest_dir_text.setText(path.expanduser('~/'))
-        self.dirsHandlerGui.setTriggers()
+        self.manifest_dir_selector_gui.clicked.connect(self.manifestTrigger)
+
+        for index in xrange(0, self.number_of_scans):
+            self.layout = self.dirs_handler_gui[index].setTriggers()
 
     def newWin(self):
         """
         Open New Window
         """
-        ReportDetailDialogBox = QDialog(self)
-        ReportDetailexitBtn = QPushButton("Exit", self)
-        ReportDetailText = QTextEdit(self)
-        ReportDetailLayout = QVBoxLayout(ReportDetailDialogBox)
+        report_detail_dialog_box = QDialog(self)
+        report_detail_exit_btn = QPushButton("Exit", self)
+        report_detail_text = QTextEdit(self)
+        report_detail_layout = QVBoxLayout(report_detail_dialog_box)
 
-        ReportDetailDialogBox.setWindowTitle('Interstitial Error Detector')
+        report_detail_dialog_box.setWindowTitle('Interstitial Error Detector')
 
-        ReportDetailexitBtn.setEnabled(False)
-        ReportDetailText.setReadOnly(True)
+        report_detail_exit_btn.setEnabled(False)
+        report_detail_text.setReadOnly(True)
 
-        ReportDetailexitBtn.clicked.connect(self.close)
+        report_detail_exit_btn.clicked.connect(self.close)
 
-        ReportDetailLayout.addWidget(ReportDetailText)
-        ReportDetailLayout.addWidget(ReportDetailexitBtn)
+        report_detail_layout.addWidget(report_detail_text)
+        report_detail_layout.addWidget(report_detail_exit_btn)
 
-        ReportDetailDialogBox.setLayout(ReportDetailLayout)
+        report_detail_dialog_box.setLayout(report_detail_layout)
 
-        sys.stdout = printer(ReportDetailText)
-        ReportDetailDialogBox.resize(1000, 300)
-        ReportDetailDialogBox.show()
+        sys.stdout = printer(report_detail_text)
+        report_detail_dialog_box.resize(1000, 300)
+        report_detail_dialog_box.show()
 
-        self.IntersCore.execute(str(self.daw_dir_text.text()), str(self.ref_dir_text.text()), str(self.manifest_dir_text.text()), QCoreApplication.instance())
+        self.inters_core.execute(str(self.dirs_handler_gui.getDaw()), str(self.dirs_handler_gui.getRefDir()), str(self.manifest_dir_text.text()), QCoreApplication.instance())
 
-        ReportDetailexitBtn.setEnabled(True)
+        report_detail_exit_btn.setEnabled(True)
 
+    def manifestTrigger(self):
+        """
+        Get Manifest Trigger
+        """
+        path_selected = QFileDialog.getExistingDirectory(directory=path.expanduser('~'))
+        self.manifest_dir_text.setText(path_selected)
+
+
+class printer():
+
+
+    """
+    printer
+    allows for writing to a QWindow
+    """
+    def __init__(self, target):
+        self.target = target
+
+    def write(self, message):
+        self.target.moveCursor(QTextCursor.End)
+        self.target.insertPlainText(message)
