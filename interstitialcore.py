@@ -102,6 +102,7 @@ def execute(a, b, d, qa):
 				# if each sample is within 6dB of the other, we have a match and can begin processing
 				t1 = mono(tX.read_frames(1000))
 				t2 = mono(tY.read_frames(1000))
+				
 				if np.array_equal(t1, t2):
 					print "MATCH: " + str(testers[t]) + " matches " + str(targets[e])
 					qa.processEvents()

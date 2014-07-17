@@ -1,0 +1,17 @@
+.project
+.pydevproject
+.settings
+*.pyc
+.project
+.pyproject
+.DS_Store
+.settings
+.settings/*
+.idea
+.idea/*
+__pycache__
+__pycache__/*
+build
+build/*
+dist/*
+dist
