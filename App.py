@@ -3,3 +3,28 @@
 # Copyright (c) 2013 AudioVisual Preservation Solutions
 # All rights reserved.
 # Released under the Apache license, v. 2.0
+
+
+from Config import Configuration, Setup, Laguage
+from Core import SharedApp, CustomException, Debugger
+class App(object):
+    _instance = None
+
+    @staticmethod
+    def getInstance():
+        if not isinstance(App._instance, App):
+            App._instance = object.__new__(App)
+            SharedApp.SharedApp.App = App._instance
+            App._instance.setUp()
+        return App._instance
+
+    def setUp(self):
+        """
+        Set Up Application Static Contents
+        """
+        self.ExceptionHandler = CustomException.CustomException.getInstance()
+        self.Configuration = Configuration.Configuration()
+        self.Setup = Setup.Setup()
+        self.Setup.setupApp()
+        self.logger = Debugger.Debugger.getInstance()
+        self.messages = Laguage.message

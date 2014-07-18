@@ -11,7 +11,8 @@ import sys, os.path as path
 from argparse import ArgumentParser
 
 from GUI import InterstitialGUI
-from Core import InterstitialCore
+from Core import InterstitialCore, SharedApp
+from App import App
 
 class Main(object):
 
@@ -22,20 +23,24 @@ class Main(object):
         """
         Launch GUI Application
         """
+        SharedApp.SharedApp.App = App.getInstance()
+
         app = QApplication(param)
         interstitialGUIApp = InterstitialGUI.InterstitialGUI()
         interstitialGUIApp.show()
         interstitialGUIApp.raise_()
         sys.exit(app.exec_())
 
-    def RunCoreExecuter(self, param1, param2):
+    def RunCoreExecutor(self, param1, param2):
         """
-        Run Core Executer Independently
+        Run Core Executor Independently
         """
+        SharedApp.SharedApp.App = App.App.getInstance()
         IntersCore = InterstitialCore()
         IntersCore.execute(param1, param2)
 
     def LaunchCLI(self):
+        SharedApp.SharedApp.App = App.App.getInstance()
         """
         Lunch CLI Application
         """
@@ -43,31 +48,11 @@ class Main(object):
 
 # Main Application
 if __name__ == '__main__':
-
-    try:
-        parser = ArgumentParser()
-        parser.add_argument('-a', '--autorun')
-        args = parser.parse_args()
-    except:
-        pass
-
     InterstitialApp = Main()
 
-    if args.autorun is None or args.autorun == '':
+    try:
         InterstitialApp.LaunchGUI(sys.argv)
-
-    else:
-        if args.autorun == 'check':
-            try:
-                InterstitialApp.RunCoreExecuter()
-            except:
-                   exc_type, exc_obj, exc_tb = sys.exc_info()
-                   file_name = path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                   print("Could not run this Project "+str(Exception.message))
-        else:
-            try:
-                InterstitialApp.LaunchCLI(args.autorun)
-            except:
-               excType, excObj, excTb = sys.exc_info()
-               fileName = path.split(excTb.tb_frame.f_code.co_filename)[1]
-               print("Could not run this Project " + str(fileName) + str(Exception.message))
+    except:
+           exc_type, exc_obj, exc_tb = sys.exc_info()
+           file_name = path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+           print("Could not run this Project "+str(Exception.message))

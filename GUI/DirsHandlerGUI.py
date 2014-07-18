@@ -8,7 +8,7 @@ from PySide.QtCore import *
 from PySide.QtGui import *
 from os import path
 
-from Config import Configuration
+from Core import DirsHandlerCore, SharedApp
 """
 Interstitial Directory GUI Manager
 """
@@ -22,120 +22,75 @@ class DirsHandlerGUI(QWidget):
         Constructor
         """
         super(DirsHandlerGUI, self).__init__()
-        self.configuration = Configuration.Configuration()
+        self.dirs_handler_core = DirsHandlerCore.DirsHandlerCore()
+        self.Interstitial = SharedApp.SharedApp.App
+
         pass
 
-    #def createDirectoriesInfo(self):
-    #    """
-    #    Create Directories
-    #    """
-    #    self.daw_dir_selector_gui = QPushButton("...", self)
-    #    self.ref_dir_selector_gui = QPushButton("...", self)
-    #
-    #
-    #    self.daw_dir_text = QLineEdit()
-    #    self.ref_dir_text = QLineEdit()
-
-    def addNewDirSet(self):
+    def createDirectoriesInfo(self):
         """
         Create Directories
         """
-        groupBox = QGroupBox("Exclusive Radio Buttons")
-
-        self.daw_dir_selector_gui = QPushButton("...", self)
-        self.ref_dir_selector_gui = QPushButton("...", self)
-
-        self.daw_dir_label = QLabel("DAW Directory")
-        self.ref_dir_label = QLabel("Reference Directory")
+        self.daw_dir_selector = QPushButton(self.Interstitial.label['dirSelector'], self)
+        self.ref_dir_selector = QPushButton(self.Interstitial.label['dirSelector'], self)
 
         self.daw_dir_text = QLineEdit()
         self.ref_dir_text = QLineEdit()
 
-        vBox = QVBoxLayout()
+    def getGuiDawText(self):
+        """
+        Get Gui Daw Text
 
-        #self.daw_dir_label.setFixedSize(130, 20)
-        #self.ref_dir_label.setFixedSize(130, 20)
+        @return daw_dir_text
+        """
+        return self.daw_dir_text.text()
 
-        #self.daw_dir_text.setFixedSize(180, 20)
-        #self.ref_dir_text.setFixedSize(180, 20)
+    def getGuiRefText(self):
+        """
+        Get Gui Ref Text
 
-        #self.daw_dir_selector_gui.setFixedSize(30, 18)
-        #self.ref_dir_selector_gui.setFixedSize(30, 18)
+        @return ref_dir_text
+        """
+        return self.ref_dir_text.text()
 
-        vBox.addWidget(self.daw_dir_label) #, 0, 0
-        vBox.addWidget(self.ref_dir_label) #, 1, 0
+    def AddWidgets(self, layout):
+        """
+        Add Widget To Layout
 
-        vBox.addWidget(self.daw_dir_text) #, 0, 1
-        vBox.addWidget(self.ref_dir_text) #, 1, 1
+        @return Layout
+        """
+        layout.addWidget(self.daw_dir_text, 0, 1)
+        layout.addWidget(self.ref_dir_text, 1, 1)
 
-        vBox.addWidget(self.daw_dir_selector_gui) #, 0, 2
-        vBox.addWidget(self.ref_dir_selector_gui) #, 1, 2
+        layout.addWidget(self.daw_dir_selector, 0, 2)
+        layout.addWidget(self.ref_dir_selector, 1, 2)
 
-        vBox.addStretch(1)
+        layout.addWidget(QLabel(self.Interstitial.label['DAWDir']), 0, 0)
+        layout.addWidget(QLabel(self.Interstitial.label['refDir']), 1, 0)
+        return layout
 
-        groupBox.setLayout(vBox)
+    def setTriggers(self):
+        """
+        Set GUI Triggers
+        """
+        self.daw_dir_selector.clicked.connect(self.dawDirTrigger)
+        self.ref_dir_selector.clicked.connect(self.refDirTrigger)
 
-        return groupBox
-
-    #def AddWidgets(self, layout ):
-    #    """
-    #    Add Widget To Layout
-    #    """
-    #    self.daw_dir_label = QLabel("DAW Directory")
-    #    self.ref_dir_label = QLabel("Reference Directory")
-    #
-    #    self.daw_dir_label.setFixedSize(130, 20)
-    #    self.ref_dir_label.setFixedSize(130, 20)
-    #
-    #    self.daw_dir_text.setFixedSize(180, 20)
-    #    self.ref_dir_text.setFixedSize(180, 20)
-    #
-    #    self.daw_dir_selector_gui.setFixedSize(30, 18)
-    #    self.ref_dir_selector_gui.setFixedSize(30, 18)
-    #
-    #    layout.addWidget(self.daw_dir_label) #, 0, 0
-    #    layout.addWidget(self.ref_dir_label) #, 1, 0
-    #
-    #    layout.addWidget(self.daw_dir_text) #, 0, 1
-    #    layout.addWidget(self.ref_dir_text) #, 1, 1
-    #
-    #    layout.addWidget(self.daw_dir_selector_gui) #, 0, 2
-    #    layout.addWidget(self.ref_dir_selector_gui) #, 1, 2
-    #
-    #    return layout
-
-    #def setTriggers(self):
-    #    """
-    #    Set GUI Triggers
-    #    """
-    #    self.daw_dir_selector_gui.clicked.connect(self.dawDirTrigger)
-    #    self.ref_dir_selector_gui.clicked.connect(self.refDirTrigger)
-    #
-    #    self.daw_dir_text.setReadOnly(True)
-    #    self.ref_dir_text.setReadOnly(True)
+        self.daw_dir_text.setReadOnly(True)
+        self.ref_dir_text.setReadOnly(True)
 
     def dawDirTrigger(self):
         """
         DAW Directory Trigger
         """
-        path_selected = QFileDialog.getExistingDirectory(directory=self.configuration.getUserHomePath())
+        path_selected = QFileDialog.getExistingDirectory(directory=self.Interstitial.Configuration.getUserHomePath())
         self.daw_dir_text.setText(path_selected)
+        #self.dirs_handler_core
 
     def refDirTrigger(self):
         """
         Get Reference Directory Trigger
         """
-        path_selected = QFileDialog.getExistingDirectory(directory=self.configuration.getUserHomePath())
+        path_selected = QFileDialog.getExistingDirectory(directory=self.Interstitial.Configuration.getUserHomePath())
         self.ref_dir_text.setText(path_selected)
 
-    def getDaw(self):
-        """
-        Get DAW
-        """
-        return self.daw_dir_text.text()
-
-    def getRefDir(self):
-        """
-        Get Reference Directory
-        """
-        return self.ref_dir_selector_gui.text()
