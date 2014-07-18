@@ -13,8 +13,13 @@ from os import walk, path, stat
 from time import strftime, time
 import datetime
 
+#custome libs
+from Config import messages
+from Config import Configuration
+
 class InterstitialCore(object):
     def __init__(self):
+        self.configuration = Configuration.Configuration()
         pass
 
     def mono(self, numpy_matrix):
@@ -79,25 +84,27 @@ class InterstitialCore(object):
         """
 
         # initialize useful variables
-        filename = "manifest_" + strftime("%Y%m%d%H%M%S") + ".csv"
+        #"manifest_" + strftime("%Y%m%d%H%M%S") + ".csv"
+        filename = self.configuration.getManifestFileName()
         test_done = []
         targ_done = []
-        table = "Test File,Reference File,Creation Date,Size,Channels,Sample Rate,Length,First Error Sample,Error At"
-        meta = "Interstitial Error Report\n"
+        table = messages.message['table']
+        meta = messages.message['meta']
         timer = time()
-        initiated = strftime("%H:%M:%S")
+        #strftime("%H:%M:%S")
+        initiated = self.configuration.getCurrentTime()
         count = 0
 
         # ensures that we have legitimate directories to walk down
         # and populates the list of files to test
         if not path.isdir(path.abspath(first_wave_file)) or not path.isdir(path.abspath(second_wave_file)):
-            print "Illegal paths given - exiting..."
+            print messages.message['illegalPaths']
             return
 
         testers = self.populate(first_wave_file)
-        print str(len(testers)) + " WAV files found: " + path.abspath(first_wave_file)
+        print str(len(testers)) + messages.message['WAVfound'] + path.abspath(first_wave_file)
         targets = self.populate(second_wave_file)
-        print str(len(targets)) + " WAV files found: " + path.abspath(second_wave_file)
+        print str(len(targets)) + messages.message['WAVfound'] + path.abspath(second_wave_file)
         q_action.processEvents()
 
         # process each file in the tester array
@@ -147,7 +154,7 @@ class InterstitialCore(object):
                                         if not np.array_equal(track_one_response[m], track_two_response[m]):
                                             # we found it! print a message and we're done with these files
                                             errs = (n * tester_file_obj.samplerate) + m + 1000
-                                            print "ERROR: Interstitial error found between " + str(testers[index]) + " and " + str(targets[e]) + " at sample " + str(errs)
+                                            print messages.message['errorfoundbw'] + str(testers[index]) + " and " + str(targets[e]) + " at sample " + str(errs)
                                             q_action.processEvents()
                                             break
                                 if errs != 0:
@@ -178,7 +185,7 @@ class InterstitialCore(object):
             try:
                 f = open(directory + "/" + filename, 'w')
                 f.write(meta + table)
-                print "Wrote manifest to " + path.abspath(f.name)
+                print messages.message['wroteManifest'] + path.abspath(f.name)
                 f.close()
             except:
-                print "Illegal path: " + directory + filename
+                print messages.message['illegalPath'] + directory + filename
