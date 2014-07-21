@@ -19,6 +19,8 @@ class Setup(object):
     def setupApp(self):
         """
         Create Config file
+
+        @return: None
         """
         if not path.isfile(self.Interstitial.Configuration.getConfigFilePath()):
             try:

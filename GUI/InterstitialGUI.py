@@ -49,6 +49,8 @@ class InterstitialGUI(QWidget):
     def createDirectories(self):
         """
         Create Gui
+
+        @return None
         """
         self.manifest_dir_selector = QPushButton(self.Interstitial.label['dirSelector'], self)
 
@@ -61,6 +63,8 @@ class InterstitialGUI(QWidget):
     def addWidgetToLayout(self):
         """
         Add Widget To Layout
+
+        @return None
         """
         self.layout.addWidget(self.go, 4, 1)
         self.layout.addWidget(self.manifest_dir_text, 2, 1)
@@ -73,6 +77,8 @@ class InterstitialGUI(QWidget):
     def setTriggers(self):
         """
         Set GUI Triggers
+
+        @return None
         """
         self.go.clicked.connect(self.ErrorVerifier)
         self.manifest_dir_text.setText(path.expanduser('~/'))
@@ -84,6 +90,8 @@ class InterstitialGUI(QWidget):
     def manifestTrigger(self):
         """
         get Manifest Trigger
+
+        @return None
         """
         path_selected = QFileDialog.getExistingDirectory(directory=self.Interstitial.Configuration.getUserHomePath())
         self.manifest_dir_text.setText(path_selected)

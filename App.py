@@ -7,11 +7,20 @@
 
 from Config import Configuration, Setup, Laguage
 from Core import SharedApp, CustomException, Debugger
+
+
 class App(object):
+
+
     _instance = None
 
     @staticmethod
     def getInstance():
+        """
+        Get Instance of the Application
+
+        @return: Interstitial Instance
+        """
         if not isinstance(App._instance, App):
             App._instance = object.__new__(App)
             SharedApp.SharedApp.App = App._instance
@@ -21,6 +30,8 @@ class App(object):
     def setUp(self):
         """
         Set Up Application Static Contents
+
+        @return: None
         """
         self.ExceptionHandler = CustomException.CustomException.getInstance()
         self.Configuration = Configuration.Configuration()

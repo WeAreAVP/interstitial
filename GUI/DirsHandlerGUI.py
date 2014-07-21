@@ -25,11 +25,11 @@ class DirsHandlerGUI(QWidget):
         self.dirs_handler_core = DirsHandlerCore.DirsHandlerCore()
         self.Interstitial = SharedApp.SharedApp.App
 
-        pass
-
     def createDirectoriesInfo(self):
         """
         Create Directories
+
+        @return: None
         """
         self.daw_dir_selector = QPushButton(self.Interstitial.label['dirSelector'], self)
         self.ref_dir_selector = QPushButton(self.Interstitial.label['dirSelector'], self)
@@ -72,6 +72,8 @@ class DirsHandlerGUI(QWidget):
     def setTriggers(self):
         """
         Set GUI Triggers
+
+        @return: None
         """
         self.daw_dir_selector.clicked.connect(self.dawDirTrigger)
         self.ref_dir_selector.clicked.connect(self.refDirTrigger)
@@ -82,6 +84,8 @@ class DirsHandlerGUI(QWidget):
     def dawDirTrigger(self):
         """
         DAW Directory Trigger
+
+        @return: None
         """
         path_selected = QFileDialog.getExistingDirectory(directory=self.Interstitial.Configuration.getUserHomePath())
         self.daw_dir_text.setText(path_selected)
@@ -90,6 +94,8 @@ class DirsHandlerGUI(QWidget):
     def refDirTrigger(self):
         """
         Get Reference Directory Trigger
+
+        @return: None
         """
         path_selected = QFileDialog.getExistingDirectory(directory=self.Interstitial.Configuration.getUserHomePath())
         self.ref_dir_text.setText(path_selected)

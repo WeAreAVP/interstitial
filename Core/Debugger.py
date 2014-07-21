@@ -27,6 +27,8 @@ class Debugger(object):
     def setUp(self):
         """
         Setup Application
+
+        @return None
         """
         self.Interstitial = SharedApp.SharedApp.App
 
@@ -56,7 +58,7 @@ class Debugger(object):
         @param msg: Message to log
         @param more_information: More information For Logging
 
-        @return:
+        @return None
         """
 
         try:
@@ -123,7 +125,8 @@ class Debugger(object):
         Set Debugging Information
 
         @param status:
-        @return:
+
+        @return: None
         """
         os.remove(self.config_file_path)
         fixity = XmlHanlder.Element("Interstitial")

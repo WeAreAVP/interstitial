@@ -22,6 +22,8 @@ class Main(object):
     def LaunchGUI(self, param):
         """
         Launch GUI Application
+
+        @return: None
         """
         SharedApp.SharedApp.App = App.getInstance()
 
@@ -34,12 +36,19 @@ class Main(object):
     def RunCoreExecutor(self, param1, param2):
         """
         Run Core Executor Independently
+
+        @return: None
         """
         SharedApp.SharedApp.App = App.App.getInstance()
         IntersCore = InterstitialCore()
         IntersCore.execute(param1, param2)
 
     def LaunchCLI(self):
+        """
+        Launch CLI Application on demand
+
+        @return: None
+        """
         SharedApp.SharedApp.App = App.App.getInstance()
         """
         Lunch CLI Application
