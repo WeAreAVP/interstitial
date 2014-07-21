@@ -52,11 +52,7 @@ class Debugger(object):
         else:
             self.is_debugger_on = True
 
-
-    #@param msg
-    #@param more_information
-
-    def logError(self,msg,more_information = None):
+    def logError(self, msg, more_information = None):
         """
         Function to Log Errors
 
@@ -80,9 +76,7 @@ class Debugger(object):
         except:
             pass
 
-
-
-    def logInfo(self,msg ,more_information = None):
+    def logInfo(self,msg , more_information=None):
         """
         Function to Log Information
 
@@ -104,7 +98,7 @@ class Debugger(object):
             self.is_debugger_on = False
             pass
 
-    def logWarning(self,msg,more_information = None):
+    def logWarning(self, msg, more_information=None):
         """
         Function to Log Warning
 
@@ -155,6 +149,7 @@ class Debugger(object):
     def get(self):
         """
         Get Status
+
         @return: int
         """
 

@@ -28,6 +28,7 @@ class App(object):
             App._instance = object.__new__(App)
             SharedApp.SharedApp.App = App._instance
             App._instance.setUp()
+
         return App._instance
 
     def setUp(self):

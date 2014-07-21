@@ -283,14 +283,8 @@ class DirsHandlerCore(object):
         current_date = strftime("%Y-%m-%d")
         seconds_content = str(floor(time() - timer))
 
-        manifest_info ={}
-        manifest_info['current_date'] = current_date
-        manifest_info['initiated'] = initiated
-        manifest_info['seconds_content'] = seconds_content
-        manifest_info['testers'] = len(testers)
-        manifest_info['file_count'] = file_count
-        manifest_info['columns'] = columns
-        manifest_info['values'] = values
+        manifest_info ={'current_date': current_date, 'initiated': initiated, 'seconds_content': seconds_content,
+                        'testers': testers, 'file_count': file_count, 'columns': columns, 'values': values}
 
         # Open template file and get manifest template content to manifest file creation
         template_of_manifest_file = open(self.Interstitial.Configuration.getManifestTemplatePath(), "r")
@@ -307,10 +301,10 @@ class DirsHandlerCore(object):
             self.writeManifestFile(manifest_file_path, manifest_content)
             return manifest_file_path
 
-
     def writeManifestFile(self, file_path, manifest_content):
         """
         Write Manifest File
+
         @param file_path: Manifest File Path(String)
         @param manifest_content: Manifest Content (Tuple)
 
