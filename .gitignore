@@ -15,3 +15,6 @@ build
 build/*
 dist/*
 dist
+debug.log
+conf.xml
+config.xml
