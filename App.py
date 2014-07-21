@@ -10,7 +10,9 @@ from Core import SharedApp, CustomException, Debugger
 
 
 class App(object):
-
+    """
+        Application Interstitial Class
+    """
 
     _instance = None
 
@@ -21,6 +23,7 @@ class App(object):
 
         @return: Interstitial Instance
         """
+
         if not isinstance(App._instance, App):
             App._instance = object.__new__(App)
             SharedApp.SharedApp.App = App._instance
@@ -33,9 +36,11 @@ class App(object):
 
         @return: None
         """
+
         self.ExceptionHandler = CustomException.CustomException.getInstance()
         self.Configuration = Configuration.Configuration()
         self.Setup = Setup.Setup()
         self.Setup.setupApp()
         self.logger = Debugger.Debugger.getInstance()
         self.messages = Laguage.message
+        self.label = Laguage.label

@@ -14,9 +14,14 @@ from GUI import InterstitialGUI
 from Core import InterstitialCore, SharedApp
 from App import App
 
+
 class Main(object):
+    """
+        Application Main Launcher Class
+    """
 
     def __init__(self):
+        SharedApp.SharedApp.App = App.getInstance()
         pass
 
     def LaunchGUI(self, param):
@@ -25,7 +30,6 @@ class Main(object):
 
         @return: None
         """
-        SharedApp.SharedApp.App = App.getInstance()
 
         app = QApplication(param)
         interstitialGUIApp = InterstitialGUI.InterstitialGUI()
@@ -39,7 +43,7 @@ class Main(object):
 
         @return: None
         """
-        SharedApp.SharedApp.App = App.App.getInstance()
+
         IntersCore = InterstitialCore()
         IntersCore.execute(param1, param2)
 
@@ -49,7 +53,6 @@ class Main(object):
 
         @return: None
         """
-        SharedApp.SharedApp.App = App.App.getInstance()
         """
         Lunch CLI Application
         """

@@ -16,7 +16,12 @@ import datetime
 #custome libs
 from Core import SharedApp
 
+
 class InterstitialCore(object):
+    """
+        Application Interstitial Core Class
+    """
+
     def __init__(self):
         self.Interstitial = SharedApp.SharedApp.App
         pass

@@ -10,6 +10,10 @@ from Core import SharedApp
 import xml.etree.cElementTree as XmlHanlder
 
 class Debugger(object):
+    """
+        Application Debugger Handler Class
+    """
+
     _instance = None
     def __init__(self):
         Debugger._instance.setUp()
@@ -28,8 +32,9 @@ class Debugger(object):
         """
         Setup Application
 
-        @return None
+        @return: None
         """
+
         self.Interstitial = SharedApp.SharedApp.App
 
         self.debug_file_path = self.Interstitial.Configuration.getDebugFilePath()
@@ -58,7 +63,7 @@ class Debugger(object):
         @param msg: Message to log
         @param more_information: More information For Logging
 
-        @return None
+        @return: None
         """
 
         try:
@@ -86,6 +91,7 @@ class Debugger(object):
 
         @return: None
         """
+
         try:
             if self.is_debugger_on:
                 self.addTimeStamp()
@@ -107,6 +113,7 @@ class Debugger(object):
 
         @return: None
         """
+
         try:
             if self.is_debugger_on:
                 self.addTimeStamp()
@@ -128,6 +135,7 @@ class Debugger(object):
 
         @return: None
         """
+
         os.remove(self.config_file_path)
         fixity = XmlHanlder.Element("Interstitial")
 
@@ -149,6 +157,7 @@ class Debugger(object):
         Get Status
         @return: int
         """
+
         tree = XmlHanlder.parse(self.config_file_path)
         root = tree.getroot()
         for child in root:
@@ -161,6 +170,7 @@ class Debugger(object):
 
         @return: None
         """
+
         return str(datetime.datetime.now()).rpartition('.')[0]
 
     def addTimeStamp(self):
@@ -169,6 +179,7 @@ class Debugger(object):
 
         @return: None
         """
+
         self.loger.warning('::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::')
         self.loger.warning('::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::')
         self.loger.warning(str(self.getCurrentTime()))
@@ -183,6 +194,7 @@ class Debugger(object):
 
         @return: None
         """
+
         self.Interstitial = SharedApp.SharedApp.App
 
         ExceptionDetail = {}

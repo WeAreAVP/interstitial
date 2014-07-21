@@ -6,7 +6,13 @@
 
 from time import strftime
 from os import path, getcwd, sep
+
+
 class Configuration(object):
+    """
+        Application Configuration Handler Class
+    """
+
     def __init__(self):
         self.base_path = str(getcwd())+str(sep)
         self.log_file_path = path.join(self.base_path, 'debug.log')
@@ -22,7 +28,7 @@ class Configuration(object):
         """
         Get Os Type
 
-        @return Os Type
+        @return:Os Type
         """
         return str(self.OsType)
 
@@ -30,56 +36,63 @@ class Configuration(object):
         """
         Get Current Date Time
 
-        @return datetime
+        @return:datetime
         """
+
         return strftime("%Y%m%d%H%M%S")
 
     def getManifestFileName(self):
         """
         Get Manifest File Name
 
-        @return file_name
+        @return:file_name
         """
+
         return "manifest_" + str(self.getCurrentDateTime()) + ".csv"
 
     def getColumnsOfManifest(self):
         """
         Get Columns Of Manifest
 
-        @return columns
+        @return:columns
         """
+
         return self.columns
 
     def getCurrentTime(self):
         """
         Get Current Time
 
-        @return date
+        @return:date
         """
+
         return strftime("%H:%M:%S")
 
     def getUserHomePath(self):
         """
         Get User Home Path
 
-        @return user_home_path
+        @return:user_home_path
         """
+
         return path.expanduser('~')
 
     def getDebugFilePath(self):
         """
         Get Debug File Path
 
-        @return debug_file_path
+        @return:debug_file_path
         """
+
         return str(self.log_file_path)
 
     def getIsDebuggingOn(self):
         """
         Get Is Debugging On
 
-        @return Boolean
+        @return:Boolean
         """
+
         return self.is_debugging_on
 
     def setIsDebuggingOn(self, is_debugging_on):
@@ -87,38 +100,43 @@ class Configuration(object):
         Set Is Debugging On
         @param is_debugging_on: Is Debugging On
 
-        @return None
+        @return: None
         """
+
         self.is_debugging_on = is_debugging_on
 
     def getBasePath(self):
         """
         Get Base Path
 
-        @return string
+        @return:string
         """
+
         return str(self.base_path)
 
     def getTemplatePath(self):
         """
         Get Template Path
 
-        @return string
+        @return:string
         """
+
         return self.template_path
 
     def getConfigFilePath(self):
         """
         Get Config File Path
 
-        @return string
+        @return:string
         """
+
         return self.config_file_path
 
     def getManifestTemplatePath(self):
         """
         Get Manifest Templates Path
 
-        @return string
+        @return:string
         """
+
         return self.manifest_template_path

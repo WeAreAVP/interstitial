@@ -6,6 +6,11 @@ Created on May 14, 2014
 
 '''
 
+
 class SharedApp(object):
+    """
+        Application Shared App Class
+    """
+
     App = None
 

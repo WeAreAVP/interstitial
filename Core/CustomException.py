@@ -9,7 +9,9 @@ import sys, os, traceback
 
 
 class CustomException(object):
-
+    """
+        Application Exception Handler Class
+    """
 
     _instance = None
 
@@ -28,6 +30,7 @@ class CustomException(object):
 
         @return: List
         """
+
         exc_type, exc_obj, exc_tb = sys.exc_info()
         file_name = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
         error_information = {}
@@ -53,6 +56,7 @@ class CustomException(object):
 
         @return: Error Stack
         """
+
         stack_errro = repr(traceback.extract_stack())
         return stack_errro
 

@@ -10,7 +10,9 @@ import xml.etree.cElementTree as XmlHanlder
 
 
 class Setup(object):
-
+    """
+        Application Setup Handler Class
+    """
 
     def __init__(self):
         self.Interstitial = SharedApp.SharedApp.App
@@ -22,6 +24,7 @@ class Setup(object):
 
         @return: None
         """
+
         if not path.isfile(self.Interstitial.Configuration.getConfigFilePath()):
             try:
                 status = 'true'

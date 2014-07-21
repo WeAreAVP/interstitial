@@ -15,12 +15,15 @@ Interstitial Directory GUI Manager
 
 
 class DirsHandlerGUI(QWidget):
-
+    """
+        Application Directories Handler GUI Class
+    """
 
     def __init__(self):
         """
         Constructor
         """
+
         super(DirsHandlerGUI, self).__init__()
         self.dirs_handler_core = DirsHandlerCore.DirsHandlerCore()
         self.Interstitial = SharedApp.SharedApp.App
@@ -31,6 +34,7 @@ class DirsHandlerGUI(QWidget):
 
         @return: None
         """
+
         self.daw_dir_selector = QPushButton(self.Interstitial.label['dirSelector'], self)
         self.ref_dir_selector = QPushButton(self.Interstitial.label['dirSelector'], self)
 
@@ -41,24 +45,27 @@ class DirsHandlerGUI(QWidget):
         """
         Get Gui Daw Text
 
-        @return daw_dir_text
+        @return:daw_dir_text
         """
+
         return self.daw_dir_text.text()
 
     def getGuiRefText(self):
         """
         Get Gui Ref Text
 
-        @return ref_dir_text
+        @return:ref_dir_text
         """
+
         return self.ref_dir_text.text()
 
     def AddWidgets(self, layout):
         """
         Add Widget To Layout
 
-        @return Layout
+        @return:Layout
         """
+
         layout.addWidget(self.daw_dir_text, 0, 1)
         layout.addWidget(self.ref_dir_text, 1, 1)
 
@@ -75,6 +82,7 @@ class DirsHandlerGUI(QWidget):
 
         @return: None
         """
+
         self.daw_dir_selector.clicked.connect(self.dawDirTrigger)
         self.ref_dir_selector.clicked.connect(self.refDirTrigger)
 
@@ -87,6 +95,7 @@ class DirsHandlerGUI(QWidget):
 
         @return: None
         """
+
         path_selected = QFileDialog.getExistingDirectory(directory=self.Interstitial.Configuration.getUserHomePath())
         self.daw_dir_text.setText(path_selected)
         #self.dirs_handler_core
@@ -97,6 +106,7 @@ class DirsHandlerGUI(QWidget):
 
         @return: None
         """
+
         path_selected = QFileDialog.getExistingDirectory(directory=self.Interstitial.Configuration.getUserHomePath())
         self.ref_dir_text.setText(path_selected)
 

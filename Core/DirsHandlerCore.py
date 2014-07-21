@@ -16,6 +16,9 @@ import datetime
 from Core import SharedApp
 
 class DirsHandlerCore(object):
+    """
+        Application Directories Handler Core  Class
+    """
 
     def __init__(self):
         self.Interstitial = SharedApp.SharedApp.App
@@ -31,48 +34,63 @@ class DirsHandlerCore(object):
         """
         Set Core DAW ID
         @param daw_dir_id: this DAW Directory ID
+
+        @return: None
         """
+
         self.daw_dir_id = daw_dir_id
 
     def getCoreDawId(self):
         """
         Get Core DAW ID
-        @return string
+
+        @return:string
         """
+
         return self.daw_dir_id
 
     def setCoreRefId(self, ref_dir_id):
         """
         Set Core Reference ID
         @param ref_dir_id: this Reference Directory ID
+
+        @return: None
         """
+
         self.ref_dir_id = ref_dir_id
 
     def getCoreRefId(self):
         """
         Get Core Reference ID
 
-        @return string
+        @return:string
         """
+
         return self.daw_dir_id
 
     def setCoreDawText(self, daw_dir_text):
         """
         Set Core DAW Text
+
+        @return: None
         """
+
         self.daw_dir_text = daw_dir_text
 
     def getCoreDawText(self):
         """
         Get Core DAW Text
 
-        @return string
+        @return:string
         """
+
         return self.daw_dir_text
 
     def setCoreRefText(self, ref_dir_text):
         """
         Set Core Reference Text
+
+        @return: None
         """
         self.ref_dir_text = ref_dir_text
 
@@ -81,16 +99,22 @@ class DirsHandlerCore(object):
         Get Core Reference Text
         @param ref_dir_text: this Reference Directory Text
 
-        @return string
+        @return:string
         """
+
         return self.ref_dir_text
 
     def mono(self, numpy_matrix):
         """
+
         mono(numpy matrix ar)
         reduces an n-dimensional matrix to a 1-dimensional list if n > 1
         if n = 1, returns it
+        @param numpy_matrix: Numpy Matrix
+
+        @return: numpy_matrix
         """
+
         if numpy_matrix.ndim > 1:
             return numpy_matrix[:,0]
         else:
@@ -131,6 +155,7 @@ class DirsHandlerCore(object):
         populate (filepath dir)
         walks the file tree under dir recursively and returns all .wav files in it
         """
+
         populated_list = []
         wav = compile('.[Ww][Aa][Vv]$')
         for root, subFolders, files in walk(dir):
@@ -145,21 +170,21 @@ class DirsHandlerCore(object):
         execute (wavefile first_wave_file, wavefile second_wave_file, directory d, QAction qa)
         the heart of interstitial - performs a null test on two wav files and returns the first difference
         """
+
         # initialize useful variables
 
         values = ''
         file_count = 0
-        test_done = []
-        targ_done = []
+
+        test_done_for_files = []
+        targeted_done = []
+
         timer = time()
 
         filename = self.Interstitial.Configuration.getManifestFileName()
         columns = self.Interstitial.Configuration.getColumnsOfManifest()
 
         initiated = self.Interstitial.Configuration.getCurrentTime()
-
-        print(self.getCoreDawText())
-        print(self.getCoreRefText())
 
         # ensures that we have legitimate directories to walk down
         # and populates the list of files to test
@@ -168,18 +193,22 @@ class DirsHandlerCore(object):
             return
 
         testers = self.populate(self.getCoreDawText())
-        print str(len(testers)) + self.Interstitial.messages['WAVfound'] + path.abspath(self.getCoreDawText())
+        print str(len(testers)) + self.Interstitial.messages['WAV_found'] + path.abspath(self.getCoreDawText())
+
         targets = self.populate(self.getCoreRefText())
-        print str(len(targets)) + self.Interstitial.messages['WAVfound'] + path.abspath(self.getCoreRefText())
+        print str(len(targets)) + self.Interstitial.messages['WAV_found'] + path.abspath(self.getCoreRefText())
+
         q_action.processEvents()
 
         # process each file in the tester array
         for index in xrange(len(testers)):
             found = False
+
             for e in xrange(len(targets)):
                 q_action.processEvents()
                 # if we haven't already processed this file, process it
-                if str(targets[e]) not in targ_done:
+                if str(targets[e]) not in targeted_done:
+
                     # find the offset and align the waveforms
                     toff = self.offs(testers[index], targets[e])
                     tester_file_obj = Sndfile(testers[index], 'r')
@@ -200,8 +229,8 @@ class DirsHandlerCore(object):
                         q_action.processEvents()
 
                         # mark files as done
-                        test_done.append(str(testers[index]))
-                        targ_done.append(str(targets[e]))
+                        test_done_for_files.append(str(testers[index]))
+                        targeted_done.append(str(targets[e]))
 
                         # we can't read the entire file into RAM at once
                         # so instead we're breaking it into one-second parts
@@ -221,8 +250,9 @@ class DirsHandlerCore(object):
                                     for m in xrange(len(track_one_response)):
                                         if not np.array_equal(track_one_response[m], track_two_response[m]):
                                             # we found it! print a message and we're done with these files
+
                                             errs = (n * tester_file_obj.samplerate) + m + 1000
-                                            print self.Interstitial.messages['errorfoundbw'] + str(testers[index]) + " and " + str(targets[e]) + " at sample " + str(errs)
+                                            print self.Interstitial.messages['errorFoundBw'] + str(testers[index]) + " and " + str(targets[e]) + " at sample " + str(errs)
                                             q_action.processEvents()
                                             break
 
@@ -233,11 +263,15 @@ class DirsHandlerCore(object):
                                 break
 
                         # append metadata for output
+
                         values += path.abspath(testers[index]) + "," + path.abspath(str(targets[e])) + ","
                         values += datetime.datetime.fromtimestamp(stat(testers[index]).st_ctime).strftime("%Y-%m-%d %H:%M:%S") + ","
+
                         values += str(stat(testers[index]).st_size) + "," + str(tester_file_obj.channels) + "," + str(tester_file_obj.samplerate) + ","
                         values += str(datetime.timedelta(seconds=int(tester_file_obj.nframes / tester_file_obj.samplerate))) + "," + str(errs) + ","
+
                         values += str(datetime.timedelta(seconds=int(errs/tester_file_obj.samplerate)))
+
                         values += "\n"
 
                         found = True
@@ -249,7 +283,7 @@ class DirsHandlerCore(object):
         current_date = strftime("%Y-%m-%d")
         seconds_content = str(floor(time() - timer))
 
-        manifest_info = {}
+        manifest_info ={}
         manifest_info['current_date'] = current_date
         manifest_info['initiated'] = initiated
         manifest_info['seconds_content'] = seconds_content
@@ -280,8 +314,9 @@ class DirsHandlerCore(object):
         @param file_path: Manifest File Path(String)
         @param manifest_content: Manifest Content (Tuple)
 
-        @return Manifest Content(String)
+        @return:Manifest Content(String)
         """
+
         try:
             f = open(file_path, 'w')
             f.write(manifest_content)
@@ -295,8 +330,9 @@ class DirsHandlerCore(object):
         Generate Manifest Content
         @param template_of_manifest_file_lines: Lines Template Of Manifest File
 
-        @return manifest_content
+        @return:manifest_content
         """
+
         manifest_content = ''
         for template_of_manifest_single_line in template_of_manifest_file_lines:
 
@@ -342,7 +378,7 @@ class DirsHandlerCore(object):
         @param find_string: Find String string to be replaced with
         @param replace_with_string: String to be replaced with
 
-        @return String
+        @return:String
         """
 
         try:self.Interstitial = SharedApp.SharedApp.App

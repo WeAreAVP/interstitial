@@ -21,7 +21,9 @@ Interstitial GUI Manager
 
 
 class InterstitialGUI(QWidget):
-
+    """
+        Application Interstitial GUI Class
+    """
 
     def __init__(self):
         """
@@ -41,7 +43,7 @@ class InterstitialGUI(QWidget):
             self.dirsHandlerGuiList[index] = DirsHandlerGUI.DirsHandlerGUI()
 
         self.createDirectories()
-        self.go = QPushButton(self.Interstitial.label['runLable'], self)
+        self.go = QPushButton(self.Interstitial.label['runLabel'], self)
         self.addWidgetToLayout()
         self.setTriggers()
         self.setLayout(self.layout)
@@ -50,8 +52,9 @@ class InterstitialGUI(QWidget):
         """
         Create Gui
 
-        @return None
+        @return: None
         """
+
         self.manifest_dir_selector = QPushButton(self.Interstitial.label['dirSelector'], self)
 
         self.manifest_dir_text = QLineEdit()
@@ -64,8 +67,9 @@ class InterstitialGUI(QWidget):
         """
         Add Widget To Layout
 
-        @return None
+        @return: None
         """
+
         self.layout.addWidget(self.go, 4, 1)
         self.layout.addWidget(self.manifest_dir_text, 2, 1)
         self.layout.addWidget(QLabel(self.Interstitial.label['manifestDest']), 2, 0)
@@ -78,8 +82,9 @@ class InterstitialGUI(QWidget):
         """
         Set GUI Triggers
 
-        @return None
+        @return: None
         """
+
         self.go.clicked.connect(self.ErrorVerifier)
         self.manifest_dir_text.setText(path.expanduser('~/'))
 
@@ -91,8 +96,9 @@ class InterstitialGUI(QWidget):
         """
         get Manifest Trigger
 
-        @return None
+        @return: None
         """
+
         path_selected = QFileDialog.getExistingDirectory(directory=self.Interstitial.Configuration.getUserHomePath())
         self.manifest_dir_text.setText(path_selected)
 
@@ -100,8 +106,9 @@ class InterstitialGUI(QWidget):
         """
         Look For Errors in Proveded Wav Files
 
-        @retrun None
+        @return: None
         """
+
         report_detail_dialog_box = QDialog(self)
         report_detail_exit_btn = QPushButton(self.Interstitial.label['exit'], self)
         report_detail_text = QTextEdit(self)
