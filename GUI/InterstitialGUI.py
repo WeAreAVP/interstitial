@@ -61,7 +61,8 @@ class InterstitialGUI(QWidget):
         self.manifest_dir_text.setReadOnly(True)
 
         for index in xrange(0, self.number_of_scans):
-            self.dirsHandlerGuiList[index].createDirectoriesInfo()
+            self.layout = self.dirsHandlerGuiList[index].createDAWDirectories(self.layout)
+            self.layout = self.dirsHandlerGuiList[index].createRefDirectories(self.layout)
 
     def addWidgetToLayout(self):
         """
@@ -75,9 +76,6 @@ class InterstitialGUI(QWidget):
         self.layout.addWidget(QLabel(self.Interstitial.label['manifestDest']), 2, 0)
         self.layout.addWidget(self.manifest_dir_selector, 2, 2)
 
-        for index in xrange(0, self.number_of_scans):
-            self.layout = self.dirsHandlerGuiList[index].AddWidgets(self.layout)
-
     def setTriggers(self):
         """
         Set GUI Triggers
@@ -89,8 +87,6 @@ class InterstitialGUI(QWidget):
         self.manifest_dir_text.setText(path.expanduser('~/'))
 
         self.manifest_dir_selector.clicked.connect(self.manifestTrigger)
-        for index in xrange(0, self.number_of_scans):
-            self.dirsHandlerGuiList[index].setTriggers()
 
     def manifestTrigger(self):
         """
