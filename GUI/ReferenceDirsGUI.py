@@ -1,0 +1,69 @@
+# Interstitial Error Detector
+# Version 0.2, 2013-08-28
+# Copyright (c) 2013 AudioVisual Preservation Solutions
+# All rights reserved.
+# Released under the Apache license, v. 2.0
+
+from PySide.QtGui import *
+
+from Core import SharedApp, ReferenceDirsCore
+
+class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
+
+    def __init__(self):
+        super(ReferenceDirsGUI, self).__init__()
+        self.Interstitial = SharedApp.SharedApp.App
+
+    def createDirectoriesInfo(self):
+        """
+        Create Directories
+
+        @return: None
+        """
+
+        self.ref_dir_selector = QPushButton(self.Interstitial.label['dirSelector'], self)
+        self.ref_dir_text = QLineEdit()
+
+    def getGuiRefText(self):
+        """
+        Get Gui Ref Text
+
+        @return:ref_dir_text
+        """
+
+        return self.ref_dir_text.text()
+
+    def AddWidgets(self, layout):
+        """
+        Add Widget To Layout
+
+        @return:Layout
+        """
+
+        layout.addWidget(self.ref_dir_text, 1, 1)
+        layout.addWidget(self.ref_dir_selector, 1, 2)
+        layout.addWidget(QLabel(self.Interstitial.label['refDir']), 1, 0)
+
+        return layout
+
+    def setTriggers(self):
+        """
+        Set GUI Triggers
+
+        @return: None
+        """
+
+        self.ref_dir_selector.clicked.connect(self.refDirTrigger)
+        self.ref_dir_text.setReadOnly(True)
+
+
+    def refDirTrigger(self):
+        """
+        Get Reference Directory Trigger
+
+        @return: None
+        """
+
+        path_selected = QFileDialog.getExistingDirectory(directory=self.Interstitial.Configuration.getUserHomePath())
+        self.ref_dir_text.setText(path_selected)
+

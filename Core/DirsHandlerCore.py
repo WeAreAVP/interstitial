@@ -23,86 +23,9 @@ class DirsHandlerCore(object):
     def __init__(self):
         self.Interstitial = SharedApp.SharedApp.App
 
-        self.daw_dir_id = ''
-        self.daw_dir_text = ''
-        self.ref_dir_id = ''
-        self.ref_dir_text = ''
-
+        self.number_of_daw_dirs = 1
+        self.number_of_ref_dirs = 1
         pass
-
-    def setCoreDawId(self, daw_dir_id):
-        """
-        Set Core DAW ID
-        @param daw_dir_id: this DAW Directory ID
-
-        @return: None
-        """
-
-        self.daw_dir_id = daw_dir_id
-
-    def getCoreDawId(self):
-        """
-        Get Core DAW ID
-
-        @return:string
-        """
-
-        return self.daw_dir_id
-
-    def setCoreRefId(self, ref_dir_id):
-        """
-        Set Core Reference ID
-        @param ref_dir_id: this Reference Directory ID
-
-        @return: None
-        """
-
-        self.ref_dir_id = ref_dir_id
-
-    def getCoreRefId(self):
-        """
-        Get Core Reference ID
-
-        @return:string
-        """
-
-        return self.daw_dir_id
-
-    def setCoreDawText(self, daw_dir_text):
-        """
-        Set Core DAW Text
-
-        @return: None
-        """
-
-        self.daw_dir_text = daw_dir_text
-
-    def getCoreDawText(self):
-        """
-        Get Core DAW Text
-
-        @return:string
-        """
-
-        return self.daw_dir_text
-
-    def setCoreRefText(self, ref_dir_text):
-        """
-        Set Core Reference Text
-
-        @return: None
-        """
-        self.ref_dir_text = ref_dir_text
-
-    def getCoreRefText(self):
-        """
-        Get Core Reference Text
-        @param ref_dir_text: this Reference Directory Text
-
-        @return:string
-        """
-
-        return self.ref_dir_text
 
     def mono(self, numpy_matrix):
         """
@@ -128,7 +51,9 @@ class DirsHandlerCore(object):
         """
 
         # opens files for reading
+
         track_one_file_obj = Sndfile(track1, 'r')
+
         track_two_file_obj = Sndfile(track2, 'r')
 
         # calculates the head of each file (first twentieth of the waveform)
@@ -152,7 +77,7 @@ class DirsHandlerCore(object):
 
     def populate(self, dir):
         """
-        populate (filepath dir)
+        Populate (File Path Dir)
         walks the file tree under dir recursively and returns all .wav files in it
         """
 
@@ -167,8 +92,8 @@ class DirsHandlerCore(object):
 
     def execute(self, directory, q_action):
         """
-        execute (wavefile first_wave_file, wavefile second_wave_file, directory d, QAction qa)
-        the heart of interstitial - performs a null test on two wav files and returns the first difference
+        Execute (wavefile first_wave_file, wavefile second_wave_file, directory d, QAction qa)
+        The heart of interstitial - performs a null test on two wav files and returns the first difference
         """
 
         # initialize useful variables
@@ -186,8 +111,8 @@ class DirsHandlerCore(object):
 
         initiated = self.Interstitial.Configuration.getCurrentTime()
 
-        # ensures that we have legitimate directories to walk down
-        # and populates the list of files to test
+        # Ensures That We Have Legitimate Directories To Walk Down
+        # And Populates The List Of Files To Test
         if not path.isdir(path.abspath(self.getCoreDawText())) or not path.isdir(path.abspath(self.getCoreRefText())):
             print self.Interstitial.messages['illegalPaths']
             return
@@ -200,34 +125,33 @@ class DirsHandlerCore(object):
 
         q_action.processEvents()
 
-        # process each file in the tester array
+        # Process Each File In The Tester Array
         for index in xrange(len(testers)):
             found = False
 
             for e in xrange(len(targets)):
                 q_action.processEvents()
-                # if we haven't already processed this file, process it
+                # If We Haven't Already Processed This File, Process It
                 if str(targets[e]) not in targeted_done:
 
                     # find the offset and align the waveforms
                     toff = self.offs(testers[index], targets[e])
                     tester_file_obj = Sndfile(testers[index], 'r')
                     target_file_obj = Sndfile(targets[e], 'r')
-
                     if toff > 0:
                         tester_file_obj.seek(toff)
                     else:
                         target_file_obj.seek(fabs(toff))
 
-                    # read the first 1000 samples of each file
-                    # if each sample is within 6dB of the other, we have a match and can begin processing
+                    # Read The First 1000 Samples Of Each File
+                    # If Each Sample Is Within 6dB Of The Other, We Have A Match And Can Begin Processing
                     numpy_matrix_of_track1 = self.mono(tester_file_obj.read_frames(1000))
                     numpy_matrix_of_track2 = self.mono(target_file_obj.read_frames(1000))
 
                     if np.array_equal(numpy_matrix_of_track1, numpy_matrix_of_track2):
                         print "MATCH: " + str(testers[index]) + " matches " + str(targets[e])
-                        q_action.processEvents()
 
+                        q_action.processEvents()
                         # mark files as done
                         test_done_for_files.append(str(testers[index]))
                         targeted_done.append(str(targets[e]))
@@ -250,42 +174,35 @@ class DirsHandlerCore(object):
                                     for m in xrange(len(track_one_response)):
                                         if not np.array_equal(track_one_response[m], track_two_response[m]):
                                             # we found it! print a message and we're done with these files
-
                                             errs = (n * tester_file_obj.samplerate) + m + 1000
                                             print self.Interstitial.messages['errorFoundBw'] + str(testers[index]) + " and " + str(targets[e]) + " at sample " + str(errs)
                                             q_action.processEvents()
                                             break
-
                                 if errs != 0:
                                     break
 
                             except RuntimeError:
                                 break
-
-                        # append metadata for output
+                        # Append Metadata For Output
 
                         values += path.abspath(testers[index]) + "," + path.abspath(str(targets[e])) + ","
                         values += datetime.datetime.fromtimestamp(stat(testers[index]).st_ctime).strftime("%Y-%m-%d %H:%M:%S") + ","
-
                         values += str(stat(testers[index]).st_size) + "," + str(tester_file_obj.channels) + "," + str(tester_file_obj.samplerate) + ","
                         values += str(datetime.timedelta(seconds=int(tester_file_obj.nframes / tester_file_obj.samplerate))) + "," + str(errs) + ","
-
                         values += str(datetime.timedelta(seconds=int(errs/tester_file_obj.samplerate)))
 
                         values += "\n"
-
                         found = True
 
                     if found:
                         break
 
-        # create header information for manifest
+        # Create Header Information For Manifest
         current_date = strftime("%Y-%m-%d")
         seconds_content = str(floor(time() - timer))
 
         manifest_info ={'current_date': current_date, 'initiated': initiated, 'seconds_content': seconds_content,
                         'testers': testers, 'file_count': file_count, 'columns': columns, 'values': values}
-
         # Open template file and get manifest template content to manifest file creation
         template_of_manifest_file = open(self.Interstitial.Configuration.getManifestTemplatePath(), "r")
         template_of_manifest_file_lines = template_of_manifest_file.readlines()
@@ -293,10 +210,9 @@ class DirsHandlerCore(object):
 
         manifest_content = self.generateManifestContent(template_of_manifest_file_lines, manifest_info)
 
-        # do we have metadata? if so, write a manifest
+        # Do We Have Metadata? If So, Write A Manifest
         # Write Manifest File
         if len((values + columns)) > 110:
-
             manifest_file_path = directory + "/" + filename
             self.writeManifestFile(manifest_file_path, manifest_content)
             return manifest_file_path
@@ -329,37 +245,30 @@ class DirsHandlerCore(object):
 
         manifest_content = ''
         for template_of_manifest_single_line in template_of_manifest_file_lines:
-
             response = False
             response = self.setValuesForScheduler(template_of_manifest_single_line, '{{current_date}}',
                                                   str(manifest_info['current_date']))
-
             if response is False:
-                    response = self.setValuesForScheduler(template_of_manifest_single_line, '{{initiated}}',
+                response = self.setValuesForScheduler(template_of_manifest_single_line, '{{initiated}}',
                                                           str(manifest_info['initiated']))
-
             if response is False:
-                    response = self.setValuesForScheduler(template_of_manifest_single_line, '{{seconds}}',
+                response = self.setValuesForScheduler(template_of_manifest_single_line, '{{seconds}}',
                                                           str(manifest_info['seconds_content']))
-
             if response is False:
-                    response = self.setValuesForScheduler(template_of_manifest_single_line, '{{testers}}',
-                                                          str(manifest_info['testers']))
-
+                response = self.setValuesForScheduler(template_of_manifest_single_line, '{{testers}}',
+                                                          str(len(manifest_info['testers'])))
             if response is False:
-                    response = self.setValuesForScheduler(template_of_manifest_single_line, '{{bad_files}}',
+                response = self.setValuesForScheduler(template_of_manifest_single_line, '{{bad_files}}',
                                                           str(manifest_info['file_count']))
-
             if response is False:
-                    response = self.setValuesForScheduler(template_of_manifest_single_line, '{{columns}}',
+                response = self.setValuesForScheduler(template_of_manifest_single_line, '{{columns}}',
                                                           str(manifest_info['columns']))
-
             if response is False:
-                    response = self.setValuesForScheduler(template_of_manifest_single_line, '{{values}}',
+                response = self.setValuesForScheduler(template_of_manifest_single_line, '{{values}}',
                                                           str(manifest_info['values']))
 
             if response is False:
-               # if no value found to replace
+               # If No Value Found To Replace
                 manifest_content += str(template_of_manifest_single_line)
             else:
                 manifest_content += response

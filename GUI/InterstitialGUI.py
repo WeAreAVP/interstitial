@@ -127,6 +127,7 @@ class InterstitialGUI(QWidget):
         report_detail_dialog_box.setLayout(report_detail_layout)
 
         sys.stdout = Printer(report_detail_text)
+
         report_detail_dialog_box.resize(1000, 300)
         report_detail_dialog_box.show()
 
@@ -139,6 +140,12 @@ class InterstitialGUI(QWidget):
             self.dirsHandlerGuiList[index].dirs_handler_core.execute(str(self.manifest_dir_text.text()), QCoreApplication.instance())
 
         report_detail_exit_btn.setEnabled(True)
+
+    def addNewDawDirectory(self):
+        pass
+
+    def addNewRefDirectory(self):
+        pass
 
 
 # printer
