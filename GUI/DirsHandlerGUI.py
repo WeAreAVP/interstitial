@@ -32,26 +32,28 @@ class DirsHandlerGUI(QWidget):
         self.grid = QGridLayout()
 
 
-    def createDAWDirectories(self, layout):
+    def createDAWDirectories(self):
         """
         Create DAW Directories
 
         @return: None
         """
 
-        self.daw_dirs_gui.createDirectoriesInfo()
-        layout = self.daw_dirs_gui.AddWidgets(layout)
-        self.daw_dirs_gui.setTriggers()
-        return layout
+        self.grid.addWidget(self.daw_dirs_gui.setupDAWGUI())
 
-    def createRefDirectories(self, layout):
+
+    def createRefDirectories(self):
         """
         Create Reference Directories
 
         @return: None
         """
-        self.reference_dirs_gui.createDirectoriesInfo()
-        layout = self.reference_dirs_gui.AddWidgets(layout)
-        self.reference_dirs_gui.setTriggers()
+        self.grid.addWidget(self.reference_dirs_gui.setupReferenceGUI())
 
-        return layout
+    def getGrid(self):
+        """
+        Get GUI Grid Layout
+
+        @return: None
+        """
+        return self.grid

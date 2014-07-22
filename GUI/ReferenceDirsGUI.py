@@ -14,6 +14,20 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
         super(ReferenceDirsGUI, self).__init__()
         self.Interstitial = SharedApp.SharedApp.App
 
+    def setupReferenceGUI(self):
+
+        group_box = QGroupBox("1")
+        vbox = QVBoxLayout()
+        self.createDirectoriesInfo()
+
+        vbox = self.AddWidgets(vbox)
+        vbox.addStretch(1)
+
+        group_box.setLayout(vbox)
+
+        return group_box
+
+
     def createDirectoriesInfo(self):
         """
         Create Directories

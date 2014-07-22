@@ -3,6 +3,7 @@
 # Copyright (c) 2013 AudioVisual Preservation Solutions
 # All rights reserved.
 # Released under the Apache license, v. 2.0
+
 from PySide.QtGui import *
 
 from Core import SharedApp, DAWDirsCore
@@ -15,6 +16,18 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
         super(DAWDirsGUI, self).__init__()
         self.Interstitial = SharedApp.SharedApp.App
         pass
+
+    def setupDAWGUI(self):
+        group_box = QGroupBox("Exclusive Radio Buttons")
+        vbox = QVBoxLayout()
+        self.createDirectoriesInfo()
+
+        vbox = self.AddWidgets(vbox)
+        vbox.addStretch(1)
+
+        group_box.setLayout(vbox)
+
+        return group_box
 
     def createDirectoriesInfo(self):
         """
