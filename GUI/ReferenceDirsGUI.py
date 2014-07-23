@@ -14,20 +14,6 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
         super(ReferenceDirsGUI, self).__init__()
         self.Interstitial = SharedApp.SharedApp.App
 
-    def setupReferenceGUI(self):
-
-        group_box = QGroupBox("1")
-        vbox = QVBoxLayout()
-        self.createDirectoriesInfo()
-
-        vbox = self.AddWidgets(vbox)
-        vbox.addStretch(1)
-
-        group_box.setLayout(vbox)
-
-        return group_box
-
-
     def createDirectoriesInfo(self):
         """
         Create Directories
@@ -37,6 +23,12 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
 
         self.ref_dir_selector = QPushButton(self.Interstitial.label['dirSelector'], self)
         self.ref_dir_text = QLineEdit()
+
+        self.ref_dir_selector.move(55, 70)
+        self.ref_dir_text.move(55, 70)
+
+        self.ref_dir_selector.setMaximumSize(50, 100)
+        self.ref_dir_text.setMaximumSize(410, 100)
 
     def getGuiRefText(self):
         """
@@ -54,9 +46,12 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
         @return:Layout
         """
 
-        layout.addWidget(self.ref_dir_text, 1, 1)
-        layout.addWidget(self.ref_dir_selector, 1, 2)
-        layout.addWidget(QLabel(self.Interstitial.label['refDir']), 1, 0)
+        layout.addWidget(self.ref_dir_text)
+        layout.addWidget(self.ref_dir_selector, 0, 2)
+
+        separator = QLabel('________________________________________________________________________________')
+        separator.setStyleSheet("QLabel { color : #FBFBF9;}")
+        layout.addWidget(separator, 0, 1)
 
         return layout
 
@@ -69,7 +64,6 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
 
         self.ref_dir_selector.clicked.connect(self.refDirTrigger)
         self.ref_dir_text.setReadOnly(True)
-
 
     def refDirTrigger(self):
         """

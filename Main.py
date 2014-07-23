@@ -44,8 +44,8 @@ class Main(object):
         @return: None
         """
 
-        IntersCore = InterstitialCore()
-        IntersCore.execute(param1, param2)
+        inters_core = InterstitialCore()
+        inters_core.execute(param1, param2)
 
     def LaunchCLI(self):
         """

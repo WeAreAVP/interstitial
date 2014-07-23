@@ -16,6 +16,7 @@ label['manifestDest'] = "Manifest Destination"
 label['exit'] = "Exit"
 label['DAWDir'] = "DAW Directory"
 label['refDir'] = "Reference Directory"
+label['addnew'] = "Add New"
 
 
 
