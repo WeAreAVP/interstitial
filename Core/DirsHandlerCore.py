@@ -293,3 +293,39 @@ class DirsHandlerCore(object):
         if find_string in string:
             return str(string).replace(find_string, replace_with_string)
         return False
+
+    def setCoreDawText(self, daw_dir_text):
+        """
+        Set Core DAW Text
+
+        @return: None
+        """
+
+        self.daw_dir_text = daw_dir_text
+
+    def getCoreDawText(self):
+        """
+        Get Core DAW Text
+
+        @return:string
+        """
+
+        return self.daw_dir_text
+
+    def setCoreRefText(self, ref_dir_text):
+        """
+        Set Core Reference Text
+
+        @return: None
+        """
+        self.ref_dir_text = ref_dir_text
+
+    def getCoreRefText(self):
+        """
+        Get Core Reference Text
+        @param ref_dir_text: this Reference Directory Text
+
+        @return:string
+        """
+
+        return self.ref_dir_text

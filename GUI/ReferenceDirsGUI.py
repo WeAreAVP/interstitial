@@ -37,7 +37,11 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
         @return:ref_dir_text
         """
 
-        return self.ref_dir_text.text()
+        try:
+            return str(self.ref_dir_text.text())
+        except:
+            return str(self.ref_dir_text)
+            pass
 
     def AddWidgets(self, layout):
         """
@@ -63,7 +67,7 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
         """
 
         self.ref_dir_selector.clicked.connect(self.refDirTrigger)
-        self.ref_dir_text.setReadOnly(True)
+        #self.ref_dir_text.setReadOnly(True)
 
     def refDirTrigger(self):
         """
@@ -74,4 +78,3 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
 
         path_selected = QFileDialog.getExistingDirectory(directory=self.Interstitial.Configuration.getUserHomePath())
         self.ref_dir_text.setText(path_selected)
-

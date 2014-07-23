@@ -36,8 +36,12 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
 
         @return:daw_dir_text
         """
-
-        return self.daw_dir_text.text()
+        
+        try:
+            return str(self.daw_dir_text.text())
+        except:
+            return str(self.daw_dir_text)
+            pass
 
     def AddWidgets(self, layout):
         """
@@ -63,7 +67,7 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
         """
 
         self.daw_dir_selector.clicked.connect(self.dawDirTrigger)
-        self.daw_dir_text.setReadOnly(True)
+        #self.daw_dir_text.setReadOnly(True)
 
     def dawDirTrigger(self):
         """

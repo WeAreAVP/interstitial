@@ -61,8 +61,10 @@ class InterstitialGUI(QWidget):
         self.manifest_dir_text.setReadOnly(True)
 
         self.grid_layout.addWidget(self.dirs_handler_gui.createDAWDirectories())
-        self.grid_layout.addWidget(self.dirs_handler_gui.createRefDirectories())
+        self.grid_layout.addWidget(self.dirs_handler_gui.add_new_daw)
 
+        self.grid_layout.addWidget(self.dirs_handler_gui.createRefDirectories())
+        self.grid_layout.addWidget(self.dirs_handler_gui.add_new_ref)
         self.setLayout(self.grid_layout)
 
     def addWidgetToLayout(self):
@@ -133,6 +135,8 @@ class InterstitialGUI(QWidget):
 
         report_detail_dialog_box.resize(1000, 300)
         report_detail_dialog_box.show()
+
+        self.dirs_handler_gui.RunExecutor(str(self.manifest_dir_text.text()))
 
         report_detail_exit_btn.setEnabled(True)
 
