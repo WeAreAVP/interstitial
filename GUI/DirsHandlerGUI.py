@@ -3,12 +3,15 @@
 # Copyright (c) 2013 AudioVisual Preservation Solutions
 # All rights reserved.
 # Released under the Apache license, v. 2.0
+
 from PySide.QtCore import *
 from PySide.QtGui import *
-from PySide.QtCore import *
 
 from Core import DirsHandlerCore, SharedApp
 from GUI import DAWDirsGUI, ReferenceDirsGUI
+
+import time
+
 
 """
 Interstitial Directory GUI Manager
@@ -24,7 +27,6 @@ class DirsHandlerGUI(QWidget):
         """
         Constructor
         """
-
         super(DirsHandlerGUI, self).__init__()
 
         self.Interstitial = SharedApp.SharedApp.App
@@ -42,20 +44,17 @@ class DirsHandlerGUI(QWidget):
         self.add_height_daw = 60
         self.add_height_ref = 60
 
-        # Adding Space for new Directories in Group Box
         for index_daw in xrange(0, self.number_of_daw_dirs):
             self.daw_dirs_gui[index_daw] = DAWDirsGUI.DAWDirsGUI()
-            self.add_height_daw += 90
 
         for index_ref in xrange(0, self.number_of_ref_dirs):
             self.reference_dirs_gui[index_ref] = ReferenceDirsGUI.ReferenceDirsGUI()
-            self.add_height_ref += 90
 
-        self.ref_group_box.setMinimumSize(520, self.add_height_ref)
-        self.daw_group_box.setMinimumSize(520, self.add_height_daw)
+        self.ref_group_box.setMinimumSize(350, self.add_height_ref)
+        self.daw_group_box.setMinimumSize(350, self.add_height_daw)
 
-        self.daw_qv_box = QVBoxLayout()
-        self.ref_qv_box = QVBoxLayout()
+        self.daw_qh_box = QFormLayout()
+        self.ref_qh_box = QFormLayout()
 
     def createDAWDirectories(self):
         """
@@ -74,19 +73,22 @@ class DirsHandlerGUI(QWidget):
 
         # Create & Load Widgets and Triggers for Reference DAW
         for index_daw in xrange(0, self.number_of_daw_dirs):
-            self.daw_dirs_gui[index_daw].createDirectoriesInfo()
+            self.daw_dirs_gui[index_daw].createDirectoriesInfo(self.number_of_daw_dirs)
             self.daw_dirs_gui[index_daw].setTriggers()
-            self.daw_qv_box = self.daw_dirs_gui[index_daw].AddWidgets(self.daw_qv_box)
+            self.daw_qh_box = self.daw_dirs_gui[index_daw].AddWidgets(self.daw_qh_box)
 
         # Load New Add Buttons Widget , Trigger
         self.add_new_daw = QPushButton(self.Interstitial.label['addNewDAW'], self)
         self.add_new_daw.clicked.connect(self.addNewDawDirectory)
-        self.add_new_daw.setMaximumSize(140, 100)
-        self.daw_qv_box.addWidget(self.add_new_daw, 0, 3)
 
-        self.daw_qv_box.addStretch(1)
-        self.daw_group_box.setLayout(self.daw_qv_box)
+        self.add_new_daw.setMaximumSize(140, 30)
+        self.add_new_daw.setMinimumSize(140, 30)
 
+
+        self.daw_qh_box.addWidget(self.add_new_daw)
+
+        self.daw_group_box.setLayout(self.daw_qh_box)
+        print(self.daw_group_box.height())
         return self.daw_group_box
 
     def setupReferenceGUI(self):
@@ -98,18 +100,21 @@ class DirsHandlerGUI(QWidget):
 
         # Create & Load Widgets and Triggers for Reference GUI
         for index_ref in xrange(0, self.number_of_ref_dirs):
-            self.reference_dirs_gui[index_ref].createDirectoriesInfo()
+            self.reference_dirs_gui[index_ref].createDirectoriesInfo(self.number_of_ref_dirs)
             self.reference_dirs_gui[index_ref].setTriggers()
-            self.ref_qv_box = self.reference_dirs_gui[index_ref].AddWidgets(self.ref_qv_box)
+            self.ref_qh_box = self.reference_dirs_gui[index_ref].AddWidgets(self.ref_qh_box)
 
         # Load New Add Buttons Widget , Trigger
         self.add_new_ref = QPushButton(self.Interstitial.label['addNewRef'], self)
         self.add_new_ref.clicked.connect(self.addNewReferenceDirectory)
         self.add_new_ref.setMaximumSize(170, 100)
-        self.ref_qv_box.addWidget(self.add_new_ref, 0, 3)
+        self.ref_qh_box.addWidget(self.add_new_ref)
 
-        self.ref_qv_box.addStretch(1)
-        self.ref_group_box.setLayout(self.ref_qv_box)
+        self.add_new_ref.setMaximumSize(170, 30)
+        self.add_new_ref.setMinimumSize(170, 30)
+
+
+        self.ref_group_box.setLayout(self.ref_qh_box)
 
         return self.ref_group_box
 
@@ -128,17 +133,22 @@ class DirsHandlerGUI(QWidget):
         @return: None
         """
 
-
         self.daw_dirs_gui[self.number_of_daw_dirs] = DAWDirsGUI.DAWDirsGUI()
 
         self.daw_dirs_gui[self.number_of_daw_dirs].createDirectoriesInfo()
         self.daw_dirs_gui[self.number_of_daw_dirs].setTriggers()
-        self.daw_qv_box = self.daw_dirs_gui[self.number_of_daw_dirs].AddWidgets(self.daw_qv_box)
-        self.add_height_daw += 60
-        self.daw_group_box.setMinimumSize(520, self.add_height_daw)
-        self.daw_group_box.setLayout(self.daw_qv_box)
+        self.daw_qh_box = self.daw_dirs_gui[self.number_of_daw_dirs].AddWidgets(self.daw_qh_box)
+
+        # Adding Space for new Directories in Group Box
+        self.add_height_daw += 30
+
+        self.daw_group_box.setMinimumSize(350, self.add_height_daw)
+        self.ref_group_box.setMinimumSize(350, self.add_height_ref)
+
+        self.daw_group_box.setLayout(self.daw_qh_box)
 
         self.number_of_daw_dirs += 1
+
         QCoreApplication.processEvents()
 
     def addNewReferenceDirectory(self):
@@ -148,18 +158,24 @@ class DirsHandlerGUI(QWidget):
         @return: None
         """
 
-
         self.reference_dirs_gui[self.number_of_ref_dirs] = ReferenceDirsGUI.ReferenceDirsGUI()
 
         self.reference_dirs_gui[self.number_of_ref_dirs].createDirectoriesInfo()
         self.reference_dirs_gui[self.number_of_ref_dirs].setTriggers()
 
-        self.ref_qv_box = self.reference_dirs_gui[self.number_of_ref_dirs].AddWidgets(self.ref_qv_box)
+        self.ref_qh_box = self.reference_dirs_gui[self.number_of_ref_dirs].AddWidgets(self.ref_qh_box)
 
-        self.add_height_ref += 60
-        self.ref_group_box.setMinimumSize(520, self.add_height_ref)
-        self.ref_group_box.setLayout(self.ref_qv_box)
+        # Adding Space for new Directories in Group Box
+        self.add_height_ref += 30
+
+        self.ref_group_box.setMinimumSize(350, self.add_height_ref)
+        self.daw_group_box.setMinimumSize(350, self.add_height_daw)
+
+        self.ref_vh_box = QVBoxLayout()
+        self.ref_group_box.setLayout(self.ref_qh_box)
+
         self.number_of_ref_dirs += 1
+
         QCoreApplication.processEvents()
 
     def RunExecutor(self, manifest_path):
@@ -177,14 +193,13 @@ class DirsHandlerGUI(QWidget):
                 self.daw_dirs_gui[index_daw].setCoreDawText(self.daw_dirs_gui[index_daw].getGuiDawText())
 
                 # Set Reference Core Information
-                self.reference_dirs_gui[index_ref].setCoreRefId('daw' + str(index_ref))
+                self.reference_dirs_gui[index_ref].setCoreRefId('ref' + str(index_ref))
                 self.reference_dirs_gui[index_ref].setCoreRefText(self.reference_dirs_gui[index_ref].getGuiRefText())
-
 
                 # Set Directories Core Information to be used for executor
                 self.dirs_handler_core.setCoreDawText(self.daw_dirs_gui[index_daw].getGuiDawText())
                 self.dirs_handler_core.setCoreRefText(self.reference_dirs_gui[index_ref].getGuiRefText())
 
-
                 # Launch The Scanner to Test Audio Files
                 self.dirs_handler_core.execute(manifest_path, QCoreApplication.instance())
+                time.sleep(2)

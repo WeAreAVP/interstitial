@@ -22,6 +22,7 @@ class Main(object):
 
     def __init__(self):
         SharedApp.SharedApp.App = App.getInstance()
+
         pass
 
     def LaunchGUI(self, param):
@@ -32,7 +33,8 @@ class Main(object):
         """
 
         app = QApplication(param)
-        interstitialGUIApp = InterstitialGUI.InterstitialGUI()
+        interstitialGUIApp = InterstitialGUI.InterstitialGUI.getInstance()
+
         interstitialGUIApp.show()
         interstitialGUIApp.raise_()
         sys.exit(app.exec_())

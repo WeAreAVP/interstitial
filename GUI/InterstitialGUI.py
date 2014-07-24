@@ -13,7 +13,7 @@ from PySide.QtGui import *
 #Custom Libs
 
 from Core import InterstitialCore, SharedApp
-from GUI import DirsHandlerGUI
+from GUI import DirsHandlerGUI, SharedAppGUI
 
 """
 Interstitial GUI Manager
@@ -25,20 +25,29 @@ class InterstitialGUI(QWidget):
         Application Interstitial GUI Class
     """
 
-    def __init__(self):
+    _instance = None
+
+    @staticmethod
+    def getInstance():
         """
         Constructor
         """
+        if not isinstance(InterstitialGUI._instance, InterstitialGUI):
+            InterstitialGUI._instance = QWidget.__new__(InterstitialGUI)
+            SharedAppGUI.SharedAppGUI.GUIApp = InterstitialGUI._instance
+            SharedAppGUI.SharedAppGUI.GUIApp._instance.setup()
+
+        return InterstitialGUI._instance
+
+    def setup(self):
         QWidget.__init__(self)
         self.inters_core = InterstitialCore.InterstitialCore()
         self.Interstitial = SharedApp.SharedApp.App
         self.grid_layout = QGridLayout(self)
-        self.dirs_handler_gui = {}
-
+        self.vbox = QHBoxLayout()
+        self.group_box = QGroupBox(self.Interstitial.label['manifestDest'])
         self.setWindowTitle(self.Interstitial.messages['InterErrorDetectTitle'])
-        self.setMaximumWidth(550)
-
-        self.number_of_scans = 1
+        self.setMaximumWidth(450)
 
         self.dirs_handler_gui = DirsHandlerGUI.DirsHandlerGUI()
 
@@ -56,8 +65,10 @@ class InterstitialGUI(QWidget):
         self.manifest_dir_selector = QPushButton(self.Interstitial.label['dirSelector'], self)
         self.manifest_dir_text = QLineEdit()
 
-        self.manifest_dir_selector.setMaximumSize(50, 100)
-        self.manifest_dir_text.setMaximumSize(410, 100)
+        self.manifest_dir_selector.setMaximumSize(50, 25)
+        self.manifest_dir_text.setMaximumSize(220, 25)
+        self.manifest_dir_text.setMinimumSize(220, 25)
+
         self.manifest_dir_text.setReadOnly(True)
 
         self.grid_layout.addWidget(self.dirs_handler_gui.createDAWDirectories())
@@ -65,6 +76,7 @@ class InterstitialGUI(QWidget):
 
         self.grid_layout.addWidget(self.dirs_handler_gui.createRefDirectories())
         self.grid_layout.addWidget(self.dirs_handler_gui.add_new_ref)
+
         self.setLayout(self.grid_layout)
 
     def addWidgetToLayout(self):
@@ -73,18 +85,15 @@ class InterstitialGUI(QWidget):
 
         @return: None
         """
-        group_box = QGroupBox(self.Interstitial.label['manifestDest'])
-        vbox = QVBoxLayout()
+        self.vbox.addWidget(self.manifest_dir_text)
+        self.vbox.addWidget(self.manifest_dir_selector)
+        self.vbox.addWidget(self.go)
 
-        vbox.addWidget(self.manifest_dir_text)
-        vbox.addWidget(self.manifest_dir_selector, 0, 2)
-        vbox.addWidget(self.go, 0, 1)
+        self.vbox.addStretch(1)
 
-        vbox.addStretch(1)
+        self.group_box.setLayout(self.vbox)
 
-        group_box.setLayout(vbox)
-
-        self.grid_layout.addWidget(group_box)
+        self.grid_layout.addWidget(self.group_box)
 
     def setTriggers(self):
         """
@@ -95,7 +104,6 @@ class InterstitialGUI(QWidget):
 
         self.go.clicked.connect(self.ErrorVerifier)
         self.manifest_dir_text.setText(path.expanduser('~/'))
-
         self.manifest_dir_selector.clicked.connect(self.manifestTrigger)
 
     def manifestTrigger(self):
@@ -104,7 +112,6 @@ class InterstitialGUI(QWidget):
 
         @return: None
         """
-
         path_selected = QFileDialog.getExistingDirectory(directory=self.Interstitial.Configuration.getUserHomePath())
         self.manifest_dir_text.setText(path_selected)
 

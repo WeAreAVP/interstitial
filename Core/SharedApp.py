@@ -14,3 +14,10 @@ class SharedApp(object):
 
     App = None
 
+
+class SharedAppGUI(object):
+    """
+        Application Shared GUI App Class
+    """
+
+    GUIApp = None
