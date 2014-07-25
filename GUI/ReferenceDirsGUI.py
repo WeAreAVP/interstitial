@@ -73,6 +73,9 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
         self.single_line_hanlder .addWidget(self.ref_dir_text)
         self.single_line_hanlder .addWidget(self.ref_dir_selector)
 
+        if self.Interstitial.Configuration.getOsType() == 'linux':
+            self.single_line_hanlder.setSpacing(10)
+
         try:
             self.single_line_hanlder .addWidget(self.bin_of_dirs)
         except:

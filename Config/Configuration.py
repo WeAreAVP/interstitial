@@ -5,7 +5,7 @@
 # Released under the Apache license, v. 2.0
 
 from time import strftime
-from os import path, getcwd, sep
+from os import path, getcwd, sep, name
 
 
 class Configuration(object):
@@ -22,7 +22,21 @@ class Configuration(object):
         self.is_debugging_on = True
         self.config_file_path = self.getBasePath()+'conf.xml'
         self.columns = "Test File,Reference File,Creation Date,Size,Channels,Sample Rate,Length,First Error Sample,Error At"
-        pass
+
+        if name == 'posix':
+            self.OsType = 'linux'
+        elif name == 'nt':
+            self.OsType = 'windows'
+        else:
+            self.OsType = 'check'
+
+        if self.OsType == 'Windows':
+            self.main_window_width = 600
+        else:
+            self.main_window_width = 630
+
+    def getMainWindowWidth(self):
+        return self.main_window_width
 
     def getOsType(self):
         """

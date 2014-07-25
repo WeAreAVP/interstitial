@@ -47,12 +47,11 @@ class InterstitialGUI(QWidget):
         self.vbox = QHBoxLayout()
         self.group_box = QGroupBox(self.Interstitial.label['manifestDest'])
         self.setWindowTitle(self.Interstitial.messages['InterErrorDetectTitle'])
-        self.setMaximumWidth(600)
-        self.setMinimumWidth(600)
 
+        self.setMaximumWidth(self.Interstitial.Configuration.getMainWindowWidth())
+        self.setMinimumWidth(self.Interstitial.Configuration.getMainWindowWidth())
 
         self.dirs_handler_gui = DirsHandlerGUI.DirsHandlerGUI()
-
         self.createDirectories()
         self.go = QPushButton(self.Interstitial.label['runLabel'], self)
         self.addWidgetToLayout()
@@ -67,12 +66,11 @@ class InterstitialGUI(QWidget):
         self.manifest_dir_selector = QPushButton(self.Interstitial.label['dirSelector'], self)
         self.manifest_dir_text = QLineEdit()
 
-        self.manifest_dir_selector.setMaximumSize(50, 25)
+        self.manifest_dir_selector.setMaximumSize(50, 20)
+        self.manifest_dir_selector.setMinimumSize(50, 20)
+
         self.manifest_dir_text.setMaximumSize(420, 25)
         self.manifest_dir_text.setMinimumSize(420, 25)
-
-        #self.go.setMaximumSize(50, 25)
-        #self.go.setMinimumSize(50, 25)
 
         self.manifest_dir_text.setReadOnly(True)
 
@@ -147,45 +145,10 @@ class InterstitialGUI(QWidget):
 
         report_detail_dialog_box.resize(1000, 300)
         report_detail_dialog_box.show()
-        #teminal = Terminal()
+
         self.dirs_handler_gui.RunExecutor(str(self.manifest_dir_text.text()))
 
         report_detail_exit_btn.setEnabled(True)
-
-
-#class Terminal(QDialog):
-#
-#    def __init__(self):
-#        self.Interstitial_GUI = SharedApp.SharedAppGUI.GUIApp
-#        QDialog.__init__(self, SharedApp.SharedAppGUI.GUIApp)
-#        self.setWindowModality(Qt.WindowModal)
-#
-#        self.inters_core = InterstitialCore.InterstitialCore()
-#        self.Interstitial = SharedApp.SharedApp.App
-#
-#        self.report_detail_exit_btn = QPushButton(self.Interstitial.label['exit'], self)
-#        self.report_detail_text = QTextEdit(self)
-#        self.report_detail_layout = QVBoxLayout(self)
-#        self.setWindowTitle(self.Interstitial.messages['InterErrorDetectTitle'])
-#        self.report_detail_exit_btn.setEnabled(False)
-#        self.report_detail_text.setReadOnly(True)
-#
-#        self.report_detail_exit_btn.clicked.connect(self.close)
-#
-#        self.report_detail_layout.addWidget(self.report_detail_text)
-#        self.report_detail_layout.addWidget(self.report_detail_exit_btn)
-#
-#        self.setLayout(self.report_detail_layout)
-#        sys.stdout = Printer(self.report_detail_text)
-#        self.report_detail_layout.addStrut(200)
-#        self.resize(1000, 300)
-#        self.show()
-#        self.exec_()
-#        #self.SetWindowLayout()
-#        #self.exec_()
-#
-#    def enable_next(self):
-#        self.report_detail_exit_btn.setEnabled(True)
 
 
 # printer

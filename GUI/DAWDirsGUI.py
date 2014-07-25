@@ -58,7 +58,12 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
 
         @return:Layout
         """
+
         self.single_line_hanlder = QHBoxLayout()
+
+        if self.Interstitial.Configuration.getOsType() == 'linux':
+            self.single_line_hanlder.setSpacing(10)
+
         self.single_line_hanlder .addWidget(self.daw_dir_text)
         self.single_line_hanlder .addWidget(self.daw_dir_selector)
 
@@ -66,6 +71,7 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
             self.single_line_hanlder.addWidget(self.bin_of_dirs)
         except:
             pass
+
         layout.addRow(self.single_line_hanlder)
 
         return layout

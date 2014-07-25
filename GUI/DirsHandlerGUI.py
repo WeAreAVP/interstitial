@@ -50,6 +50,9 @@ class DirsHandlerGUI(QWidget):
         self.daw_qh_box = QFormLayout()
         self.ref_qh_box = QFormLayout()
 
+        if self.Interstitial.Configuration.getOsType() == 'linux':
+            self.daw_qh_box.setSpacing(0)
+            self.ref_qh_box.setSpacing(0)
     def createDAWDirectories(self):
         """
         Create DAW Directories
@@ -75,11 +78,17 @@ class DirsHandlerGUI(QWidget):
         self.add_new_daw = QPushButton(self.Interstitial.label['addNewDAW'], self)
         self.add_new_daw.clicked.connect(self.addNewDawDirectory)
 
-        self.add_new_daw.setMaximumSize(140, 30)
-        self.add_new_daw.setMinimumSize(140, 30)
+        if self.Interstitial.Configuration.getOsType() == 'windows':
+            self.add_new_daw.setMaximumSize(140, 30)
+            self.add_new_daw.setMinimumSize(140, 30)
+        else:
+            self.add_new_daw.setMaximumSize(200, 30)
+            self.add_new_daw.setMinimumSize(200, 30)
 
+        # self.daw_qh_box.set.setContentsMargins(0,0,0,0)
         self.daw_qh_box.addWidget(self.add_new_daw)
 
+        # self.daw_group_box.set.setContentsMargins(0,0,0,0)
         self.daw_group_box.setLayout(self.daw_qh_box)
 
         return self.daw_group_box
@@ -100,11 +109,10 @@ class DirsHandlerGUI(QWidget):
         # Load New Add Buttons Widget , Trigger
         self.add_new_ref = QPushButton(self.Interstitial.label['addNewRef'], self)
         self.add_new_ref.clicked.connect(self.addNewReferenceDirectory)
-        self.add_new_ref.setMaximumSize(170, 100)
         self.ref_qh_box.addWidget(self.add_new_ref)
 
-        self.add_new_ref.setMaximumSize(170, 30)
-        self.add_new_ref.setMinimumSize(170, 30)
+        self.add_new_ref.setMaximumSize(220, 30)
+        self.add_new_ref.setMinimumSize(220, 30)
 
 
         self.ref_group_box.setLayout(self.ref_qh_box)
@@ -225,8 +233,3 @@ class DirsHandlerGUI(QWidget):
             manifest_file_path = manifest_path + "/" + filename
             self.dirs_handler_core.writeManifestFile(manifest_file_path, manifest_content)
             return manifest_file_path
-
-
-        print(testers)
-        print(file_count)
-        print(values)
