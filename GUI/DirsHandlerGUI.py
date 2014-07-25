@@ -41,17 +41,11 @@ class DirsHandlerGUI(QWidget):
         self.daw_group_box = QGroupBox(self.Interstitial.label['DAWDir'])
         self.ref_group_box = QGroupBox(self.Interstitial.label['refDir'])
 
-        self.add_height_daw = 60
-        self.add_height_ref = 60
-
         for index_daw in xrange(0, self.number_of_daw_dirs):
             self.daw_dirs_gui[index_daw] = DAWDirsGUI.DAWDirsGUI()
 
         for index_ref in xrange(0, self.number_of_ref_dirs):
             self.reference_dirs_gui[index_ref] = ReferenceDirsGUI.ReferenceDirsGUI()
-
-        self.ref_group_box.setMinimumSize(350, self.add_height_ref)
-        self.daw_group_box.setMinimumSize(350, self.add_height_daw)
 
         self.daw_qh_box = QFormLayout()
         self.ref_qh_box = QFormLayout()
@@ -84,11 +78,10 @@ class DirsHandlerGUI(QWidget):
         self.add_new_daw.setMaximumSize(140, 30)
         self.add_new_daw.setMinimumSize(140, 30)
 
-
         self.daw_qh_box.addWidget(self.add_new_daw)
 
         self.daw_group_box.setLayout(self.daw_qh_box)
-        print(self.daw_group_box.height())
+
         return self.daw_group_box
 
     def setupReferenceGUI(self):
@@ -140,14 +133,12 @@ class DirsHandlerGUI(QWidget):
         self.daw_qh_box = self.daw_dirs_gui[self.number_of_daw_dirs].AddWidgets(self.daw_qh_box)
 
         # Adding Space for new Directories in Group Box
-        self.add_height_daw += 30
-
-        self.daw_group_box.setMinimumSize(350, self.add_height_daw)
-        self.ref_group_box.setMinimumSize(350, self.add_height_ref)
-
         self.daw_group_box.setLayout(self.daw_qh_box)
 
         self.number_of_daw_dirs += 1
+
+        if self.number_of_daw_dirs == 7:
+            self.add_new_daw.setDisabled(True)
 
         QCoreApplication.processEvents()
 
@@ -166,15 +157,11 @@ class DirsHandlerGUI(QWidget):
         self.ref_qh_box = self.reference_dirs_gui[self.number_of_ref_dirs].AddWidgets(self.ref_qh_box)
 
         # Adding Space for new Directories in Group Box
-        self.add_height_ref += 30
-
-        self.ref_group_box.setMinimumSize(350, self.add_height_ref)
-        self.daw_group_box.setMinimumSize(350, self.add_height_daw)
-
-        self.ref_vh_box = QVBoxLayout()
         self.ref_group_box.setLayout(self.ref_qh_box)
 
         self.number_of_ref_dirs += 1
+        if self.number_of_ref_dirs == 7:
+            self.add_new_ref.setDisabled(True)
 
         QCoreApplication.processEvents()
 

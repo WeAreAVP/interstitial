@@ -35,9 +35,9 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
 
         self.daw_dir_selector.setMaximumSize(50, 20)
         self.daw_dir_selector.setMinimumSize(50, 20)
-        #self.daw_dir_selector.setContentsMargins(100,100,100,100)
-        self.daw_dir_text.setMaximumSize(260, 20)
-        self.daw_dir_text.setMinimumSize(260, 20)
+
+        self.daw_dir_text.setMaximumSize(460, 20)
+        self.daw_dir_text.setMinimumSize(460, 20)
 
     def getGuiDawText(self):
         """
@@ -58,15 +58,15 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
 
         @return:Layout
         """
-        single_line_hanlder = QHBoxLayout()
-        single_line_hanlder .addWidget(self.daw_dir_text)
-        single_line_hanlder .addWidget(self.daw_dir_selector)
+        self.single_line_hanlder = QHBoxLayout()
+        self.single_line_hanlder .addWidget(self.daw_dir_text)
+        self.single_line_hanlder .addWidget(self.daw_dir_selector)
 
         try:
-            single_line_hanlder .addWidget(self.bin_of_dirs)
+            self.single_line_hanlder.addWidget(self.bin_of_dirs)
         except:
             pass
-        layout.addRow(single_line_hanlder)
+        layout.addRow(self.single_line_hanlder)
 
         return layout
 
@@ -96,6 +96,14 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
 
         @return: None
         """
+
+        self.Interstitial_GUI.dirs_handler_gui.daw_qh_box.removeWidget(self.daw_dir_selector)
+        self.Interstitial_GUI.dirs_handler_gui.daw_qh_box.removeWidget(self.daw_dir_text)
+        try:
+            self.Interstitial_GUI.dirs_handler_gui.daw_qh_box.removeWidget(self.bin_of_dirs)
+        except:
+            pass
+
         try:
             self.daw_dir_selector.deleteLater()
             self.daw_dir_selector.destroy()
@@ -117,10 +125,21 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
         except:
             pass
 
-        self.Interstitial_GUI.dirs_handler_gui.number_of_daw_dirs = self.Interstitial_GUI.dirs_handler_gui.number_of_daw_dirs - 1
+        try:
+            self.single_line_hanlder.deleteLater()
+            self.single_line_hanlder.destroy()
+            del self.single_line_hanlder
+        except:
+            pass
 
-        self.Interstitial_GUI.dirs_handler_gui.add_height_daw -= 30
+        self.Interstitial_GUI.dirs_handler_gui.number_of_daw_dirs -= 1
+
         SharedAppGUI.SharedAppGUI.GUIApp = self.Interstitial_GUI
         SharedAppGUI.SharedAppGUI.GUIApp.updateGeometry()
+        SharedAppGUI.SharedAppGUI.GUIApp.adjustSize()
+
+        if self.Interstitial_GUI.dirs_handler_gui.number_of_daw_dirs < 7:
+            self.Interstitial_GUI.dirs_handler_gui.add_new_daw.setDisabled(False)
+
         QCoreApplication.processEvents()
         del self

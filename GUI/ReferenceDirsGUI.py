@@ -31,13 +31,24 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
             self.bin_of_dirs = QPushButton('X')
             self.bin_of_dirs.setStyleSheet('QPushButton {color: red; font: bold;}')
             self.bin_of_dirs.setMaximumSize(30, 20)
+        try:
             self.bin_of_dirs.clicked.connect(self.removeReferenceDirectory)
+        except:
+            pass
 
         self.ref_dir_selector.setMaximumSize(50, 20)
         self.ref_dir_selector.setMinimumSize(50, 20)
+        self.ref_dir_selector.setContentsMargins(0,0,0,0)
 
-        self.ref_dir_text.setMaximumSize(270, 20)
-        self.ref_dir_text.setMinimumSize(270, 20)
+        self.ref_dir_text.setMaximumSize(460, 20)
+        self.ref_dir_text.setMinimumSize(460, 20)
+        self.ref_dir_text.setContentsMargins(0,0,0,0)
+
+        try:
+            self.bin_of_dirs.setContentsMargins(0,0,0,0)
+        except:
+            pass
+
 
     def getGuiRefText(self):
         """
@@ -58,15 +69,15 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
 
         @return:Layout
         """
-        single_line_hanlder = QHBoxLayout()
-        single_line_hanlder .addWidget(self.ref_dir_text)
-        single_line_hanlder .addWidget(self.ref_dir_selector)
+        self.single_line_hanlder = QHBoxLayout()
+        self.single_line_hanlder .addWidget(self.ref_dir_text)
+        self.single_line_hanlder .addWidget(self.ref_dir_selector)
 
         try:
-            single_line_hanlder .addWidget(self.bin_of_dirs)
+            self.single_line_hanlder .addWidget(self.bin_of_dirs)
         except:
             pass
-        layout.addRow(single_line_hanlder)
+        layout.addRow(self.single_line_hanlder)
 
         return layout
 
@@ -96,6 +107,22 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
 
         @return: None
         """
+
+        try:
+            self.Interstitial_GUI.dirs_handler_gui.daw_qh_box.removeWidget(self.ref_dir_selector)
+        except:
+            pass
+
+        try:
+            self.Interstitial_GUI.dirs_handler_gui.daw_qh_box.removeWidget(self.ref_dir_text)
+        except:
+            pass
+
+        try:
+            self.Interstitial_GUI.dirs_handler_gui.daw_qh_box.removeWidget(self.bin_of_dirs)
+        except:
+            pass
+
         try:
             self.ref_dir_selector.deleteLater()
             self.ref_dir_selector.destroy()
@@ -117,18 +144,21 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
         except:
             pass
 
-        self.Interstitial_GUI.dirs_handler_gui.add_height_ref -= 30
+        try:
+            self.single_line_hanlder.deleteLater()
+            self.single_line_hanlder.destroy()
+            del self.single_line_hanlder
+        except:
+            pass
 
-        self.Interstitial_GUI.dirs_handler_gui.number_of_ref_dirs = self.Interstitial_GUI.dirs_handler_gui.number_of_ref_dirs - 1
-
-        #if self.Interstitial_GUI.dirs_handler_gui.number_of_ref_dirs == 1:
-        #    self.Interstitial_GUI.dirs_handler_gui.ref_group_box.setMinimumSize(400, 60)
-        #    self.Interstitial_GUI.dirs_handler_gui.ref_group_box.setMaximumSize(400, 60)
-        #else:
-        #    self.Interstitial_GUI.dirs_handler_gui.ref_group_box.setMinimumSize(400, self.Interstitial_GUI.dirs_handler_gui.add_height_ref)
-        #self.Interstitial_GUI.dirs_handler_gui.ref_group_box.resize(100, 100)
+        self.Interstitial_GUI.dirs_handler_gui.number_of_ref_dirs -= 1
 
         SharedAppGUI.SharedAppGUI.GUIApp = self.Interstitial_GUI
         SharedAppGUI.SharedAppGUI.GUIApp.updateGeometry()
+        SharedAppGUI.SharedAppGUI.GUIApp.adjustSize()
+
+        if self.Interstitial_GUI.dirs_handler_gui.number_of_ref_dirs < 7:
+            self.Interstitial_GUI.dirs_handler_gui.add_new_ref.setDisabled(False)
+
         QCoreApplication.processEvents()
         del self

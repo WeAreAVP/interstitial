@@ -17,8 +17,8 @@ label['exit'] = "Exit"
 label['DAWDir'] = "DAW Directory"
 label['refDir'] = "Reference Directory"
 label['addnew'] = "Add New"
-label['addNewRef'] = "Add New Reference Directory..."
-label['addNewDAW'] = "Add New DAW Directory..."
+label['addNewRef'] = "Add New Reference Directory ..."
+label['addNewDAW'] = "Add New DAW Directory ..."
 
 
 

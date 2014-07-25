@@ -47,7 +47,9 @@ class InterstitialGUI(QWidget):
         self.vbox = QHBoxLayout()
         self.group_box = QGroupBox(self.Interstitial.label['manifestDest'])
         self.setWindowTitle(self.Interstitial.messages['InterErrorDetectTitle'])
-        self.setMaximumWidth(450)
+        self.setMaximumWidth(600)
+        self.setMinimumWidth(600)
+
 
         self.dirs_handler_gui = DirsHandlerGUI.DirsHandlerGUI()
 
@@ -66,8 +68,11 @@ class InterstitialGUI(QWidget):
         self.manifest_dir_text = QLineEdit()
 
         self.manifest_dir_selector.setMaximumSize(50, 25)
-        self.manifest_dir_text.setMaximumSize(220, 25)
-        self.manifest_dir_text.setMinimumSize(220, 25)
+        self.manifest_dir_text.setMaximumSize(420, 25)
+        self.manifest_dir_text.setMinimumSize(420, 25)
+
+        #self.go.setMaximumSize(50, 25)
+        #self.go.setMinimumSize(50, 25)
 
         self.manifest_dir_text.setReadOnly(True)
 
