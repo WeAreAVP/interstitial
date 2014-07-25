@@ -55,6 +55,8 @@ class InterstitialGUI(QWidget):
 
         self.createDirectories()
         self.go = QPushButton(self.Interstitial.label['runLabel'], self)
+        self.go.setMaximumSize(50, 25)
+        self.go.setMinimumSize(50, 25)
         self.addWidgetToLayout()
         self.setTriggers()
 
@@ -71,8 +73,7 @@ class InterstitialGUI(QWidget):
         self.manifest_dir_text.setMaximumSize(420, 25)
         self.manifest_dir_text.setMinimumSize(420, 25)
 
-        #self.go.setMaximumSize(50, 25)
-        #self.go.setMinimumSize(50, 25)
+
 
         self.manifest_dir_text.setReadOnly(True)
 
@@ -126,34 +127,70 @@ class InterstitialGUI(QWidget):
 
         @return: None
         """
-        report_detail_dialog_box = QDialog(self)
-        report_detail_exit_btn = QPushButton(self.Interstitial.label['exit'], self)
-        report_detail_text = QTextEdit(self)
-        report_detail_layout = QVBoxLayout(report_detail_dialog_box)
-
-        report_detail_dialog_box.setWindowTitle(self.Interstitial.messages['InterErrorDetectTitle'])
-
-        report_detail_exit_btn.setEnabled(False)
-        report_detail_text.setReadOnly(True)
-
-        report_detail_exit_btn.clicked.connect(self.close)
-
-        report_detail_layout.addWidget(report_detail_text)
-        report_detail_layout.addWidget(report_detail_exit_btn)
-
-        report_detail_dialog_box.setLayout(report_detail_layout)
-
-        sys.stdout = Printer(report_detail_text)
-
-        report_detail_dialog_box.resize(1000, 300)
-        report_detail_dialog_box.show()
-
+        #report_detail_dialog_box = QDialog(self)
+        #report_detail_exit_btn = QPushButton(self.Interstitial.label['exit'], self)
+        #report_detail_text = QTextEdit(self)
+        #report_detail_layout = QVBoxLayout(report_detail_dialog_box)
+        #
+        ##report_detail_dialog_box.setWindowFlags(Qt.FramelessWindowHint)
+        ##report_detail_dialog_box.setWindowFlags(Qt.WindowTitleHint)
+        #
+        #report_detail_dialog_box.setWindowTitle(self.Interstitial.messages['InterErrorDetectTitle'])
+        #
+        #report_detail_exit_btn.setEnabled(False)
+        #report_detail_text.setReadOnly(True)
+        #
+        #report_detail_exit_btn.clicked.connect(self.close)
+        #
+        #report_detail_layout.addWidget(report_detail_text)
+        #report_detail_layout.addWidget(report_detail_exit_btn)
+        #
+        #report_detail_dialog_box.setLayout(report_detail_layout)
+        #
+        #sys.stdout = Printer(report_detail_text)
+        #
+        #report_detail_dialog_box.resize(1000, 300)
+        #report_detail_dialog_box.show()
+        #
+        #self.dirs_handler_gui.RunExecutor(str(self.manifest_dir_text.text()))
+        #
+        #report_detail_exit_btn.setEnabled(True)
+        terminal = Terminal()
         self.dirs_handler_gui.RunExecutor(str(self.manifest_dir_text.text()))
-
-        report_detail_exit_btn.setEnabled(True)
+        terminal.enable_next()
 
 # printer
 # allows for writing to a QWindow
+
+
+class Terminal(QDialog):
+    def __init__(self):
+        super(Terminal,self).__init__()
+
+        self.inters_core = InterstitialCore.InterstitialCore()
+        self.Interstitial = SharedApp.SharedApp.App
+
+        self.report_detail_exit_btn = QPushButton(self.Interstitial.label['exit'], self)
+        self.report_detail_text = QTextEdit(self)
+        self.report_detail_layout = QVBoxLayout(self)
+        self.setWindowTitle(self.Interstitial.messages['InterErrorDetectTitle'])
+        self.report_detail_exit_btn.setEnabled(False)
+        self.report_detail_text.setReadOnly(True)
+
+        self.report_detail_exit_btn.clicked.connect(self.close)
+
+        self.report_detail_layout.addWidget(self.report_detail_text)
+        self.report_detail_layout.addWidget(self.report_detail_exit_btn)
+
+        self.setLayout(self.report_detail_layout)
+
+        sys.stdout = Printer(self.report_detail_text)
+
+        self.resize(1000, 300)
+        self.show()
+
+    def enable_next(self):
+        self.report_detail_exit_btn.setEnabled(True)
 
 
 class Printer():

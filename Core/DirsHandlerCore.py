@@ -293,7 +293,6 @@ class DirsHandlerCore(object):
         if find_string in string:
             return str(string).replace(find_string, replace_with_string)
         return False
-
     def setCoreDawText(self, daw_dir_text):
         """
         Set Core DAW Text

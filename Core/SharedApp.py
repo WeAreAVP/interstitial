@@ -17,7 +17,7 @@ class SharedApp(object):
 
 class SharedAppGUI(object):
     """
-        Application Shared GUI App Class
+        Application Shared App Class
     """
 
     GUIApp = None
