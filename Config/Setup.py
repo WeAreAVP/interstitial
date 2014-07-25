@@ -14,7 +14,11 @@ class Setup(object):
         Application Setup Handler Class
     """
 
+
     def __init__(self):
+        """
+        Constructor
+        """
         self.Interstitial = SharedApp.SharedApp.App
         pass
 

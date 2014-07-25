@@ -1,10 +1,12 @@
 # -*- coding: UTF-8 -*-
-'''
-Created on May 14, 2014
+# Interstitial Error Detector
+# Version 0.2, 2013-08-28
+# Copyright (c) 2013 AudioVisual Preservation Solutions
+# All rights reserved.
+# Released under the Apache license, v. 2.0
+#Created on May 14, 2014
+#@author: Furqan Wasi <furqan@avpreserve.com>
 
-@author: Furqan Wasi <furqan@avpreserve.com>
-
-'''
 import os, logging, datetime
 from Core import SharedApp
 import xml.etree.cElementTree as XmlHanlder
@@ -20,12 +22,21 @@ class Debugger(object):
 
     @staticmethod
     def getInstance():
+        """
+        get Debugging Inctance
+
+        @return Debugger Instance:
+
+        """
         if not isinstance(Debugger._instance, Debugger):
             Debugger._instance = object.__new__(Debugger)
             Debugger._instance.setUp()
         return Debugger._instance
 
     def selfDestruct(self):
+        """
+        Self Destruct Object
+        """
         del self
 
     def setUp(self):

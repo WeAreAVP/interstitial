@@ -15,18 +15,27 @@ class Configuration(object):
 
     def __init__(self):
         self.base_path = str(getcwd())+str(sep)
+
         self.log_file_path = path.join(self.base_path, 'debug.log')
+
         self.assets_path = path.join(self.base_path, 'assets'+str(sep))
+
         self.template_path = path.join(self.assets_path, 'templates')+str(sep)
+
         self.manifest_template_path = path.join(self.template_path, 'manifestTemplate.txt')
+
         self.is_debugging_on = True
+
         self.config_file_path = self.getBasePath()+'conf.xml'
+
         self.columns = "Test File,Reference File,Creation Date,Size,Channels,Sample Rate,Length,First Error Sample,Error At"
 
         if name == 'posix':
             self.OsType = 'linux'
+
         elif name == 'nt':
             self.OsType = 'windows'
+
         else:
             self.OsType = 'check'
 
@@ -36,6 +45,11 @@ class Configuration(object):
             self.main_window_width = 630
 
     def getMainWindowWidth(self):
+        """
+        Get Main Window Width
+
+        @return:Windows Width
+        """
         return self.main_window_width
 
     def getOsType(self):
