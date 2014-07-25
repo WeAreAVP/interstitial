@@ -10,8 +10,8 @@ from PySide.QtGui import *
 from Core import DirsHandlerCore, SharedApp
 from GUI import DAWDirsGUI, ReferenceDirsGUI
 
-import time
-
+from time import strftime, time, sleep
+from math import floor
 
 """
 Interstitial Directory GUI Manager
@@ -172,6 +172,19 @@ class DirsHandlerGUI(QWidget):
         @return: None
         """
 
+        filename = self.Interstitial.Configuration.getManifestFileName()
+        columns = self.Interstitial.Configuration.getColumnsOfManifest()
+
+        timer = time()
+        initiated = self.Interstitial.Configuration.getCurrentTime()
+
+        current_date = strftime("%Y-%m-%d")
+        seconds_content = str(floor(time() - timer))
+        testers = 0
+        file_count = 0
+
+        values = ''
+
         for index_daw in xrange(0, self.number_of_daw_dirs):
             for index_ref in xrange(0, self.number_of_ref_dirs):
 
@@ -188,5 +201,32 @@ class DirsHandlerGUI(QWidget):
                 self.dirs_handler_core.setCoreRefText(self.reference_dirs_gui[index_ref].getGuiRefText())
 
                 # Launch The Scanner to Test Audio Files
-                self.dirs_handler_core.execute(manifest_path, QCoreApplication.instance())
-                time.sleep(2)
+                resport_result = self.dirs_handler_core.execute(QCoreApplication.instance())
+
+                testers += len(resport_result['manifest_info']['testers'])
+                file_count += int(resport_result['manifest_info']['file_count'])
+                values += resport_result['manifest_info']['values']
+
+                sleep(2)
+
+        manifest_info = {'current_date': current_date, 'initiated': initiated, 'seconds_content': seconds_content,
+                        'testers': testers, 'file_count': file_count, 'columns': columns, 'values': values}
+
+        # Open template file and get manifest template content to manifest file creation
+        template_of_manifest_file = open(self.Interstitial.Configuration.getManifestTemplatePath(), "r")
+        template_of_manifest_file_lines = template_of_manifest_file.readlines()
+        template_of_manifest_file.close()
+
+        manifest_content = self.dirs_handler_core.generateManifestContent(template_of_manifest_file_lines, manifest_info)
+
+        # Do We Have Metadata? If So, Write A Manifest
+        # Write Manifest File
+        if len((values + columns)) > 110:
+            manifest_file_path = manifest_path + "/" + filename
+            self.dirs_handler_core.writeManifestFile(manifest_file_path, manifest_content)
+            return manifest_file_path
+
+
+        print(testers)
+        print(file_count)
+        print(values)

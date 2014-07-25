@@ -90,7 +90,7 @@ class DirsHandlerCore(object):
 
         return populated_list
 
-    def execute(self, directory, q_action):
+    def execute(self, q_action):
         """
         Execute (wavefile first_wave_file, wavefile second_wave_file, directory d, QAction qa)
         The heart of interstitial - performs a null test on two wav files and returns the first difference
@@ -103,13 +103,6 @@ class DirsHandlerCore(object):
 
         test_done_for_files = []
         targeted_done = []
-
-        timer = time()
-
-        filename = self.Interstitial.Configuration.getManifestFileName()
-        columns = self.Interstitial.Configuration.getColumnsOfManifest()
-
-        initiated = self.Interstitial.Configuration.getCurrentTime()
 
         # Ensures That We Have Legitimate Directories To Walk Down
         # And Populates The List Of Files To Test
@@ -198,24 +191,22 @@ class DirsHandlerCore(object):
                         break
 
         # Create Header Information For Manifest
-        current_date = strftime("%Y-%m-%d")
-        seconds_content = str(floor(time() - timer))
 
-        manifest_info ={'current_date': current_date, 'initiated': initiated, 'seconds_content': seconds_content,
-                        'testers': testers, 'file_count': file_count, 'columns': columns, 'values': values}
-        # Open template file and get manifest template content to manifest file creation
-        template_of_manifest_file = open(self.Interstitial.Configuration.getManifestTemplatePath(), "r")
-        template_of_manifest_file_lines = template_of_manifest_file.readlines()
-        template_of_manifest_file.close()
+        manifest_info = {'testers': testers, 'file_count': file_count, 'values': values}
+        return {'manifest_info': manifest_info}
+        ## Open template file and get manifest template content to manifest file creation
+        #template_of_manifest_file = open(self.Interstitial.Configuration.getManifestTemplatePath(), "r")
+        #template_of_manifest_file_lines = template_of_manifest_file.readlines()
+        #template_of_manifest_file.close()
+        #
+        #manifest_content = self.generateManifestContent(template_of_manifest_file_lines, manifest_info)
 
-        manifest_content = self.generateManifestContent(template_of_manifest_file_lines, manifest_info)
-
-        # Do We Have Metadata? If So, Write A Manifest
-        # Write Manifest File
-        if len((values + columns)) > 110:
-            manifest_file_path = directory + "/" + filename
-            self.writeManifestFile(manifest_file_path, manifest_content)
-            return manifest_file_path
+        ## Do We Have Metadata? If So, Write A Manifest
+        ## Write Manifest File
+        #if len((values + columns)) > 110:
+        #    manifest_file_path = directory + "/" + filename
+        #    self.writeManifestFile(manifest_file_path, manifest_content)
+        #    return manifest_file_path
 
     def writeManifestFile(self, file_path, manifest_content):
         """
@@ -256,7 +247,7 @@ class DirsHandlerCore(object):
                                                           str(manifest_info['seconds_content']))
             if response is False:
                 response = self.setValuesForScheduler(template_of_manifest_single_line, '{{testers}}',
-                                                          str(len(manifest_info['testers'])))
+                                                          str(manifest_info['testers']))
             if response is False:
                 response = self.setValuesForScheduler(template_of_manifest_single_line, '{{bad_files}}',
                                                           str(manifest_info['file_count']))
