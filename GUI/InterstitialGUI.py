@@ -100,7 +100,8 @@ class InterstitialGUI(QWidget):
         self.vbox.addStretch(1)
 
         self.group_box.setLayout(self.vbox)
-
+        self.group_box.setMinimumHeight(70)
+        self.group_box.setMaximumHeight(70)
         self.grid_layout.addWidget(self.group_box)
 
     def setTriggers(self):
@@ -130,11 +131,16 @@ class InterstitialGUI(QWidget):
         @return: None
         """
         report_detail_dialog_box = QDialog(self)
+
+        report_detail_dialog_box.setWindowTitle(self.Interstitial.messages['InterErrorDetectTitle'])
+
+        report_detail_dialog_box.setWindowModality(Qt.WindowModal)
+
         report_detail_exit_btn = QPushButton(self.Interstitial.label['exit'], self)
         report_detail_text = QTextEdit(self)
         report_detail_layout = QVBoxLayout(report_detail_dialog_box)
 
-        report_detail_dialog_box.setWindowTitle(self.Interstitial.messages['InterErrorDetectTitle'])
+
 
         report_detail_exit_btn.setEnabled(False)
         report_detail_text.setReadOnly(True)

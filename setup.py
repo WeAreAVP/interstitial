@@ -9,7 +9,7 @@ from setuptools import setup
 
 APP = ['Main.py']
 DATA_FILES = []
-OPTIONS = {'argv_emulation': True, 'includes': ['sip', 'PySide.QtCore','PySide.QtGui'], 'resources':'assets'}
+OPTIONS = {'argv_emulation': True, 'includes': ['sip', 'PySide.QtCore','PySide.QtGui'], 'iconfile':'assets/logo_sign_trans.icns','resources':'assets'}
 setup(
     app=APP,
     name='Interstitail',

@@ -89,7 +89,7 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
         """
 
         self.daw_dir_selector.clicked.connect(self.dawDirTrigger)
-        #self.daw_dir_text.setReadOnly(True)
+        self.daw_dir_text.setReadOnly(True)
 
     def dawDirTrigger(self):
         """
