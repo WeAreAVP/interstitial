@@ -64,6 +64,8 @@ class DirsHandlerCore(object):
             return
             pass
 
+        print('123123123')
+
         try:
             track_two_file_obj = Sndfile(track2, 'r')
         except:
