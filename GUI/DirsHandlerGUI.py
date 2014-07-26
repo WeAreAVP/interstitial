@@ -214,9 +214,20 @@ class DirsHandlerGUI(QWidget):
                 # Launch The Scanner to Test Audio Files
                 resport_result = self.dirs_handler_core.execute(QCoreApplication.instance())
 
-                testers += len(resport_result['manifest_info']['testers'])
-                file_count += int(resport_result['manifest_info']['file_count'])
-                values += resport_result['manifest_info']['values']
+                try:
+                    testers += len(resport_result['manifest_info']['testers'])
+                except:
+                    pass
+
+                try:
+                    file_count += int(resport_result['manifest_info']['file_count'])
+                except:
+                    pass
+
+                try:
+                    values += resport_result['manifest_info']['values']
+                except:
+                    pass
 
                 sleep(2)
 

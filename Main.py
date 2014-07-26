@@ -67,9 +67,9 @@ class Main(object):
 if __name__ == '__main__':
     InterstitialApp = Main()
 
-    # try:
-    InterstitialApp.LaunchGUI(sys.argv)
-    # except:
-    #       exc_type, exc_obj, exc_tb = sys.exc_info()
-    #       file_name = path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-    #       print("Could not run this Project "+str(Exception.message))
+    try:
+        InterstitialApp.LaunchGUI(sys.argv)
+    except:
+           exc_type, exc_obj, exc_tb = sys.exc_info()
+           file_name = path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+           print("Could not run this Project "+str(Exception.message))

@@ -36,22 +36,26 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
         if number_of_ref_dirs > 1:
             self.bin_of_dirs = QPushButton('X')
             self.bin_of_dirs.setStyleSheet('QPushButton {color: red; font: bold;}')
-            self.bin_of_dirs.setMaximumSize(30, 20)
+
         try:
             self.bin_of_dirs.clicked.connect(self.removeReferenceDirectory)
         except:
             pass
 
+        # Styling Selector
         self.ref_dir_selector.setMaximumSize(50, 20)
         self.ref_dir_selector.setMinimumSize(50, 20)
-        self.ref_dir_selector.setContentsMargins(0,0,0,0)
+        self.ref_dir_selector.setContentsMargins(0, 0, 0, 0)
 
+        # Styling Text Box
         self.ref_dir_text.setMaximumSize(460, 20)
         self.ref_dir_text.setMinimumSize(460, 20)
-        self.ref_dir_text.setContentsMargins(0,0,0,0)
+        self.ref_dir_text.setContentsMargins(0, 0, 0, 0)
 
+        # Styling Delete Button
         try:
-            self.bin_of_dirs.setContentsMargins(0,0,0,0)
+            self.bin_of_dirs.setMaximumSize(30, 20)
+            self.bin_of_dirs.setContentsMargins(0, 0, 0, 0)
         except:
             pass
 
@@ -117,18 +121,9 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
         @return: None
         """
 
+        # Reference Directory Selector Removing
         try:
             self.Interstitial_GUI.dirs_handler_gui.daw_qh_box.removeWidget(self.ref_dir_selector)
-        except:
-            pass
-
-        try:
-            self.Interstitial_GUI.dirs_handler_gui.daw_qh_box.removeWidget(self.ref_dir_text)
-        except:
-            pass
-
-        try:
-            self.Interstitial_GUI.dirs_handler_gui.daw_qh_box.removeWidget(self.bin_of_dirs)
         except:
             pass
 
@@ -139,10 +134,22 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
         except:
             pass
 
+        # Reference Directory Text Removing
+        try:
+            self.Interstitial_GUI.dirs_handler_gui.daw_qh_box.removeWidget(self.ref_dir_text)
+        except:
+            pass
+
         try:
             self.ref_dir_text.deleteLater()
             self.ref_dir_text.destroy()
             del self.ref_dir_text
+        except:
+            pass
+
+        # Reference Directory Text Delete button
+        try:
+            self.Interstitial_GUI.dirs_handler_gui.daw_qh_box.removeWidget(self.bin_of_dirs)
         except:
             pass
 
@@ -153,6 +160,7 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
         except:
             pass
 
+        # Delete Layout For One Directory
         try:
             self.single_line_hanlder.deleteLater()
             self.single_line_hanlder.destroy()

@@ -57,10 +57,19 @@ class DirsHandlerCore(object):
         """
 
         # opens files for reading
+        try:
+            track_one_file_obj = Sndfile(track1, 'r')
+        except:
+            print('Corrupted file : '+ str(track1))
+            return
+            pass
 
-        track_one_file_obj = Sndfile(track1, 'r')
-
-        track_two_file_obj = Sndfile(track2, 'r')
+        try:
+            track_two_file_obj = Sndfile(track2, 'r')
+        except:
+            print('Corrupted File : '+ str(track2))
+            return
+            pass
 
         # calculates the head of each file (first twentieth of the waveform)
         # if this is less than 5 seconds of audio (that is, the waveform is under 100 seconds long)
@@ -135,8 +144,21 @@ class DirsHandlerCore(object):
 
                     # find the offset and align the waveforms
                     toff = self.offs(testers[index], targets[e])
-                    tester_file_obj = Sndfile(testers[index], 'r')
-                    target_file_obj = Sndfile(targets[e], 'r')
+
+                    try:
+                        tester_file_obj = Sndfile(testers[index], 'r')
+                    except:
+                        print('Corrupted File : '+ str(testers[index]))
+                        return
+                        pass
+
+                    try:
+                        target_file_obj = Sndfile(targets[e], 'r')
+                    except:
+                        print('Corrupted File : ' + str(targets[e]))
+                        return
+                        pass
+
                     if toff > 0:
                         tester_file_obj.seek(toff)
                     else:
@@ -182,8 +204,8 @@ class DirsHandlerCore(object):
 
                             except RuntimeError:
                                 break
-                        # Append Metadata For Output
 
+                        # Append Metadata For Output
                         values += path.abspath(testers[index]) + "," + path.abspath(str(targets[e])) + ","
                         values += datetime.datetime.fromtimestamp(stat(testers[index]).st_ctime).strftime("%Y-%m-%d %H:%M:%S") + ","
                         values += str(stat(testers[index]).st_size) + "," + str(tester_file_obj.channels) + "," + str(tester_file_obj.samplerate) + ","
@@ -197,22 +219,8 @@ class DirsHandlerCore(object):
                         break
 
         # Create Header Information For Manifest
-
         manifest_info = {'testers': testers, 'file_count': file_count, 'values': values}
         return {'manifest_info': manifest_info}
-        ## Open template file and get manifest template content to manifest file creation
-        #template_of_manifest_file = open(self.Interstitial.Configuration.getManifestTemplatePath(), "r")
-        #template_of_manifest_file_lines = template_of_manifest_file.readlines()
-        #template_of_manifest_file.close()
-        #
-        #manifest_content = self.generateManifestContent(template_of_manifest_file_lines, manifest_info)
-
-        ## Do We Have Metadata? If So, Write A Manifest
-        ## Write Manifest File
-        #if len((values + columns)) > 110:
-        #    manifest_file_path = directory + "/" + filename
-        #    self.writeManifestFile(manifest_file_path, manifest_content)
-        #    return manifest_file_path
 
     def writeManifestFile(self, file_path, manifest_content):
         """

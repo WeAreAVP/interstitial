@@ -14,20 +14,16 @@ class Configuration(object):
     """
 
     def __init__(self):
+        """
+        Constructor
+        """
         self.base_path = str(getcwd())+str(sep)
-
         self.log_file_path = path.join(self.base_path, 'debug.log')
-
         self.assets_path = path.join(self.base_path, 'assets'+str(sep))
-
         self.template_path = path.join(self.assets_path, 'templates')+str(sep)
-
         self.manifest_template_path = path.join(self.template_path, 'manifestTemplate.txt')
-
         self.is_debugging_on = True
-
         self.config_file_path = self.getBasePath()+'conf.xml'
-
         self.columns = "Test File,Reference File,Creation Date,Size,Channels,Sample Rate,Length,First Error Sample,Error At"
 
         if name == 'posix':
@@ -41,6 +37,7 @@ class Configuration(object):
 
         if self.OsType == 'Windows':
             self.main_window_width = 600
+
         else:
             self.main_window_width = 630
 
