@@ -4,14 +4,15 @@
 # Copyright (c) 2013 AudioVisual Preservation Solutions
 # All rights reserved.
 # Released under the Apache license, v. 2.0
-#Created on May 14, 2014
-#@author: Furqan Wasi <furqan@avpreserve.com>
+# Created on May 14, 2014
+# @author: Furqan Wasi <furqan@avpreserve.com>
 
 from PySide.QtCore import *
 from PySide.QtGui import *
 
 from Core import SharedApp, DAWDirsCore
 from GUI import SharedAppGUI
+
 
 class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
 
@@ -89,6 +90,7 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
         """
 
         self.daw_dir_selector.clicked.connect(self.dawDirTrigger)
+
         self.daw_dir_text.setReadOnly(True)
 
     def dawDirTrigger(self):
@@ -97,13 +99,16 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
 
         @return: None
         """
-
-        path_selected = QFileDialog.getExistingDirectory(directory=self.Interstitial.Configuration.getUserHomePath())
+        daw_path_selector = QFileDialog()
+        print(self.Interstitial.Configuration.getUserHomePath())
+        daw_path_selector.setDirectory(self.Interstitial.Configuration.getUserHomePath())
+        path_selected = daw_path_selector.getExistingDirectory()
         self.daw_dir_text.setText(path_selected)
 
     def removeDAWDirectory(self):
         """
         Remove DAW Directory Trigger
+        Destroy this Daw directory's Path Selector , Delete button and path text field
 
         @return: None
         """
@@ -115,6 +120,7 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
         except:
             pass
 
+        # DAW Directory Text Removing
         try:
             self.daw_dir_selector.deleteLater()
             self.daw_dir_selector.destroy()
@@ -122,6 +128,7 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
         except:
             pass
 
+        # DAW Directory Text Delete button
         try:
             self.daw_dir_text.deleteLater()
             self.daw_dir_text.destroy()
@@ -129,6 +136,7 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
         except:
             pass
 
+        # DAW Directory Text Delete button
         try:
             self.bin_of_dirs.deleteLater()
             self.bin_of_dirs.destroy()
@@ -136,6 +144,7 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
         except:
             pass
 
+        # Delete Layout For One Directory
         try:
             self.single_line_hanlder.deleteLater()
             self.single_line_hanlder.destroy()

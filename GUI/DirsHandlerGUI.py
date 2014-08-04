@@ -4,22 +4,20 @@
 # Copyright (c) 2013 AudioVisual Preservation Solutions
 # All rights reserved.
 # Released under the Apache license, v. 2.0
-#Created on May 14, 2014
-#@author: Furqan Wasi <furqan@avpreserve.com>
+# Created on May 14, 2014
+# @author: Furqan Wasi <furqan@avpreserve.com>
 
 from PySide.QtCore import *
 from PySide.QtGui import *
+from time import strftime, time, sleep
+from math import floor
 
 from Core import DirsHandlerCore, SharedApp
 from GUI import DAWDirsGUI, ReferenceDirsGUI
 
-from time import strftime, time, sleep
-from math import floor
-
 """
 Interstitial Directory GUI Manager
 """
-
 
 class DirsHandlerGUI(QWidget):
     """
@@ -56,6 +54,7 @@ class DirsHandlerGUI(QWidget):
         if self.Interstitial.Configuration.getOsType() == 'linux':
             self.daw_qh_box.setSpacing(0)
             self.ref_qh_box.setSpacing(0)
+
     def createDAWDirectories(self):
         """
         Create DAW Directories
@@ -88,10 +87,8 @@ class DirsHandlerGUI(QWidget):
             self.add_new_daw.setMaximumSize(200, 30)
             self.add_new_daw.setMinimumSize(200, 30)
 
-        # self.daw_qh_box.set.setContentsMargins(0,0,0,0)
         self.daw_qh_box.addWidget(self.add_new_daw)
 
-        # self.daw_group_box.set.setContentsMargins(0,0,0,0)
         self.daw_group_box.setLayout(self.daw_qh_box)
 
         return self.daw_group_box
@@ -116,7 +113,6 @@ class DirsHandlerGUI(QWidget):
 
         self.add_new_ref.setMaximumSize(220, 30)
         self.add_new_ref.setMinimumSize(220, 30)
-
 
         self.ref_group_box.setLayout(self.ref_qh_box)
 
@@ -212,20 +208,20 @@ class DirsHandlerGUI(QWidget):
                 self.dirs_handler_core.setCoreRefText(self.reference_dirs_gui[index_ref].getGuiRefText())
 
                 # Launch The Scanner to Test Audio Files
-                resport_result = self.dirs_handler_core.execute(QCoreApplication.instance())
+                report_result = self.dirs_handler_core.execute(QCoreApplication.instance())
 
                 try:
-                    testers += len(resport_result['manifest_info']['testers'])
+                    testers += len(report_result['manifest_info']['testers'])
                 except:
                     pass
 
                 try:
-                    file_count += int(resport_result['manifest_info']['file_count'])
+                    file_count += int(report_result['manifest_info']['file_count'])
                 except:
                     pass
 
                 try:
-                    values += resport_result['manifest_info']['values']
+                    values += report_result['manifest_info']['values']
                 except:
                     pass
 

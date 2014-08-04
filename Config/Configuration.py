@@ -6,7 +6,7 @@
 
 from time import strftime
 from os import path, getcwd, sep, name
-
+import sys
 
 class Configuration(object):
     """
@@ -22,24 +22,43 @@ class Configuration(object):
         self.assets_path = path.join(self.base_path, 'assets'+str(sep))
         self.template_path = path.join(self.assets_path, 'templates')+str(sep)
         self.manifest_template_path = path.join(self.template_path, 'manifestTemplate.txt')
+
         self.is_debugging_on = True
         self.config_file_path = self.getBasePath()+'conf.xml'
         self.columns = "Test File,Reference File,Creation Date,Size,Channels,Sample Rate,Length,First Error Sample,Error At"
 
+        self.logo_sign_small = 'logo_sign_small.png'
+
         if name == 'posix':
-            self.OsType = 'linux'
+            self.os_type = 'linux'
 
         elif name == 'nt':
-            self.OsType = 'windows'
+            self.os_type = 'windows'
 
         else:
-            self.OsType = 'check'
+            self.os_type = 'check'
 
-        if self.OsType == 'Windows':
+        if self.os_type == 'windows':
             self.main_window_width = 600
 
         else:
             self.main_window_width = 630
+
+    def getLogoSignSmall(self):
+        """
+        Get Windows icon
+
+        @return windows_icon_path: string
+        """
+
+        if self.getOsType() == 'windows':
+            try:
+                return path.join(sys._MEIPASS, 'assets' + (str(sep)) + str(self.logo_sign_small))
+            except:
+                pass
+        else:
+
+            return path.join(self.assets_path, str(self.logo_sign_small))
 
     def getMainWindowWidth(self):
         """
@@ -55,7 +74,7 @@ class Configuration(object):
 
         @return:Os Type
         """
-        return str(self.OsType)
+        return self.os_type
 
     def getCurrentDateTime(self):
         """

@@ -4,16 +4,15 @@
 # Copyright (c) 2013 AudioVisual Preservation Solutions
 # All rights reserved.
 # Released under the Apache license, v. 2.0
-#Created on May 14, 2014
-#@author: Furqan Wasi <furqan@avpreserve.com>
+# Created on May 14, 2014
+# @author: Furqan Wasi <furqan@avpreserve.com>
 
 import sys
-from os import path
 
 from PySide.QtCore import *
 from PySide.QtGui import *
 
-#Custom Libs
+# Custom Libs
 
 from Core import InterstitialCore, SharedApp
 from GUI import DirsHandlerGUI, SharedAppGUI
@@ -51,7 +50,9 @@ class InterstitialGUI(QWidget):
         self.grid_layout = QGridLayout(self)
         self.vbox = QHBoxLayout()
         self.group_box = QGroupBox(self.Interstitial.label['manifestDest'])
+
         self.setWindowTitle(self.Interstitial.messages['InterErrorDetectTitle'])
+        self.setWindowIcon(QIcon(self.Interstitial.Configuration.getLogoSignSmall()))
 
         self.setMaximumWidth(self.Interstitial.Configuration.getMainWindowWidth())
         self.setMinimumWidth(self.Interstitial.Configuration.getMainWindowWidth())
@@ -64,10 +65,11 @@ class InterstitialGUI(QWidget):
 
     def createDirectories(self):
         """
-        Create Gui
+        Create Main Gui
 
         @return: None
         """
+
         self.manifest_dir_selector = QPushButton(self.Interstitial.label['dirSelector'], self)
         self.manifest_dir_text = QLineEdit()
 
@@ -112,7 +114,8 @@ class InterstitialGUI(QWidget):
         """
 
         self.go.clicked.connect(self.ErrorVerifier)
-        self.manifest_dir_text.setText(path.expanduser('~/'))
+        self.manifest_dir_text.setText(self.Interstitial.Configuration.getBasePath())
+
         self.manifest_dir_selector.clicked.connect(self.manifestTrigger)
 
     def manifestTrigger(self):
@@ -121,7 +124,9 @@ class InterstitialGUI(QWidget):
 
         @return: None
         """
-        path_selected = QFileDialog.getExistingDirectory(directory=self.Interstitial.Configuration.getUserHomePath())
+        manifest_path_selector = QFileDialog()
+        manifest_path_selector.setDirectory(self.Interstitial.Configuration.getBasePath())
+        path_selected = manifest_path_selector.getExistingDirectory()
         self.manifest_dir_text.setText(path_selected)
 
     def ErrorVerifier(self):
@@ -133,14 +138,13 @@ class InterstitialGUI(QWidget):
         report_detail_dialog_box = QDialog(self)
 
         report_detail_dialog_box.setWindowTitle(self.Interstitial.messages['InterErrorDetectTitle'])
+        report_detail_dialog_box.setWindowIcon(QIcon(self.Interstitial.Configuration.getLogoSignSmall()))
 
         report_detail_dialog_box.setWindowModality(Qt.WindowModal)
 
         report_detail_exit_btn = QPushButton(self.Interstitial.label['exit'], self)
         report_detail_text = QTextEdit(self)
         report_detail_layout = QVBoxLayout(report_detail_dialog_box)
-
-
 
         report_detail_exit_btn.setEnabled(False)
         report_detail_text.setReadOnly(True)
@@ -161,13 +165,10 @@ class InterstitialGUI(QWidget):
 
         report_detail_exit_btn.setEnabled(True)
 
-
 # printer
 # allows for writing to a QWindow
 
-
 class Printer():
-
 
     def __init__(self, t):
         self.t = t

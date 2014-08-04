@@ -7,7 +7,6 @@
 # Created on July 23, 2014
 # @author: Furqan Wasi <furqan@avpreserve.com>
 
-
 class SharedAppGUI(object):
     """
         Application Shared GUI App Class

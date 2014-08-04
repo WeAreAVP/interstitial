@@ -4,14 +4,12 @@
 # Copyright (c) 2013 AudioVisual Preservation Solutions
 # All rights reserved.
 # Released under the Apache license, v. 2.0
-#Created on May 14, 2014
-#@author: Furqan Wasi <furqan@avpreserve.com>
+# Created on May 14, 2014
+# @author: Furqan Wasi <furqan@avpreserve.com>
 
-from PySide.QtCore import *
 from PySide.QtGui import *
-import sys, os.path as path
-
-from argparse import ArgumentParser
+import sys
+from os import path
 
 from GUI import InterstitialGUI
 from Core import InterstitialCore, SharedApp
@@ -25,7 +23,6 @@ class Main(object):
 
     def __init__(self):
         SharedApp.SharedApp.App = App.getInstance()
-
         pass
 
     def LaunchGUI(self, param):
@@ -34,12 +31,12 @@ class Main(object):
 
         @return: None
         """
-
         app = QApplication(param)
         interstitialGUIApp = InterstitialGUI.InterstitialGUI.getInstance()
 
         interstitialGUIApp.show()
         interstitialGUIApp.raise_()
+
         sys.exit(app.exec_())
 
     def RunCoreExecutor(self, param1, param2):
@@ -48,7 +45,6 @@ class Main(object):
 
         @return: None
         """
-
         inters_core = InterstitialCore()
         inters_core.execute(param1, param2)
 
@@ -65,11 +61,11 @@ class Main(object):
 
 # Main Application
 if __name__ == '__main__':
-    InterstitialApp = Main()
 
-    try:
-        InterstitialApp.LaunchGUI(sys.argv)
-    except:
-           exc_type, exc_obj, exc_tb = sys.exc_info()
-           file_name = path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-           print("Could not run this Project "+str(Exception.message))
+    InterstitialApp = Main()
+    #try:
+    InterstitialApp.LaunchGUI(sys.argv)
+    #except:
+    #   exc_type, exc_obj, exc_tb = sys.exc_info()
+    #   file_name = path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+    #   print("Could not run this Project "+str(Exception.message))

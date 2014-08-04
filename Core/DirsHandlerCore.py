@@ -4,8 +4,8 @@
 # Copyright (c) 2013 AudioVisual Preservation Solutions
 # All rights reserved.
 # Released under the Apache license, v. 2.0
-#Created on May 14, 2014
-#@author: Furqan Wasi <furqan@avpreserve.com>
+# Created on May 14, 2014
+# @author: Furqan Wasi <furqan@avpreserve.com>
 
 import numpy as np
 from scikits.audiolab import Sndfile
@@ -63,8 +63,6 @@ class DirsHandlerCore(object):
             print('Corrupted file : '+ str(track1))
             return
             pass
-
-        print('123123123')
 
         try:
             track_two_file_obj = Sndfile(track2, 'r')

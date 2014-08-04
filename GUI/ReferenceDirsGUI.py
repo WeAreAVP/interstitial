@@ -4,15 +4,14 @@
 # Copyright (c) 2013 AudioVisual Preservation Solutions
 # All rights reserved.
 # Released under the Apache license, v. 2.0
-#Created on May 14, 2014
-#@author: Furqan Wasi <furqan@avpreserve.com>
+# Created on May 14, 2014
+# @author: Furqan Wasi <furqan@avpreserve.com>
 
 from PySide.QtCore import *
 from PySide.QtGui import *
 
 from Core import SharedApp, ReferenceDirsCore
 from GUI import SharedAppGUI
-
 
 class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
 
@@ -111,7 +110,9 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
         @return: None
         """
 
-        path_selected = QFileDialog.getExistingDirectory(directory=self.Interstitial.Configuration.getUserHomePath())
+        ref_path_selector = QFileDialog()
+        ref_path_selector.setDirectory(self.Interstitial.Configuration.getUserHomePath())
+        path_selected = ref_path_selector.getExistingDirectory()
         self.ref_dir_text.setText(path_selected)
 
     def removeReferenceDirectory(self):
@@ -127,6 +128,7 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
         except:
             pass
 
+        # Destroy this Reference directory's Path Selector , Delete button and path text field
         try:
             self.ref_dir_selector.deleteLater()
             self.ref_dir_selector.destroy()
