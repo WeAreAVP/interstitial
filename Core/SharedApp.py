@@ -14,11 +14,3 @@ class SharedApp(object):
     """
 
     App = None
-
-
-class SharedAppGUI(object):
-    """
-        Application Shared App Class
-    """
-
-    GUIApp = None

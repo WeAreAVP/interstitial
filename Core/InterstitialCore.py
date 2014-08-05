@@ -6,19 +6,8 @@
 # Released under the Apache license, v. 2.0
 # Created on May 14, 2014
 # @author: Furqan Wasi <furqan@avpreserve.com>
-
-import numpy as np
-from scikits.audiolab import Sndfile
-from sys import argv, exit
-from math import fabs, floor
-from re import compile
-from os import walk, path, stat
-from time import strftime, time
-import datetime
-
 #custome libs
 from Core import SharedApp
-
 
 class InterstitialCore(object):
     """

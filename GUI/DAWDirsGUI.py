@@ -112,7 +112,7 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
 
         @return: None
         """
-
+        print(1)
         self.Interstitial_GUI.dirs_handler_gui.daw_qh_box.removeWidget(self.daw_dir_selector)
         self.Interstitial_GUI.dirs_handler_gui.daw_qh_box.removeWidget(self.daw_dir_text)
         try:
