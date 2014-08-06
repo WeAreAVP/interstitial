@@ -69,6 +69,9 @@ class DirsHandlerGUI(QWidget):
 
         @return: daw_group_box
         """
+        self.loading_daw_label = QLabel('Please Wait.....Removing DAW Directory!')
+        self.loading_daw_label.setHidden(True)
+        self.daw_qh_box.addWidget(self.loading_daw_label)
 
         # Create & Load Widgets and Triggers for Reference DAW
         for index_daw in xrange(0, self.number_of_daw_dirs):

@@ -112,6 +112,9 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
 
         @return: None
         """
+        self.Interstitial_GUI.dirs_handler_gui.loading_daw_label.setHidden(False)
+        QCoreApplication.processEvents()
+        
         self.single_line_hanlder.deleteLater()
         self.daw_dir_text.deleteLater()
         self.bin_of_dirs.deleteLater()
@@ -148,5 +151,6 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
         if self.Interstitial_GUI.dirs_handler_gui.number_of_daw_dirs < 7:
             self.Interstitial_GUI.dirs_handler_gui.add_new_daw.setDisabled(False)
 
+        self.Interstitial_GUI.dirs_handler_gui.loading_daw_label.setHidden(True)
         QCoreApplication.processEvents()
         del self
