@@ -7,10 +7,8 @@
 # Created on May 14, 2014
 # @author: Furqan Wasi <furqan@avpreserve.com>
 
-
 from Config import Configuration, Setup, Laguage
 from Core import SharedApp, CustomException, Debugger
-
 
 class App(object):
     """

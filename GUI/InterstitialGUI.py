@@ -15,14 +15,14 @@ from PySide.QtGui import *
 # Custom Libs
 
 from Core import InterstitialCore, SharedApp
-from GUI import DirsHandlerGUI, SharedAppGUI
+from GUI import DirsHandlerGUI, SharedAppGUI, AboutInterstitialGUI
 
 """
 Interstitial GUI Manager
 """
 
 
-class InterstitialGUI(QWidget):
+class InterstitialGUI(QMainWindow):
     """
         Application Interstitial GUI Class
     """
@@ -32,9 +32,9 @@ class InterstitialGUI(QWidget):
     @staticmethod
     def getInstance():
         """
-        Get Interstitail Gui Instance
+        Get Interstitial Gui Instance
 
-        @return :Interstitail Gui Instance
+        @return :Interstitial Gui Instance
         """
         if not isinstance(InterstitialGUI._instance, InterstitialGUI):
             InterstitialGUI._instance = QWidget.__new__(InterstitialGUI)
@@ -44,7 +44,7 @@ class InterstitialGUI(QWidget):
         return InterstitialGUI._instance
 
     def setup(self):
-        QWidget.__init__(self)
+        super(InterstitialGUI, self).__init__()
         self.inters_core = InterstitialCore.InterstitialCore()
         self.Interstitial = SharedApp.SharedApp.App
         self.grid_layout = QGridLayout(self)
@@ -57,11 +57,46 @@ class InterstitialGUI(QWidget):
         self.setMaximumWidth(self.Interstitial.Configuration.getMainWindowWidth())
         self.setMinimumWidth(self.Interstitial.Configuration.getMainWindowWidth())
 
+        # create Menu
+        self.createMenu()
+
+        # Set Short Cuts
+        self.setShortCuts()
+
+        #Set All Menu
+        self.setAllMenus()
+
+        #Set Trigger
+        self.setTriggersForMenu()
+
         self.dirs_handler_gui = DirsHandlerGUI.DirsHandlerGUI()
         self.createDirectories()
         self.go = QPushButton(self.Interstitial.label['runLabel'], self)
         self.addWidgetToLayout()
         self.setTriggers()
+
+    def createMenu(self):
+         #Creat All Menu
+        self.menubar = self.menuBar()
+        self.file_manu_fixity = self.menubar.addMenu('&Help')
+        self.about_fixity_menu = QAction('&About Interstitial', self)
+
+    def setShortCuts(self):
+        self.about_fixity_menu.setShortcut('CTRL+,')
+
+    def setAllMenus(self):
+        self.file_manu_fixity.addAction(self.about_fixity_menu)
+
+    def setTriggersForMenu(self):
+        self.about_fixity_menu.triggered.connect(self.AboutFixity)
+
+    def AboutFixity(self):
+        self.about_fixity_gui = AboutInterstitialGUI.AboutInterstitialGUI(self)
+        self.about_fixity_gui.LaunchDialog()
+
+    def filePasteAct(self):
+        filePasteAct1 = ''
+
 
     def createDirectories(self):
         """
@@ -86,8 +121,9 @@ class InterstitialGUI(QWidget):
 
         self.grid_layout.addWidget(self.dirs_handler_gui.createRefDirectories())
         self.grid_layout.addWidget(self.dirs_handler_gui.add_new_ref)
-
-        self.setLayout(self.grid_layout)
+        self.qwidget = QWidget()
+        self.qwidget.setLayout(self.grid_layout)
+        self.setCentralWidget(self.qwidget)
 
     def addWidgetToLayout(self):
         """

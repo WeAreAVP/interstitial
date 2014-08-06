@@ -14,13 +14,13 @@ exe = EXE(pyz,
           a.binaries,
           a.zipfiles, 
           a.datas,
-          name=os.path.join('dist', 'Interstitail.exe'),
+          name=os.path.join('dist', 'Interstitial.exe'),
           debug=False,
           strip=None,
           upx=True,
           console=False , icon='assets\\icon.ico')
 app = BUNDLE(exe,
-             name=os.path.join('dist', 'Interstitail.exe.app'))
+             name=os.path.join('dist', 'Interstitial.exe.app'))
 
 
 
