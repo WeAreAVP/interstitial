@@ -22,7 +22,7 @@ class Configuration(object):
         self.assets_path = path.join(self.base_path, 'assets'+str(sep))
         self.template_path = path.join(self.assets_path, 'templates')+str(sep)
         self.manifest_template_path = path.join(self.template_path, 'manifestTemplate.txt')
-
+        self.user_guide_url = 'http://www.avpreserve.com/wp-content/uploads/2013/09/Interstitial-User-Guide-v1-2013-08-27.pdf'
         self.is_debugging_on = True
         self.config_file_path = self.getBasePath()+'conf.xml'
         self.columns = "Test File,Reference File,Creation Date,Size,Channels,Sample Rate,Length,First Error Sample,Error At"
@@ -43,6 +43,14 @@ class Configuration(object):
 
         else:
             self.main_window_width = 630
+
+    def getUserGuideUrl(self):
+        """
+        Get User Guide Url
+
+        @return user_guide_url: string
+        """
+        return self.user_guide_url
 
     def getLogoSignSmall(self):
         """

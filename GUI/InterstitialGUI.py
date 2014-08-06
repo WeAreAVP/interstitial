@@ -45,6 +45,7 @@ class InterstitialGUI(QMainWindow):
 
     def setup(self):
         super(InterstitialGUI, self).__init__()
+
         self.inters_core = InterstitialCore.InterstitialCore()
         self.Interstitial = SharedApp.SharedApp.App
         self.grid_layout = QGridLayout()
@@ -82,15 +83,19 @@ class InterstitialGUI(QMainWindow):
         self.about_fixity_menu = QAction('&About Interstitial', self)
 
     def setShortCuts(self):
+        #Creat Menu Short Cut
         self.about_fixity_menu.setShortcut('CTRL+,')
 
     def setAllMenus(self):
+        #All Menu to Interstitial
         self.file_manu_fixity.addAction(self.about_fixity_menu)
 
     def setTriggersForMenu(self):
+        #Set Trigger for Menu
         self.about_fixity_menu.triggered.connect(self.AboutInterstitail)
 
     def AboutInterstitail(self):
+        #Launch About Interstitial
         try:
             self.about_fixity_gui.destroy()
         except:
@@ -98,10 +103,6 @@ class InterstitialGUI(QMainWindow):
 
         self.about_fixity_gui = AboutInterstitialGUI.AboutInterstitialGUI(self)
         self.about_fixity_gui.LaunchDialog()
-
-    def filePasteAct(self):
-        filePasteAct1 = ''
-
 
     def createDirectories(self):
         """
@@ -126,6 +127,7 @@ class InterstitialGUI(QMainWindow):
 
         self.grid_layout.addWidget(self.dirs_handler_gui.createRefDirectories())
         self.grid_layout.addWidget(self.dirs_handler_gui.add_new_ref)
+
         self.qwidget = QWidget()
         self.qwidget.setLayout(self.grid_layout)
         self.setCentralWidget(self.qwidget)
@@ -172,7 +174,7 @@ class InterstitialGUI(QMainWindow):
 
     def ErrorVerifier(self):
         """
-        Look For Errors in Proveded Wav Files
+        Look For Errors in Provided Wav Files
 
         @return: None
         """
@@ -211,9 +213,9 @@ class InterstitialGUI(QMainWindow):
 
 class Printer():
 
-    def __init__(self, t):
-        self.t = t
+    def __init__(self, target):
+        self.target = target
 
-    def write(self, m):
-        self.t.moveCursor(QTextCursor.End)
-        self.t.insertPlainText(m)
+    def write(self, message):
+        self.target.moveCursor(QTextCursor.End)
+        self.target.insertPlainText(message)

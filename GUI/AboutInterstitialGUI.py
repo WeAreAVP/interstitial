@@ -11,7 +11,7 @@
 
 from PySide.QtCore import *
 from PySide.QtGui import *
-
+import webbrowser
 from Core import SharedApp
 
 
@@ -46,13 +46,22 @@ class AboutInterstitialGUI(QDialog):
         self.close_btn = QPushButton('Close')
 
         self.about_layout = QGroupBox()
-        self.heading = QTextEdit()
-        self.content = QTextBrowser()
+        self.heading = QTextBrowser()
+        self.content = QTextEdit()
 
+        self.content.installEventFilter(self)
         self.heading.setReadOnly(True)
         self.content.setReadOnly(False)
+        self.content.viewport().setCursor(Qt.PointingHandCursor)
 
         self.main = QHBoxLayout()
+
+    def openUserGuideUrl(self):
+        try:
+            QDesktopServices.openUrl(QUrl(self.Interstitial.Configuration.getUserGuideUrl()))
+        except:
+            webbrowser.open_new_tab(self.Interstitial.Configuration.getUserGuideUrl())
+            pass
 
     def destroy(self):
         ''' Distructor'''
@@ -71,6 +80,19 @@ class AboutInterstitialGUI(QDialog):
         ''' Show Description'''
         self.heading.setText(self.Interstitial.label['description_heading'])
         self.content.setHtml(self.Interstitial.label['description_content'])
+
+    def eventFilter(self, target, event):
+        """
+        Capturing Content Clicked Event
+        @param target: Event triggered by Widget Object
+        @param event: Event triggered
+        @return Boolean: weather to launch
+        """
+    
+        if event.type() == QEvent.RequestSoftwareInputPanel:
+            self.openUserGuideUrl()
+            return True;
+        return False;
 
     def SetDesgin(self):
         ''' All design Management Done in Here'''
@@ -121,8 +143,10 @@ class AboutInterstitialGUI(QDialog):
         @return:
         """
 
-        try:self.Interstitial = SharedApp.SharedApp.App
-        except:pass
+        try:
+            self.Interstitial = SharedApp.SharedApp.App
+        except:
+            pass
 
         self.parent_win.setWindowTitle(self.Interstitial.messages['InterErrorDetectTitle'])
         self.destroy()
