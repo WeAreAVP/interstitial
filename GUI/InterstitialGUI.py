@@ -47,7 +47,7 @@ class InterstitialGUI(QMainWindow):
         super(InterstitialGUI, self).__init__()
         self.inters_core = InterstitialCore.InterstitialCore()
         self.Interstitial = SharedApp.SharedApp.App
-        self.grid_layout = QGridLayout(self)
+        self.grid_layout = QGridLayout()
         self.vbox = QHBoxLayout()
         self.group_box = QGroupBox(self.Interstitial.label['manifestDest'])
 
@@ -88,9 +88,14 @@ class InterstitialGUI(QMainWindow):
         self.file_manu_fixity.addAction(self.about_fixity_menu)
 
     def setTriggersForMenu(self):
-        self.about_fixity_menu.triggered.connect(self.AboutFixity)
+        self.about_fixity_menu.triggered.connect(self.AboutInterstitail)
 
-    def AboutFixity(self):
+    def AboutInterstitail(self):
+        try:
+            self.about_fixity_gui.destroy()
+        except:
+            pass
+
         self.about_fixity_gui = AboutInterstitialGUI.AboutInterstitialGUI(self)
         self.about_fixity_gui.LaunchDialog()
 

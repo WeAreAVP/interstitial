@@ -15,15 +15,16 @@ from PySide.QtGui import *
 from Core import SharedApp
 
 
-''' Class to manage the Filter to be implemented for the files with specific extensions '''
 
 class AboutInterstitialGUI(QDialog):
     
       
     ''' Class to manage the Filter to be implemented for the files with specific extensions '''
-    
-    '''Contstructor'''
+
     def __init__(self, parent_win):
+        '''
+        Contstructor
+        '''
 
         QDialog.__init__(self, parent_win)
         self.Interstitial = SharedApp.SharedApp.App
@@ -135,4 +136,3 @@ class AboutInterstitialGUI(QDialog):
         """
         self.SetDesgin()
         self.ShowDialog()
-
