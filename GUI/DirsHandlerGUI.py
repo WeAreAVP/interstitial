@@ -99,6 +99,9 @@ class DirsHandlerGUI(QWidget):
 
         @return: reference_group_box
         """
+        self.loading_ref_label = QLabel('Please Wait.....Removing Reference Directory!')
+        self.loading_ref_label.setHidden(True)
+        self.ref_qh_box.addWidget(self.loading_ref_label)
 
         # Create & Load Widgets and Triggers for Reference GUI
         for index_ref in xrange(0, self.number_of_ref_dirs):

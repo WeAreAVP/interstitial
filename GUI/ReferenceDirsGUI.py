@@ -118,57 +118,32 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
     def removeReferenceDirectory(self):
         """
         Remove Reference Directory
+        Destroy this Reference directory's Path Selector , Delete button and path text field
 
         @return: None
         """
+        self.Interstitial_GUI.dirs_handler_gui.loading_ref_label.setHidden(False)
+        QCoreApplication.processEvents()
 
-        # Reference Directory Selector Removing
-        try:
-            self.Interstitial_GUI.dirs_handler_gui.daw_qh_box.removeWidget(self.ref_dir_selector)
-        except:
-            pass
+        self.single_line_hanlder.deleteLater()
+        self.ref_dir_text.deleteLater()
+        self.ref_dir_selector.deleteLater()
+        self.bin_of_dirs.deleteLater()
 
-        # Destroy this Reference directory's Path Selector , Delete button and path text field
-        try:
-            self.ref_dir_selector.deleteLater()
-            self.ref_dir_selector.destroy()
-            del self.ref_dir_selector
-        except:
-            pass
+        self.Interstitial_GUI.dirs_handler_gui.ref_qh_box.removeWidget(self.bin_of_dirs)
+        self.Interstitial_GUI.dirs_handler_gui.ref_qh_box.removeWidget(self.ref_dir_text)
+        self.Interstitial_GUI.dirs_handler_gui.ref_qh_box.removeWidget(self.ref_dir_selector)
 
-        # Reference Directory Text Removing
-        try:
-            self.Interstitial_GUI.dirs_handler_gui.daw_qh_box.removeWidget(self.ref_dir_text)
-        except:
-            pass
+        QCoreApplication.processEvents()
 
-        try:
-            self.ref_dir_text.deleteLater()
-            self.ref_dir_text.destroy()
-            del self.ref_dir_text
-        except:
-            pass
+        self.ref_dir_selector.destroy()
+        self.ref_dir_text.destroy()
+        self.bin_of_dirs.destroy()
 
-        # Reference Directory Text Delete button
-        try:
-            self.Interstitial_GUI.dirs_handler_gui.daw_qh_box.removeWidget(self.bin_of_dirs)
-        except:
-            pass
-
-        try:
-            self.bin_of_dirs.deleteLater()
-            self.bin_of_dirs.destroy()
-            del self.bin_of_dirs
-        except:
-            pass
-
-        # Delete Layout For One Directory
-        try:
-            self.single_line_hanlder.deleteLater()
-            self.single_line_hanlder.destroy()
-            del self.single_line_hanlder
-        except:
-            pass
+        del self.ref_dir_selector
+        del self.ref_dir_text
+        del self.bin_of_dirs
+        del self.single_line_hanlder
 
         self.Interstitial_GUI.dirs_handler_gui.number_of_ref_dirs -= 1
 
@@ -179,5 +154,6 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
         if self.Interstitial_GUI.dirs_handler_gui.number_of_ref_dirs < 7:
             self.Interstitial_GUI.dirs_handler_gui.add_new_ref.setDisabled(False)
 
+        self.Interstitial_GUI.dirs_handler_gui.loading_ref_label.setHidden(True)
         QCoreApplication.processEvents()
         del self

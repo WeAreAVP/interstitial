@@ -112,45 +112,32 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
 
         @return: None
         """
-        print(1)
+        self.single_line_hanlder.deleteLater()
+        self.daw_dir_text.deleteLater()
+        self.bin_of_dirs.deleteLater()
+        self.daw_dir_selector.deleteLater()
+
         self.Interstitial_GUI.dirs_handler_gui.daw_qh_box.removeWidget(self.daw_dir_selector)
         self.Interstitial_GUI.dirs_handler_gui.daw_qh_box.removeWidget(self.daw_dir_text)
-        try:
-            self.Interstitial_GUI.dirs_handler_gui.daw_qh_box.removeWidget(self.bin_of_dirs)
-        except:
-            pass
+        self.Interstitial_GUI.dirs_handler_gui.daw_qh_box.removeWidget(self.bin_of_dirs)
+
+        QCoreApplication.processEvents()
+
+        self.daw_dir_selector.destroy()
+        self.daw_dir_text.destroy()
+        self.bin_of_dirs.destroy()
 
         # DAW Directory Text Removing
-        try:
-            self.daw_dir_selector.deleteLater()
-            self.daw_dir_selector.destroy()
-            del self.daw_dir_selector
-        except:
-            pass
-
-        # DAW Directory Text Delete button
-        try:
-            self.daw_dir_text.deleteLater()
-            self.daw_dir_text.destroy()
-            del self.daw_dir_text
-        except:
-            pass
-
-        # DAW Directory Text Delete button
-        try:
-            self.bin_of_dirs.deleteLater()
-            self.bin_of_dirs.destroy()
-            del self.bin_of_dirs
-        except:
-            pass
+        del self.daw_dir_selector
 
         # Delete Layout For One Directory
-        try:
-            self.single_line_hanlder.deleteLater()
-            self.single_line_hanlder.destroy()
-            del self.single_line_hanlder
-        except:
-            pass
+        del self.single_line_hanlder
+
+        # DAW Directory Text Delete button
+        del self.daw_dir_text
+
+        # DAW Directory Text Delete button
+        del self.bin_of_dirs
 
         self.Interstitial_GUI.dirs_handler_gui.number_of_daw_dirs -= 1
 
