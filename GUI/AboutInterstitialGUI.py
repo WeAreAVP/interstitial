@@ -40,9 +40,9 @@ class AboutInterstitialGUI(QDialog):
         self.AboutInterstitialLayout = QVBoxLayout()
 
         self.widget = QWidget(self)
-
+        self.pgroup = QGroupBox()
         self.detail_layout = QVBoxLayout()
-
+        self.pgroup.setStyleSheet(" QGroupBox { border-style: none; border: none;}")
         self.close_btn = QPushButton('Close')
 
         self.about_layout = QGroupBox()
@@ -88,7 +88,7 @@ class AboutInterstitialGUI(QDialog):
         @param event: Event triggered
         @return Boolean: weather to launch
         """
-    
+
         if event.type() == QEvent.RequestSoftwareInputPanel:
             self.openUserGuideUrl()
             return True;
@@ -110,7 +110,7 @@ class AboutInterstitialGUI(QDialog):
         self.close_btn.clicked.connect(self.Cancel)
 
         self.detail_layout.addWidget(pic)
-
+        self.pgroup.setLayout(self.detail_layout)
         slay = QVBoxLayout()
         if self.Interstitial.Configuration.getOsType() == 'windows':
             self.heading.setFixedSize(555, 40)
@@ -123,14 +123,15 @@ class AboutInterstitialGUI(QDialog):
 
         slay.addWidget(self.heading)
         slay.addWidget(self.content)
-
         slay.addWidget(self.close_btn)
 
         if self.Interstitial.Configuration.getOsType() == 'windows':
-            self.about_layout.setFixedSize(580, 360)
+            self.about_layout.setFixedSize(575, 360)
         else:
-            self.about_layout.setFixedSize(560, 360)
+            self.about_layout.setFixedSize(585, 360)
 
+        self.pgroup.setFixedSize(40, 360)
+        self.main.addWidget(self.pgroup)
         self.main.addWidget(self.about_layout)
 
         self.about_layout.setLayout(slay)

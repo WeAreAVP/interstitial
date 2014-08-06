@@ -63,9 +63,11 @@ class Configuration(object):
             try:
                 return path.join(sys._MEIPASS, 'assets' + (str(sep)) + str(self.logo_sign_small))
             except:
+
+                return path.join(self.assets_path, str(self.logo_sign_small))
                 pass
         else:
-
+            print(path.join(self.assets_path, str(self.logo_sign_small)))
             return path.join(self.assets_path, str(self.logo_sign_small))
 
     def getMainWindowWidth(self):
