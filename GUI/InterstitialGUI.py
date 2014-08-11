@@ -14,7 +14,7 @@ from PySide.QtGui import *
 
 # Custom Libs
 
-from Core import InterstitialCore, SharedApp
+from Core import SharedApp
 from GUI import DirsHandlerGUI, SharedAppGUI, AboutInterstitialGUI
 
 """
@@ -46,7 +46,6 @@ class InterstitialGUI(QMainWindow):
     def setup(self):
         super(InterstitialGUI, self).__init__()
 
-        self.inters_core = InterstitialCore.InterstitialCore()
         self.Interstitial = SharedApp.SharedApp.App
         self.grid_layout = QGridLayout()
         self.vbox = QHBoxLayout()
@@ -77,7 +76,7 @@ class InterstitialGUI(QMainWindow):
         self.setTriggers()
 
     def createMenu(self):
-         #Creat All Menu
+        #Creat All Menu
         self.menubar = self.menuBar()
         self.file_manu_fixity = self.menubar.addMenu('&Help')
         self.about_fixity_menu = QAction('&About Interstitial', self)

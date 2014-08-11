@@ -28,6 +28,8 @@ class Configuration(object):
         self.columns = "Test File,Reference File,Creation Date,Size,Channels,Sample Rate,Length,First Error Sample,Error At"
 
         self.logo_sign_small = 'logo_sign_small.png'
+        self.unit_test_folder = self.base_path + 'Tests' + sep
+        self.fixtures_folder = self.unit_test_folder + 'assets' + sep + 'tests' + sep
 
         if name == 'posix':
             self.os_type = 'linux'
@@ -51,6 +53,14 @@ class Configuration(object):
         @return user_guide_url: string
         """
         return self.user_guide_url
+
+    def getFixturesFolder(self):
+        """
+        Get Fixture Folder
+
+        @return fixtures_folder: string
+        """
+        return self.fixtures_folder
 
     def getLogoSignSmall(self):
         """
@@ -77,6 +87,15 @@ class Configuration(object):
         @return:Windows Width
         """
         return self.main_window_width
+
+    def getUnit_test_folder(self):
+        """
+        Get Unit Test Folder
+
+        @return:unit_test_folder
+        """
+
+        return self.unit_test_folder
 
     def getOsType(self):
         """

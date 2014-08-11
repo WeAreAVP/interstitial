@@ -8,7 +8,7 @@
 # @author: Furqan Wasi <furqan@avpreserve.com>
 
 from Config import Configuration, Setup, Laguage
-from Core import SharedApp, CustomException, Debugger
+from Core import SharedApp
 
 class App(object):
     """
@@ -39,10 +39,7 @@ class App(object):
         @return: None
         """
 
-        self.ExceptionHandler = CustomException.CustomException.getInstance()
         self.Configuration = Configuration.Configuration()
         self.Setup = Setup.Setup()
-        self.Setup.setupApp()
-        self.logger = Debugger.Debugger.getInstance()
         self.messages = Laguage.message
         self.label = Laguage.label

@@ -1,0 +1,8 @@
+Interstitial Error Report
+Date,{{current_date}}
+Time initiated,{{initiated}}
+Duration (seconds),{{seconds}}
+Files analyzed,{{testers}}
+Bad files found,{{bad_files}}
+{{columns}}
+{{values}}

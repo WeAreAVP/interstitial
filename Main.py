@@ -12,9 +12,8 @@ import sys
 from os import path
 
 from GUI import InterstitialGUI
-from Core import InterstitialCore, SharedApp
+from Core import SharedApp
 from App import App
-
 
 class Main(object):
     """
@@ -45,8 +44,8 @@ class Main(object):
 
         @return: None
         """
-        inters_core = InterstitialCore()
-        inters_core.execute(param1, param2)
+        print('asd')
+
 
     def LaunchCLI(self):
         """
