@@ -28,7 +28,7 @@ class Configuration(object):
         self.columns = "Test File,Reference File,Creation Date,Size,Channels,Sample Rate,Length,First Error Sample,Error At"
 
         self.logo_sign_small = 'logo_sign_small.png'
-        self.unit_test_folder = self.base_path + 'Tests' + sep
+        self.unit_test_folder = self.base_path
         self.fixtures_folder = self.unit_test_folder + 'assets' + sep + 'tests' + sep
 
         if name == 'posix':
@@ -42,7 +42,6 @@ class Configuration(object):
 
         if self.os_type == 'windows':
             self.main_window_width = 600
-
         else:
             self.main_window_width = 630
 
@@ -73,11 +72,9 @@ class Configuration(object):
             try:
                 return path.join(sys._MEIPASS, 'assets' + (str(sep)) + str(self.logo_sign_small))
             except:
-
                 return path.join(self.assets_path, str(self.logo_sign_small))
                 pass
         else:
-            print(path.join(self.assets_path, str(self.logo_sign_small)))
             return path.join(self.assets_path, str(self.logo_sign_small))
 
     def getMainWindowWidth(self):

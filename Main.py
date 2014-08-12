@@ -44,7 +44,7 @@ class Main(object):
 
         @return: None
         """
-        print('asd')
+
 
 
     def LaunchCLI(self):

@@ -1,18 +1,17 @@
 # -*- coding: UTF-8 -*-
-'''
-Created on May 14, 2014
+# Interstitial Error Detector
+# Version 0.2, 2013-08-28
+# Copyright (c) 2013 AudioVisual Preservation Solutions
+# All rights reserved.
+# Released under the Apache license, v. 2.0
+# Created on Aug 12, 2014
+# @author: Furqan Wasi <furqan@avpreserve.com>
 
-@author: Furqan Wasi <furqan@avpreserve.com>
-'''
 
-EmailTestCaseFailMessages = {}
 ProjectTestCaseFailMessages = {}
-AlgorithmTestCaseFailMessages = {}
-RequiredsCreationTestCaseFailMessages = {}
+CheckRequiredTestCaseFailMessages = {}
 
-EmailTestCaseFailMessages['testing'] = 'Failed Testing Email ................. !'
-EmailTestCaseFailMessages['attachment'] = 'Failed Attachment Email ................. !'
-EmailTestCaseFailMessages['error'] = 'Failed Error Email ................. !'
+ProjectTestCaseFailMessages['run_project_single_dir_with_error'] = 'Failed Project Run Message ................. !'
+ProjectTestCaseFailMessages['run_project_multiple_dir_with_error'] = 'Failed Project Run Message for Multiple Directories ................. !'
 
-
-
+CheckRequiredTestCaseFailMessages['check_for_template'] ='Failed templates dose not exists ................. !'

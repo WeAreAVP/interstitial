@@ -9,7 +9,7 @@
 
 from PySide.QtCore import *
 from PySide.QtGui import *
-from time import strftime, time, sleep
+from time import strftime, time
 from math import floor
 
 from Core import DirsHandlerCore, SharedApp
@@ -47,6 +47,7 @@ class DirsHandlerGUI(QWidget):
 
         for index_ref in xrange(0, self.number_of_ref_dirs):
             self.reference_dirs_gui[index_ref] = ReferenceDirsGUI.ReferenceDirsGUI()
+
 
         self.daw_qh_box = QFormLayout()
         self.ref_qh_box = QFormLayout()
@@ -185,19 +186,6 @@ class DirsHandlerGUI(QWidget):
         @return: None
         """
 
-        filename = self.Interstitial.Configuration.getManifestFileName()
-        columns = self.Interstitial.Configuration.getColumnsOfManifest()
-
-        timer = time()
-        initiated = self.Interstitial.Configuration.getCurrentTime()
-
-        current_date = strftime("%Y-%m-%d")
-        seconds_content = str(floor(time() - timer))
-        testers = 0
-        file_count = 0
-
-        values = ''
-
         for index_daw in xrange(0, self.number_of_daw_dirs):
             for index_ref in xrange(0, self.number_of_ref_dirs):
 
@@ -210,42 +198,8 @@ class DirsHandlerGUI(QWidget):
                 self.reference_dirs_gui[index_ref].setCoreRefText(self.reference_dirs_gui[index_ref].getGuiRefText())
 
                 # Set Directories Core Information to be used for executor
-                self.dirs_handler_core.setCoreDawText(self.daw_dirs_gui[index_daw].getGuiDawText())
-                self.dirs_handler_core.setCoreRefText(self.reference_dirs_gui[index_ref].getGuiRefText())
+                self.dirs_handler_core.setDawDirsCore(self.daw_dirs_gui[index_daw].getGuiDawText(), index_daw)
+                self.dirs_handler_core.setRefDirsCore(self.reference_dirs_gui[index_ref].getGuiRefText(), index_ref)
 
-                # Launch The Scanner to Test Audio Files
-                report_result = self.dirs_handler_core.execute(QCoreApplication.instance())
-
-                try:
-                    testers += len(report_result['manifest_info']['testers'])
-                except:
-                    pass
-
-                try:
-                    file_count += int(report_result['manifest_info']['file_count'])
-                except:
-                    pass
-
-                try:
-                    values += report_result['manifest_info']['values']
-                except:
-                    pass
-
-                sleep(2)
-
-        manifest_info = {'current_date': current_date, 'initiated': initiated, 'seconds_content': seconds_content,
-                        'testers': testers, 'file_count': file_count, 'columns': columns, 'values': values}
-
-        # Open template file and get manifest template content to manifest file creation
-        template_of_manifest_file = open(self.Interstitial.Configuration.getManifestTemplatePath(), "r")
-        template_of_manifest_file_lines = template_of_manifest_file.readlines()
-        template_of_manifest_file.close()
-
-        manifest_content = self.dirs_handler_core.generateManifestContent(template_of_manifest_file_lines, manifest_info)
-
-        # Do We Have Metadata? If So, Write A Manifest
-        # Write Manifest File
-        if len((values + columns)) > 110:
-            manifest_file_path = manifest_path + "/" + filename
-            self.dirs_handler_core.writeManifestFile(manifest_file_path, manifest_content)
-            return manifest_file_path
+        # Launch The Scanner to Test Audio Files
+        self.dirs_handler_core.run_executor(manifest_path, QCoreApplication.instance())

@@ -9,14 +9,14 @@
 
 import numpy as np
 from scikits.audiolab import Sndfile
-from sys import argv, exit
 from math import fabs, floor
 from re import compile
 from os import walk, path, stat
-from time import strftime, time
+from time import strftime, time, sleep
 import datetime
 
 from Core import SharedApp
+from Core import DAWDirsCore, ReferenceDirsCore
 
 class DirsHandlerCore(object):
     """
@@ -29,9 +29,78 @@ class DirsHandlerCore(object):
         """
         self.Interstitial = SharedApp.SharedApp.App
 
-        self.number_of_daw_dirs = 1
-        self.number_of_ref_dirs = 1
+        self.number_of_daw_core = 1
+        self.number_of_ref_core = 1
+
+        self.daw_dirs_core = {}
+        self.reference_dirs_core = {}
+
+        for index_daw in xrange(0, self.number_of_daw_core):
+            self.daw_dirs_core[index_daw] = DAWDirsCore.DAWDirsCore()
+
+        for index_ref in xrange(0, self.number_of_ref_core):
+            self.reference_dirs_core[index_ref] = ReferenceDirsCore.ReferenceDirsCore()
+
         pass
+
+    def setNumberOfDawCore(self, number_of_dirs_daw):
+        """
+        Set Number Of Reference Dirs
+
+        @return daw_dirs_core:String
+        """
+        self.number_of_daw_core = number_of_dirs_daw
+
+
+    def setNumberOfRefCore(self, number_of_dirs_ref):
+        """
+        Set Number Of Daw Dirs
+
+        @return number_of_ref_core:String
+        """
+        self.number_of_ref_core = number_of_dirs_ref
+
+    def getDawDirsCore(self, index):
+        """
+        Set Daw Dirs Core
+
+        @return None
+        """
+        return self.daw_dirs_core[index]
+
+    def setDawDirsCore(self, text, index):
+        """
+        Set Daw Dirs Core
+
+        @return None
+        """
+        new_daw = DAWDirsCore.DAWDirsCore()
+
+        new_daw.setCoreDawText(text)
+        new_daw.setCoreDawId(index)
+
+        self.daw_dirs_core[index] = new_daw
+
+    def setRefDirsCore(self, text, index):
+        """
+        Set Ref Dirs Core
+
+        @return None
+        """
+        new_ref = ReferenceDirsCore.ReferenceDirsCore()
+
+        new_ref.setCoreRefText(text)
+        new_ref.setCoreRefId(index)
+
+        self.reference_dirs_core[index] = new_ref
+
+    def getRefDirsCore(self, index):
+        """
+        Set Ref Dirs Core
+
+        @return None
+        """
+        return self.reference_dirs_core[index]
 
     def mono(self, numpy_matrix):
         """
@@ -105,7 +174,71 @@ class DirsHandlerCore(object):
 
         return populated_list
 
-    def execute(self, q_action):
+    def run_executor(self, manifest_path, q_action=None, is_unit_test=False):
+        '''
+        Run Executor For all Directories
+
+        @param manifest_path: Manifest File Path
+        @param q_action: QCoreApplication Object
+        @param is_unit_test: Is call generated from Unit test
+
+        @return manifest_file_path/{manifest_info, manifest_file_path}: Sting/List
+        '''
+        testers = 0
+        file_count = 0
+        values = ''
+
+        filename = self.Interstitial.Configuration.getManifestFileName()
+        columns = self.Interstitial.Configuration.getColumnsOfManifest()
+
+        timer = time()
+        initiated = self.Interstitial.Configuration.getCurrentTime()
+
+        current_date = strftime("%Y-%m-%d")
+        seconds_content = str(floor(time() - timer))
+
+        for index_daw in xrange(0, self.number_of_daw_core):
+            for index_ref in xrange(0, self.number_of_ref_core):
+
+                # Launch The Scanner to Test Audio Files
+                report_result = self.execute(index_daw, index_ref, q_action)
+
+                try:
+                    testers += len(report_result['manifest_info']['testers'])
+                except: pass
+
+                try:
+                    file_count += int(report_result['manifest_info']['file_count'])
+                except: pass
+
+                try:
+                    values += report_result['manifest_info']['values']
+                except: pass
+
+                sleep(2)
+
+        manifest_info = {'current_date': current_date, 'initiated': initiated, 'seconds_content': seconds_content,
+                        'testers': testers, 'file_count': file_count, 'columns': columns, 'values': values}
+
+        # Open template file and get manifest template content to manifest file creation
+        template_of_manifest_file = open(self.Interstitial.Configuration.getManifestTemplatePath(), "r")
+        template_of_manifest_file_lines = template_of_manifest_file.readlines()
+        template_of_manifest_file.close()
+
+        manifest_content = self.generateManifestContent(template_of_manifest_file_lines, manifest_info)
+
+        # Do We Have Metadata? If So, Write A Manifest
+        # Write Manifest File
+        if len((values + columns)) > 110:
+            manifest_file_path = manifest_path + "/" + filename
+            self.writeManifestFile(manifest_file_path, manifest_content)
+
+            if is_unit_test:
+                return {'manifest_info': manifest_info, 'manifest_file_path':manifest_file_path}
+            else:
+                return manifest_file_path
+
+    def execute(self, index_daw, index_ref, q_action=None):
         """
         Execute (wavefile first_wave_file, wavefile second_wave_file, directory d, QAction qa)
         The heart of interstitial - performs a null test on two wav files and returns the first difference
@@ -121,24 +254,32 @@ class DirsHandlerCore(object):
 
         # Ensures That We Have Legitimate Directories To Walk Down
         # And Populates The List Of Files To Test
-        if not path.isdir(path.abspath(self.getCoreDawText())) or not path.isdir(path.abspath(self.getCoreRefText())):
+        if not path.isdir(path.abspath(self.getDawDirsCore(index_daw).getCoreDawText())) or not path.isdir(path.abspath(self.getRefDirsCore(index_ref).getCoreRefText())):
             print self.Interstitial.messages['illegalPaths']
             return
 
-        testers = self.populate(self.getCoreDawText())
-        print str(len(testers)) + self.Interstitial.messages['WAV_found'] + path.abspath(self.getCoreDawText())
+        testers = self.populate(self.getDawDirsCore(index_daw).getCoreDawText())
+        print str(len(testers)) + self.Interstitial.messages['WAV_found'] + path.abspath(self.getDawDirsCore(index_daw).getCoreDawText())
 
-        targets = self.populate(self.getCoreRefText())
-        print str(len(targets)) + self.Interstitial.messages['WAV_found'] + path.abspath(self.getCoreRefText())
+        targets = self.populate(self.getRefDirsCore(index_ref).getCoreRefText())
+        print str(len(targets)) + self.Interstitial.messages['WAV_found'] + path.abspath(self.getRefDirsCore(index_ref).getCoreRefText())
 
-        q_action.processEvents()
+        try:
+            q_action.processEvents()
+        except:
+            pass
 
         # Process Each File In The Tester Array
         for index in xrange(len(testers)):
             found = False
 
             for e in xrange(len(targets)):
-                q_action.processEvents()
+
+                try:
+                    q_action.processEvents()
+                except:
+                    pass
+
                 # If We Haven't Already Processed This File, Process It
                 if str(targets[e]) not in targeted_done:
 
@@ -172,7 +313,10 @@ class DirsHandlerCore(object):
                     if np.array_equal(numpy_matrix_of_track1, numpy_matrix_of_track2):
                         print "MATCH: " + str(testers[index]) + " matches " + str(targets[e])
 
-                        q_action.processEvents()
+                        try:
+                            q_action.processEvents()
+                        except:
+                            pass
                         # mark files as done
                         test_done_for_files.append(str(testers[index]))
                         targeted_done.append(str(targets[e]))
@@ -197,7 +341,10 @@ class DirsHandlerCore(object):
                                             # we found it! print a message and we're done with these files
                                             errs = (n * tester_file_obj.samplerate) + m + 1000
                                             print self.Interstitial.messages['errorFoundBw'] + str(testers[index]) + " and " + str(targets[e]) + " at sample " + str(errs)
-                                            q_action.processEvents()
+                                            try:
+                                                q_action.processEvents()
+                                            except:
+                                                pass
                                             break
                                 if errs != 0:
                                     break
@@ -217,7 +364,8 @@ class DirsHandlerCore(object):
 
                     if found:
                         break
-
+        print('')
+        print('')
         # Create Header Information For Manifest
         manifest_info = {'testers': testers, 'file_count': file_count, 'values': values}
         return {'manifest_info': manifest_info}
@@ -233,6 +381,7 @@ class DirsHandlerCore(object):
         """
 
         try:
+
             f = open(file_path, 'w')
             f.write(manifest_content)
             print self.Interstitial.messages['wroteManifest'] + path.abspath(f.name)
@@ -251,26 +400,40 @@ class DirsHandlerCore(object):
         manifest_content = ''
         for template_of_manifest_single_line in template_of_manifest_file_lines:
             response = False
-            response = self.setValuesForScheduler(template_of_manifest_single_line, '{{current_date}}',
-                                                  str(manifest_info['current_date']))
+
+            response = self.setValuesForScheduler(template_of_manifest_single_line,
+                                                '{{current_date}}',
+                                                str(manifest_info['current_date']))
+
             if response is False:
-                response = self.setValuesForScheduler(template_of_manifest_single_line, '{{initiated}}',
-                                                          str(manifest_info['initiated']))
+                response = self.setValuesForScheduler(template_of_manifest_single_line,
+                                                '{{initiated}}',
+                                                str(manifest_info['initiated']))
+
             if response is False:
-                response = self.setValuesForScheduler(template_of_manifest_single_line, '{{seconds}}',
-                                                          str(manifest_info['seconds_content']))
+                response = self.setValuesForScheduler(template_of_manifest_single_line,
+                                                '{{seconds}}',
+                                                str(manifest_info['seconds_content']))
+
             if response is False:
-                response = self.setValuesForScheduler(template_of_manifest_single_line, '{{testers}}',
-                                                          str(manifest_info['testers']))
+                response = self.setValuesForScheduler(template_of_manifest_single_line,
+                                                '{{testers}}',
+                                                str(manifest_info['testers']))
+
             if response is False:
-                response = self.setValuesForScheduler(template_of_manifest_single_line, '{{bad_files}}',
-                                                          str(manifest_info['file_count']))
+                response = self.setValuesForScheduler(template_of_manifest_single_line,
+                                                '{{bad_files}}',
+                                                str(manifest_info['file_count']))
+
             if response is False:
-                response = self.setValuesForScheduler(template_of_manifest_single_line, '{{columns}}',
-                                                          str(manifest_info['columns']))
+                response = self.setValuesForScheduler(template_of_manifest_single_line,
+                                                '{{columns}}',
+                                                str(manifest_info['columns']))
+
             if response is False:
-                response = self.setValuesForScheduler(template_of_manifest_single_line, '{{values}}',
-                                                          str(manifest_info['values']))
+                response = self.setValuesForScheduler(template_of_manifest_single_line,
+                                                '{{values}}',
+                                                str(manifest_info['values']))
 
             if response is False:
                # If No Value Found To Replace
@@ -286,7 +449,7 @@ class DirsHandlerCore(object):
         @param find_string: Find String string to be replaced with
         @param replace_with_string: String to be replaced with
 
-        @return:String
+        @return: String
         """
 
         try:self.Interstitial = SharedApp.SharedApp.App
@@ -295,9 +458,12 @@ class DirsHandlerCore(object):
         string = str(string)
         find_string = str(find_string)
         replace_with_string = str(replace_with_string)
+
         if find_string in string:
             return str(string).replace(find_string, replace_with_string)
+
         return False
+
     def setCoreDawText(self, daw_dir_text):
         """
         Set Core DAW Text

@@ -91,7 +91,7 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
 
         self.daw_dir_selector.clicked.connect(self.dawDirTrigger)
 
-        self.daw_dir_text.setReadOnly(True)
+        #self.daw_dir_text.setReadOnly(True)
 
     def dawDirTrigger(self):
         """
@@ -100,9 +100,9 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
         @return: None
         """
         daw_path_selector = QFileDialog()
-        print(self.Interstitial.Configuration.getUserHomePath())
         daw_path_selector.setDirectory(self.Interstitial.Configuration.getUserHomePath())
         path_selected = daw_path_selector.getExistingDirectory()
+
         self.daw_dir_text.setText(path_selected)
 
     def removeDAWDirectory(self):

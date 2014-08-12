@@ -14,7 +14,6 @@ class App(object):
     """
         Application Interstitial Class
     """
-
     _instance = None
 
     @staticmethod

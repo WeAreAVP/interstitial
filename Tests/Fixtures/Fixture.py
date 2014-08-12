@@ -13,22 +13,20 @@ import sys
 
 # Custom libraries
 import helper
-print(helper.setImportBaseBath())
 sys.path.append(helper.setImportBaseBath())
-import Main
-
-
+print(helper.setImportBaseBath())
+from App import App
 class Fixtures(object):
 
-
     def __init__(self):
-        self.App = Main.Main()
+        self.Interstitial = App.getInstance()
 
-        self.unit_test_folder = self.App.Fixity.Configuration.getUnit_test_folder()
-        self.fixtures_folder = self.App.Fixity.Configuration.getFixturesFolder()
+        self.unit_test_folder = self.Interstitial.Configuration.getUnit_test_folder()
+        self.fixtures_folder = self.Interstitial.Configuration.getFixturesFolder()
 
         self.project_name = 'New_Project'
         self.test_folder_one = self.fixtures_folder + 'DAW' + os.sep
-        self.test_folder_one = self.fixtures_folder + 'Reference' + os.sep
+        self.test_folder_two = self.fixtures_folder + 'Reference' + os.sep
+
 
         pass
