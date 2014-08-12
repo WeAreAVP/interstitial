@@ -79,8 +79,8 @@ class ProjectTestCase(object):
         print('')
         dirs_handler_core = DirsHandlerCore.DirsHandlerCore()
 
-        dirs_handler_core.setNumberOfDawCore(2)
-        dirs_handler_core.setNumberOfRefCore(2)
+        #dirs_handler_core.setNumberOfDawCore(2)
+        #dirs_handler_core.setNumberOfRefCore(2)
 
         for index_raw in xrange(0, dirs_handler_core.number_of_daw_core):
             for index_ref in xrange(0, dirs_handler_core.number_of_ref_core):

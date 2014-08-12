@@ -197,6 +197,9 @@ class DirsHandlerCore(object):
         current_date = strftime("%Y-%m-%d")
         seconds_content = str(floor(time() - timer))
 
+        print(self.number_of_daw_core)
+        print(self.number_of_ref_core)
+
         for index_daw in xrange(0, self.number_of_daw_core):
             for index_ref in xrange(0, self.number_of_ref_core):
 
@@ -338,6 +341,7 @@ class DirsHandlerCore(object):
                                     # we find it by comparing sample by sample across this second of audio
                                     for m in xrange(len(track_one_response)):
                                         if not np.array_equal(track_one_response[m], track_two_response[m]):
+
                                             # we found it! print a message and we're done with these files
                                             errs = (n * tester_file_obj.samplerate) + m + 1000
                                             print self.Interstitial.messages['errorFoundBw'] + str(testers[index]) + " and " + str(targets[e]) + " at sample " + str(errs)
@@ -361,6 +365,9 @@ class DirsHandlerCore(object):
 
                         values += "\n"
                         found = True
+                    else:
+                        print "COULD NOT MATCH FILES: " + str(testers[index]) + " UN-MATCHES " + str(targets[e])
+                        pass
 
                     if found:
                         break
@@ -381,7 +388,6 @@ class DirsHandlerCore(object):
         """
 
         try:
-
             f = open(file_path, 'w')
             f.write(manifest_content)
             print self.Interstitial.messages['wroteManifest'] + path.abspath(f.name)

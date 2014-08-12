@@ -150,6 +150,8 @@ class DirsHandlerGUI(QWidget):
         self.daw_group_box.setLayout(self.daw_qh_box)
 
         self.number_of_daw_dirs += 1
+        self.dirs_handler_core.number_of_daw_core = self.number_of_daw_dirs
+
 
         if self.number_of_daw_dirs == 7:
             self.add_new_daw.setDisabled(True)
@@ -174,6 +176,7 @@ class DirsHandlerGUI(QWidget):
         self.ref_group_box.setLayout(self.ref_qh_box)
 
         self.number_of_ref_dirs += 1
+        self.dirs_handler_core.number_of_ref_core = self.number_of_ref_dirs
         if self.number_of_ref_dirs == 7:
             self.add_new_ref.setDisabled(True)
 
@@ -196,7 +199,8 @@ class DirsHandlerGUI(QWidget):
                 # Set Reference Core Information
                 self.reference_dirs_gui[index_ref].setCoreRefId('ref' + str(index_ref))
                 self.reference_dirs_gui[index_ref].setCoreRefText(self.reference_dirs_gui[index_ref].getGuiRefText())
-
+                self.dirs_handler_core.setNumberOfDawCore(self.number_of_daw_dirs)
+                self.dirs_handler_core.setNumberOfRefCore(self.number_of_ref_dirs)
                 # Set Directories Core Information to be used for executor
                 self.dirs_handler_core.setDawDirsCore(self.daw_dirs_gui[index_daw].getGuiDawText(), index_daw)
                 self.dirs_handler_core.setRefDirsCore(self.reference_dirs_gui[index_ref].getGuiRefText(), index_ref)

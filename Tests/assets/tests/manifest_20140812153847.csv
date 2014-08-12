@@ -1,0 +1,11 @@
+Interstitial Error Report
+Date,2014-08-12
+Time initiated,15:38:47
+Duration (seconds),0.0
+Files analyzed,4
+Bad files found,4
+Test File,Reference File,Creation Date,Size,Channels,Sample Rate,Length,First Error Sample,Error At
+D:\python\Interstitial Project\Tests\assets\tests\DAW\daw.wav,D:\python\Interstitial Project\Tests\assets\tests\Reference\reference.wav,2014-08-11 14:12:50,3875624,2,44100,0:00:21,511561,0:00:11
+D:\python\Interstitial Project\Tests\assets\tests\DAW\daw.wav,D:\python\Interstitial Project\Tests\assets\tests\Reference\reference.wav,2014-08-11 14:12:50,3875624,2,44100,0:00:21,511561,0:00:11
+D:\python\Interstitial Project\Tests\assets\tests\DAW\daw.wav,D:\python\Interstitial Project\Tests\assets\tests\Reference\reference.wav,2014-08-11 14:12:50,3875624,2,44100,0:00:21,511561,0:00:11
+D:\python\Interstitial Project\Tests\assets\tests\DAW\daw.wav,D:\python\Interstitial Project\Tests\assets\tests\Reference\reference.wav,2014-08-11 14:12:50,3875624,2,44100,0:00:21,511561,0:00:11
