@@ -14,3 +14,6 @@
 ### Scenarios of Dir required
  1. Run Project Single Directory With Error
  2. Run Project Multiple Directory With Error
+
+### Required Assets
+ 1. Checking For Templates used for reporting and manifest file creation
