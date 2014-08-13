@@ -197,9 +197,6 @@ class DirsHandlerCore(object):
         current_date = strftime("%Y-%m-%d")
         seconds_content = str(floor(time() - timer))
 
-        print(self.number_of_daw_core)
-        print(self.number_of_ref_core)
-
         for index_daw in xrange(0, self.number_of_daw_core):
             for index_ref in xrange(0, self.number_of_ref_core):
 
