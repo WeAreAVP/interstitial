@@ -101,7 +101,7 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
         """
 
         self.ref_dir_selector.clicked.connect(self.refDirTrigger)
-        #self.ref_dir_text.setReadOnly(True)
+        self.ref_dir_text.setReadOnly(True)
 
     def refDirTrigger(self):
         """

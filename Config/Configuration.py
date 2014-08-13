@@ -42,8 +42,26 @@ class Configuration(object):
 
         if self.os_type == 'windows':
             self.main_window_width = 600
+
         else:
+            self.base_path = str(getcwd()).replace(str(sep)+'Contents'+str(sep)+'Resources', '')
+
+            self.base_path = str(self.base_path).replace('Resources'+str(sep), '')
+            self.base_path = str(self.base_path).replace('Contents'+str(sep), '')
+            self.base_path = str(self.base_path).replace('Interstitial.app', '')
+            self.base_path = str(self.base_path).replace(str(sep) + str(sep), '')
+            self.base_path = str(self.base_path).replace('Main.app', '')
+
             self.main_window_width = 630
+
+    def getAppBasePath(self):
+        """
+        Get App Base Path
+
+        @reture app_base_path: path
+        """
+
+        return self.app_base_path
 
     def getUserGuideUrl(self):
         """
