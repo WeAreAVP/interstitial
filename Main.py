@@ -45,8 +45,6 @@ class Main(object):
         @return: None
         """
 
-
-
     def LaunchCLI(self):
         """
         Launch CLI Application on demand

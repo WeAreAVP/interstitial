@@ -15,7 +15,7 @@ from PySide.QtGui import *
 # Custom Libs
 
 from Core import SharedApp
-from GUI import DirsHandlerGUI, SharedAppGUI, AboutInterstitialGUI
+from GUI import DirsHandlerGUI, SharedAppGUI, AboutInterstitialGUI, NotificationGUI
 
 """
 Interstitial GUI Manager
@@ -71,6 +71,8 @@ class InterstitialGUI(QMainWindow):
         self.setTriggersForMenu()
 
         self.dirs_handler_gui = DirsHandlerGUI.DirsHandlerGUI()
+        self.notification_gui = NotificationGUI.NotificationGUI()
+
         self.createDirectories()
         self.go = QPushButton(self.Interstitial.label['runLabel'], self)
         self.addWidgetToLayout()
@@ -178,6 +180,15 @@ class InterstitialGUI(QMainWindow):
 
         @return: None
         """
+        for index_daw in xrange(0, self.dirs_handler_gui.number_of_daw_dirs):
+            if self.dirs_handler_gui.daw_dirs_gui[index_daw].getGuiDawText() == '':
+                self.notification_gui.showWarning(self,'Invalid Data', self.Interstitial.messages['daw_empty_msg'])
+                return
+        for index_ref in xrange(0, self.dirs_handler_gui.number_of_ref_dirs):
+            if self.dirs_handler_gui.reference_dirs_gui[index_ref].getGuiRefText() == '':
+                self.notification_gui.showWarning(self,'Invalid Data', self.Interstitial.messages['ref_empty_msg'])
+                return
+
         report_detail_dialog_box = QDialog(self)
 
         report_detail_dialog_box.setWindowTitle(self.Interstitial.messages['InterErrorDetectTitle'])

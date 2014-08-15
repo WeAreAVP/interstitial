@@ -15,6 +15,8 @@ message['WAV_found'] = " WAV files found: "
 message['errorFoundBw'] = "ERROR: Interstitial error found between "
 message['wroteManifest'] = 'Wrote manifest to: '
 message['illegalPath'] = "Illegal path: "
+message['daw_empty_msg'] = 'One or more "DAW" Field(s) are empty.Please provide valid path and try again.'
+message['ref_empty_msg'] = 'One or more "Reference" Field(s) are empty.Please provide valid path and try again.'
 
 # Widgets labels
 
@@ -44,9 +46,6 @@ label['description_content'] = '''
                                 '''
 
 label['description_content'] += """ <p> More information on interstitial errors and how to use Interstitial can be found in the <a href='http://www.avpreserve.com/wp-content/uploads/2013/09/Interstitial-User-Guide-v1-2013-08-27.pdf'>Interstitial manual</a>.</p> </br>"""
-
-
-
 
 
 

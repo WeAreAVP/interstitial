@@ -195,7 +195,7 @@ class DirsHandlerCore(object):
         initiated = self.Interstitial.Configuration.getCurrentTime()
 
         current_date = strftime("%Y-%m-%d")
-        seconds_content = str(floor(time() - timer))
+
 
         for index_daw in xrange(0, self.number_of_daw_core):
             for index_ref in xrange(0, self.number_of_ref_core):
@@ -217,6 +217,7 @@ class DirsHandlerCore(object):
 
                 sleep(2)
 
+        seconds_content = str(floor(time() - timer))
         manifest_info = {'current_date': current_date, 'initiated': initiated, 'seconds_content': seconds_content,
                         'testers': testers, 'file_count': file_count, 'columns': columns, 'values': values}
 
