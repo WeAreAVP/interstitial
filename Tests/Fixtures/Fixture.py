@@ -14,7 +14,7 @@ import sys
 # Custom libraries
 import helper
 sys.path.append(helper.setImportBaseBath())
-print(helper.setImportBaseBath())
+
 from App import App
 class Fixtures(object):
 
@@ -27,6 +27,5 @@ class Fixtures(object):
         self.project_name = 'New_Project'
         self.test_folder_one = self.fixtures_folder + 'DAW' + os.sep
         self.test_folder_two = self.fixtures_folder + 'Reference' + os.sep
-
 
         pass

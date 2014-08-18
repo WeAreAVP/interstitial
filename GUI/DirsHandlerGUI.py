@@ -193,14 +193,6 @@ class DirsHandlerGUI(QWidget):
         for index_daw in xrange(0, self.number_of_daw_dirs):
             for index_ref in xrange(0, self.number_of_ref_dirs):
 
-                # Set DAW Core Information
-                self.daw_dirs_gui[index_daw].setCoreDawId('daw' + str(index_daw))
-                self.daw_dirs_gui[index_daw].setCoreDawText(self.daw_dirs_gui[index_daw].getGuiDawText())
-
-                # Set Reference Core Information
-                self.reference_dirs_gui[index_ref].setCoreRefId('ref' + str(index_ref))
-                self.reference_dirs_gui[index_ref].setCoreRefText(self.reference_dirs_gui[index_ref].getGuiRefText())
-
                 # Set Directories Core Information to be used for executor
                 self.dirs_handler_core.setDawDirsCore(self.daw_dirs_gui[index_daw].getGuiDawText(), index_daw)
                 self.dirs_handler_core.setRefDirsCore(self.reference_dirs_gui[index_ref].getGuiRefText(), index_ref)

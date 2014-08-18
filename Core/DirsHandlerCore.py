@@ -127,16 +127,16 @@ class DirsHandlerCore(object):
 
         # opens files for reading
         try:
-            track_one_file_obj = Sndfile(track1, 'r')
+            track_one_file_obj = Sndfile(track1.encode('utf-8'), 'r')
         except:
-            print('Corrupted file : '+ str(track1))
+            print('Corrupted File 1 : '+ track1)
             return
             pass
 
         try:
             track_two_file_obj = Sndfile(track2, 'r')
         except:
-            print('Corrupted File : '+ str(track2))
+            print('Corrupted File 2 : '+ track2)
             return
             pass
 
@@ -166,6 +166,7 @@ class DirsHandlerCore(object):
         """
 
         populated_list = []
+
         wav = compile('.[Ww][Aa][Vv]$')
         for root, subFolders, files in walk(dir):
             for singleFile in files:
@@ -173,6 +174,29 @@ class DirsHandlerCore(object):
                     populated_list.append(path.join(root, singleFile))
 
         return populated_list
+
+    def specialCharacterHandler(self, string_to_be_handled):
+        """
+        Method to handle all special characters
+
+        @param string_to_be_handled: String To Be Handled
+
+        @return:  String - Fixed characters String
+        """
+        try:self.Fixity = SharedApp.SharedApp.App
+        except:pass
+
+        try:
+            string_to_be_handled = string_to_be_handled.decode('cp1252')
+        except:
+            pass
+
+        try:
+            string_to_be_handled = string_to_be_handled.encode('utf8')
+        except:
+            pass
+
+        return string_to_be_handled
 
     def run_executor(self, manifest_path, q_action=None, is_unit_test=False):
         '''
@@ -255,6 +279,7 @@ class DirsHandlerCore(object):
 
         # Ensures That We Have Legitimate Directories To Walk Down
         # And Populates The List Of Files To Test
+
         if not path.isdir(path.abspath(self.getDawDirsCore(index_daw).getCoreDawText())) or not path.isdir(path.abspath(self.getRefDirsCore(index_ref).getCoreRefText())):
             print self.Interstitial.messages['illegalPaths']
             return
@@ -270,10 +295,11 @@ class DirsHandlerCore(object):
         except:
             pass
 
+
         # Process Each File In The Tester Array
         for index in xrange(len(testers)):
             found = False
-
+            unmatched_flag = False
             for e in xrange(len(targets)):
 
                 try:
@@ -282,7 +308,8 @@ class DirsHandlerCore(object):
                     pass
 
                 # If We Haven't Already Processed This File, Process It
-                if str(targets[e]) not in targeted_done:
+
+                if targets[e] not in targeted_done:
 
                     # find the offset and align the waveforms
                     toff = self.offs(testers[index], targets[e])
@@ -290,14 +317,14 @@ class DirsHandlerCore(object):
                     try:
                         tester_file_obj = Sndfile(testers[index], 'r')
                     except:
-                        print('Corrupted File : '+ str(testers[index]))
+                        print('Corrupted File : '+ testers[index])
                         return
                         pass
 
                     try:
                         target_file_obj = Sndfile(targets[e], 'r')
                     except:
-                        print('Corrupted File : ' + str(targets[e]))
+                        print('Corrupted File : ' + targets[e])
                         return
                         pass
 
@@ -312,15 +339,15 @@ class DirsHandlerCore(object):
                     numpy_matrix_of_track2 = self.mono(target_file_obj.read_frames(1000))
 
                     if np.array_equal(numpy_matrix_of_track1, numpy_matrix_of_track2):
-                        print "MATCH: " + str(testers[index]) + " matches " + str(targets[e])
+                        print "MATCH: " + testers[index] + " matches " + targets[e]
 
                         try:
                             q_action.processEvents()
                         except:
                             pass
                         # mark files as done
-                        test_done_for_files.append(str(testers[index]))
-                        targeted_done.append(str(targets[e]))
+                        test_done_for_files.append(testers[index])
+                        targeted_done.append(targets[e])
 
                         # we can't read the entire file into RAM at once
                         # so instead we're breaking it into one-second parts
@@ -342,7 +369,7 @@ class DirsHandlerCore(object):
 
                                             # we found it! print a message and we're done with these files
                                             errs = (n * tester_file_obj.samplerate) + m + 1000
-                                            print self.Interstitial.messages['errorFoundBw'] + str(testers[index]) + " and " + str(targets[e]) + " at sample " + str(errs)
+                                            print self.Interstitial.messages['errorFoundBw'] + testers[index] + " and " + targets[e] + " at sample " + str(errs)
                                             try:
                                                 q_action.processEvents()
                                             except:
@@ -355,7 +382,7 @@ class DirsHandlerCore(object):
                                 break
 
                         # Append Metadata For Output
-                        values += path.abspath(testers[index]) + "," + path.abspath(str(targets[e])) + ","
+                        values += path.abspath(testers[index]) + "," + path.abspath(targets[e]) + ","
                         values += datetime.datetime.fromtimestamp(stat(testers[index]).st_ctime).strftime("%Y-%m-%d %H:%M:%S") + ","
                         values += str(stat(testers[index]).st_size) + "," + str(tester_file_obj.channels) + "," + str(tester_file_obj.samplerate) + ","
                         values += str(datetime.timedelta(seconds=int(tester_file_obj.nframes / tester_file_obj.samplerate))) + "," + str(errs) + ","
@@ -363,14 +390,21 @@ class DirsHandlerCore(object):
 
                         values += "\n"
                         found = True
+                        unmatched_flag = False
                     else:
-                        print "COULD NOT MATCH FILES: " + str(testers[index]) + " UN-MATCHES " + str(targets[e])
+                        values += path.abspath(testers[index]) + ", NONE " + ","
+                        values += "," + "," + "," + ''
+                        values += "\n"
+                        unmatched_flag = True
                         pass
 
                     if found:
                         break
+            if unmatched_flag == True:
+                print "COULD NOT MATCH FILES: " + testers[index] + " UN-MATCHES " + targets[e]
         print('')
         print('')
+
         # Create Header Information For Manifest
         manifest_info = {'testers': testers, 'file_count': file_count, 'values': values}
         return {'manifest_info': manifest_info}
@@ -437,11 +471,11 @@ class DirsHandlerCore(object):
             if response is False:
                 response = self.setValuesForScheduler(template_of_manifest_single_line,
                                                 '{{values}}',
-                                                str(manifest_info['values']))
+                                                manifest_info['values'])
 
             if response is False:
                # If No Value Found To Replace
-                manifest_content += str(template_of_manifest_single_line)
+                manifest_content += template_of_manifest_single_line
             else:
                 manifest_content += response
 
@@ -459,47 +493,11 @@ class DirsHandlerCore(object):
         try:self.Interstitial = SharedApp.SharedApp.App
         except:pass
 
-        string = str(string)
-        find_string = str(find_string)
-        replace_with_string = str(replace_with_string)
+        string = string
+        find_string = find_string
+        replace_with_string = replace_with_string
 
         if find_string in string:
-            return str(string).replace(find_string, replace_with_string)
+            return string.replace(find_string, replace_with_string)
 
         return False
-
-    def setCoreDawText(self, daw_dir_text):
-        """
-        Set Core DAW Text
-
-        @return: None
-        """
-
-        self.daw_dir_text = daw_dir_text
-
-    def getCoreDawText(self):
-        """
-        Get Core DAW Text
-
-        @return:string
-        """
-
-        return self.daw_dir_text
-
-    def setCoreRefText(self, ref_dir_text):
-        """
-        Set Core Reference Text
-
-        @return: None
-        """
-        self.ref_dir_text = ref_dir_text
-
-    def getCoreRefText(self):
-        """
-        Get Core Reference Text
-        @param ref_dir_text: this Reference Directory Text
-
-        @return:string
-        """
-
-        return self.ref_dir_text

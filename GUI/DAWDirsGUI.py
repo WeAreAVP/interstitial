@@ -53,9 +53,10 @@ class DAWDirsGUI(QWidget, DAWDirsCore.DAWDirsCore):
         """
 
         try:
-            return str(self.daw_dir_text.text())
+
+            return self.daw_dir_text.text()
         except:
-            return str(self.daw_dir_text)
+            print(Exception.message)
             pass
 
     def AddWidgets(self, layout):

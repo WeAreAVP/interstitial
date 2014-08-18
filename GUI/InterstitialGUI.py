@@ -215,7 +215,7 @@ class InterstitialGUI(QMainWindow):
         report_detail_dialog_box.resize(1000, 300)
         report_detail_dialog_box.show()
 
-        self.dirs_handler_gui.RunExecutor(str(self.manifest_dir_text.text()))
+        self.dirs_handler_gui.RunExecutor(self.manifest_dir_text.text())
 
         report_detail_exit_btn.setEnabled(True)
 

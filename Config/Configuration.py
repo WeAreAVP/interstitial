@@ -17,7 +17,7 @@ class Configuration(object):
         """
         Constructor
         """
-        self.base_path = str(getcwd())+str(sep)
+        self.base_path = getcwd() + str(sep)
         self.log_file_path = path.join(self.base_path, 'debug.log')
         self.assets_path = path.join(self.base_path, 'assets'+str(sep))
         self.template_path = path.join(self.assets_path, 'templates')+str(sep)
@@ -44,13 +44,13 @@ class Configuration(object):
             self.main_window_width = 600
 
         else:
-            self.base_path = str(getcwd()).replace(str(sep)+'Contents'+str(sep)+'Resources', '')
+            self.base_path = getcwd().replace(str(sep)+'Contents'+str(sep)+'Resources', '')
 
-            self.base_path = str(self.base_path).replace('Resources'+str(sep), '')
-            self.base_path = str(self.base_path).replace('Contents'+str(sep), '')
-            self.base_path = str(self.base_path).replace('Interstitial.app', '')
-            self.base_path = str(self.base_path).replace(str(sep) + str(sep), '')
-            self.base_path = str(self.base_path).replace('Main.app', '')
+            self.base_path = self.base_path.replace('Resources'+str(sep), '')
+            self.base_path = self.base_path.replace('Contents'+str(sep), '')
+            self.base_path = self.base_path.replace('Interstitial.app', '')
+            self.base_path = self.base_path.replace(str(sep) + str(sep), '')
+            self.base_path = self.base_path.replace('Main.app', '')
 
             self.main_window_width = 630
 
@@ -88,12 +88,12 @@ class Configuration(object):
 
         if self.getOsType() == 'windows':
             try:
-                return path.join(sys._MEIPASS, 'assets' + (str(sep)) + str(self.logo_sign_small))
+                return path.join(sys._MEIPASS, 'assets' + (str(sep)) + self.logo_sign_small)
             except:
-                return path.join(self.assets_path, str(self.logo_sign_small))
+                return path.join(self.assets_path, self.logo_sign_small)
                 pass
         else:
-            return path.join(self.assets_path, str(self.logo_sign_small))
+            return path.join(self.assets_path, self.logo_sign_small)
 
     def getMainWindowWidth(self):
         """
@@ -136,7 +136,7 @@ class Configuration(object):
         @return:file_name
         """
 
-        return "manifest_" + str(self.getCurrentDateTime()) + ".csv"
+        return "manifest_" + self.getCurrentDateTime() + ".csv"
 
     def getColumnsOfManifest(self):
         """
@@ -172,7 +172,7 @@ class Configuration(object):
         @return:debug_file_path
         """
 
-        return str(self.log_file_path)
+        return self.log_file_path
 
     def getIsDebuggingOn(self):
         """
@@ -200,7 +200,7 @@ class Configuration(object):
         @return:string
         """
 
-        return str(self.base_path)
+        return self.base_path
 
     def getTemplatePath(self):
         """
