@@ -18,3 +18,7 @@ dist
 debug.log
 conf.xml
 config.xml
+*.csv
+test.py
+test1.py
+

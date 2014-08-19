@@ -69,7 +69,6 @@ class ReferenceDirsGUI(QWidget, ReferenceDirsCore.ReferenceDirsCore):
         try:
             return self.ref_dir_text.text()
         except:
-            print(Exception.message)
             pass
 
     def AddWidgets(self, layout):
