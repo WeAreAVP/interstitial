@@ -220,7 +220,6 @@ class DirsHandlerCore(object):
 
         current_date = strftime("%Y-%m-%d")
 
-
         for index_daw in xrange(0, self.number_of_daw_core):
             for index_ref in xrange(0, self.number_of_ref_core):
 
@@ -303,7 +302,6 @@ class DirsHandlerCore(object):
 
         for index in xrange(len(ref_directories)):
             all_ref_files.append(ref_directories[index])
-
 
         scanned_daw_files = []
         scanned_ref_files = []
