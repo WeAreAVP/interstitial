@@ -312,8 +312,12 @@ class DirsHandlerCore(object):
         for index in xrange(len(daw_directories)):
             found = False
             unmatched_flag = False
-            for e in xrange(len(ref_directories)):
+            if daw_directories[index] in scanned_daw_files:
+                continue
 
+            for e in xrange(len(ref_directories)):
+                if ref_directories[e] in scanned_ref_files:
+                    continue
                 try:
                     q_action.processEvents()
                 except:
