@@ -425,19 +425,22 @@ class DirsHandlerCore(object):
                 values += "," + "," + "," + ''
                 values += "\n"
 
-                scanned_daw_files.append(daw_directories[index])
                 print('')
                 print "COULD NOT MATCH FILES: " + daw_directories[index]
                 print('')
+
+                scanned_daw_files.append(daw_directories[index])
 
         for single_daw_file in all_daw_files:
             if single_daw_file not in scanned_daw_files:
                 values += path.abspath(single_daw_file) + ", NONE "
                 values += "," + "," + "," + "," + ''
                 values += "\n"
+
                 print('')
                 print "COULD NOT MATCH FILES: " + single_daw_file
                 print('')
+
                 scanned_daw_files.append(single_daw_file)
 
         for single_ref_file in all_ref_files:
@@ -445,9 +448,11 @@ class DirsHandlerCore(object):
                 values += "NONE ," + path.abspath(single_ref_file)
                 values += "," + "," + "," + "," + ''
                 values += "\n"
+
                 print('')
                 print "COULD NOT MATCH FILES: " + single_ref_file
                 print('')
+
                 scanned_ref_files.append(single_ref_file)
 
         # Create Header Information For Manifest
