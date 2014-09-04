@@ -1,26 +1,23 @@
 # -*- mode: python -*-
 a = Analysis(['Main.py'],
-             pathex=['C:\\PyInstaller\\pyinstaller.py'],
+             pathex=['c:\\Users\\Xohotech\\Desktop\\projects\\interstitial'],
              hiddenimports=[],
-             hookspath=None)
+             hookspath=None,
+             runtime_hooks=None)
 for d in a.datas:
-    if 'pyconfig' in d[0]:
+    if 'pyconfig' in d[0]: 
         a.datas.remove(d)
         break
-a.datas += [('assets\\logo_sign_small.png', 'assets\\logo_sign_small.png','DATA')]
+a.datas += [('assets\\avpreserve-2.png', 'assets\\avpreserve-2.png', 'DATA')]
 pyz = PYZ(a.pure)
 exe = EXE(pyz,
           a.scripts,
           a.binaries,
-          a.zipfiles, 
+          a.zipfiles,
           a.datas,
-          name=os.path.join('dist', 'Interstitial.exe'),
+          name='Interstitial.exe',
           debug=False,
           strip=None,
           upx=True,
-          console=False , icon='assets\\icon.ico')
-app = BUNDLE(exe,
-             name=os.path.join('dist', 'Interstitial.exe.app'))
-
-
-
+          console=False , icon='assets\\avpreserve-1.ico')
+app = BUNDLE(exe, name=os.path.join('dist', 'Interstitial.exe.app'))
