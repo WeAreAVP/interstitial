@@ -27,7 +27,7 @@ class Configuration(object):
         self.config_file_path = self.getBasePath()+'conf.xml'
         self.columns = "Test File,Reference File,Creation Date,Size,Channels,Sample Rate,Length,First Error Sample,Error At"
 
-        self.logo_sign_small = 'logo_sign_small.png'
+        self.logo_sign_small = 'avpreserve-2.png'
         self.unit_test_folder = self.base_path
         self.fixtures_folder = self.unit_test_folder + 'assets' + sep + 'tests' + sep
 
