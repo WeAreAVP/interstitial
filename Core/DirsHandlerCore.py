@@ -41,6 +41,8 @@ class DirsHandlerCore(object):
         for index_ref in xrange(0, self.number_of_ref_core):
             self.reference_dirs_core[index_ref] = ReferenceDirsCore.ReferenceDirsCore()
 
+        self.scanned_daw_files = []
+        self.scanned_ref_files = []
         pass
 
     def setNumberOfDawCore(self, number_of_dirs_daw):
@@ -226,6 +228,7 @@ class DirsHandlerCore(object):
                 # Launch The Scanner to Test Audio Files
                 report_result = self.execute(index_daw, index_ref, q_action)
 
+
                 try:
                     testers += len(report_result['manifest_info']['testers'])
                 except: pass
@@ -303,18 +306,16 @@ class DirsHandlerCore(object):
         for index in xrange(len(ref_directories)):
             all_ref_files.append(ref_directories[index])
 
-        scanned_daw_files = []
-        scanned_ref_files = []
 
         # Process Each File In The Tester Array
         for index in xrange(len(daw_directories)):
             found = False
             unmatched_flag = False
-            if daw_directories[index] in scanned_daw_files:
+            if daw_directories[index] in self.scanned_daw_files:
                 continue
 
             for e in xrange(len(ref_directories)):
-                if ref_directories[e] in scanned_ref_files:
+                if ref_directories[e] in self.scanned_ref_files:
                     continue
                 try:
                     q_action.processEvents()
@@ -410,8 +411,8 @@ class DirsHandlerCore(object):
                         found = True
                         unmatched_flag = False
 
-                        scanned_daw_files.append(daw_directories[index])
-                        scanned_ref_files.append(ref_directories[e])
+                        self.scanned_daw_files.append(daw_directories[index])
+                        self.scanned_ref_files.append(ref_directories[e])
 
                     else:
                         unmatched_flag = True
@@ -419,6 +420,10 @@ class DirsHandlerCore(object):
 
                     if found:
                         break
+
+            # if found:
+            #     break
+
 
             if unmatched_flag:
                 values += path.abspath(daw_directories[index]) + ", NONE " + ","
@@ -429,10 +434,12 @@ class DirsHandlerCore(object):
                 print "COULD NOT MATCH FILES: " + daw_directories[index]
                 print('')
 
-                scanned_daw_files.append(daw_directories[index])
+                self.scanned_daw_files.append(daw_directories[index])
+
+
 
         for single_daw_file in all_daw_files:
-            if single_daw_file not in scanned_daw_files:
+            if single_daw_file not in self.scanned_daw_files:
                 values += path.abspath(single_daw_file) + ", NONE "
                 values += "," + "," + "," + "," + ''
                 values += "\n"
@@ -441,10 +448,10 @@ class DirsHandlerCore(object):
                 print "COULD NOT MATCH FILES: " + single_daw_file
                 print('')
 
-                scanned_daw_files.append(single_daw_file)
+                self.scanned_daw_files.append(single_daw_file)
 
         for single_ref_file in all_ref_files:
-            if single_ref_file not in scanned_ref_files:
+            if single_ref_file not in self.scanned_ref_files:
                 values += "NONE ," + path.abspath(single_ref_file)
                 values += "," + "," + "," + "," + ''
                 values += "\n"
@@ -453,7 +460,7 @@ class DirsHandlerCore(object):
                 print "COULD NOT MATCH FILES: " + single_ref_file
                 print('')
 
-                scanned_ref_files.append(single_ref_file)
+                self.scanned_ref_files.append(single_ref_file)
 
         # Create Header Information For Manifest
         manifest_info = {'testers': daw_directories, 'file_count': file_count, 'values': values}
