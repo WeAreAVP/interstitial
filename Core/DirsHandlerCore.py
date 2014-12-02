@@ -257,11 +257,7 @@ class DirsHandlerCore(object):
                 print('')
 
                 self.scanned_daw_files.append(self.daw_directories[index_daw])
-                print('8******************************')
-                print("\n")
-                print("\n")
-                print("\n")
-                print("\n")
+
 
 
         for single_daw_file in self.all_daw_files:
@@ -285,8 +281,6 @@ class DirsHandlerCore(object):
                 print "COULD NOT MATCH FILES: " + single_ref_file
                 print('')
                 self.scanned_ref_files.append(single_ref_file)
-        print(self.all_daw_files)
-        print(self.all_ref_files)
 
         seconds_content = str(floor(time() - timer))
         manifest_info = {'current_date': current_date, 'initiated': initiated, 'seconds_content': seconds_content,
@@ -356,21 +350,14 @@ class DirsHandlerCore(object):
         # Process Each File In The Tester Array
         for index in xrange(len(self.daw_directories)):
             found = False
-
-            print('Started************************')
-            print(self.daw_directories[index])
-
             if self.daw_directories[index] in self.scanned_daw_files:
-                print(self.daw_directories[index] + ' Continured()()()()()()()()')
                 continue
 
-            print('ref')
+
             for e in xrange(len(self.ref_directories)):
                 if self.ref_directories[e] in self.scanned_ref_files:
-                    print(self.ref_directories[e] + ' Continured()()()()()()()()')
                     continue
 
-                print(self.ref_directories[e])
                 try:
                     q_action.processEvents()
                 except:
@@ -465,8 +452,7 @@ class DirsHandlerCore(object):
                         values += "\n"
                         found = True
                         unmatched_flag = False
-                        print('added file ' + self.daw_directories[index])
-                        print('added file ' + self.ref_directories[e])
+
                         self.scanned_daw_files.append(self.daw_directories[index])
                         self.scanned_ref_files.append(self.ref_directories[e])
 
@@ -476,8 +462,7 @@ class DirsHandlerCore(object):
 
                     if found:
                         break
-            print('------------------------------------------------------------------------------------------')
-            # if found:
+             # if found:
             #     break
 
 

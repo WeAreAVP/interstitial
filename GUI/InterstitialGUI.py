@@ -210,7 +210,7 @@ class InterstitialGUI(QMainWindow):
 
         report_detail_dialog_box.setLayout(report_detail_layout)
 
-        # sys.stdout = Printer(report_detail_text)
+        sys.stdout = Printer(report_detail_text)
 
         report_detail_dialog_box.resize(1000, 300)
         report_detail_dialog_box.show()
