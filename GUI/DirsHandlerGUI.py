@@ -190,6 +190,7 @@ class DirsHandlerGUI(QWidget):
         """
         self.dirs_handler_core.setNumberOfDawCore(self.number_of_daw_dirs)
         self.dirs_handler_core.setNumberOfRefCore(self.number_of_ref_dirs)
+
         for index_daw in xrange(0, self.number_of_daw_dirs):
             for index_ref in xrange(0, self.number_of_ref_dirs):
 

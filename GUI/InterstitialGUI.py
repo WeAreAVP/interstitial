@@ -189,7 +189,7 @@ class InterstitialGUI(QMainWindow):
                 self.notification_gui.showWarning(self,'Invalid Data', self.Interstitial.messages['ref_empty_msg'])
                 return
 
-        report_detail_dialog_box = QDialog(self)
+        report_detail_dialog_box = QDialog()
 
         report_detail_dialog_box.setWindowTitle(self.Interstitial.messages['InterErrorDetectTitle'])
         report_detail_dialog_box.setWindowIcon(QIcon(self.Interstitial.Configuration.getLogoSignSmall()))
@@ -210,7 +210,7 @@ class InterstitialGUI(QMainWindow):
 
         report_detail_dialog_box.setLayout(report_detail_layout)
 
-        sys.stdout = Printer(report_detail_text)
+        # sys.stdout = Printer(report_detail_text)
 
         report_detail_dialog_box.resize(1000, 300)
         report_detail_dialog_box.show()

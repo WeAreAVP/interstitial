@@ -41,8 +41,7 @@ class DirsHandlerCore(object):
         for index_ref in xrange(0, self.number_of_ref_core):
             self.reference_dirs_core[index_ref] = ReferenceDirsCore.ReferenceDirsCore()
 
-        self.scanned_daw_files = []
-        self.scanned_ref_files = []
+
         pass
 
     def setNumberOfDawCore(self, number_of_dirs_daw):
@@ -221,13 +220,17 @@ class DirsHandlerCore(object):
         initiated = self.Interstitial.Configuration.getCurrentTime()
 
         current_date = strftime("%Y-%m-%d")
+        self.all_ref_files = []
+        self.all_daw_files = []
+
+        self.scanned_daw_files = []
+        self.scanned_ref_files = []
 
         for index_daw in xrange(0, self.number_of_daw_core):
             for index_ref in xrange(0, self.number_of_ref_core):
 
                 # Launch The Scanner to Test Audio Files
                 report_result = self.execute(index_daw, index_ref, q_action)
-
 
                 try:
                     testers += len(report_result['manifest_info']['testers'])
@@ -242,6 +245,48 @@ class DirsHandlerCore(object):
                 except: pass
 
                 sleep(2)
+
+            if self.unmatched_flag:
+
+                values += path.abspath(self.daw_directories[index_daw]) + ", NONE " + ","
+                values += "," + "," + "," + ''
+                values += "\n"
+
+                print('')
+                print "COULD NOT MATCH FILES: " +self.daw_directories[index_daw]
+                print('')
+
+                self.scanned_daw_files.append(self.daw_directories[index_daw])
+                print('8******************************')
+                print("\n")
+                print("\n")
+                print("\n")
+                print("\n")
+
+
+        for single_daw_file in self.all_daw_files:
+            if single_daw_file not in self.scanned_daw_files:
+                values += path.abspath(single_daw_file) + ", NONE "
+                values += "," + "," + "," + "," + ''
+                values += "\n"
+
+                print('')
+                print "COULD NOT MATCH FILES: " + single_daw_file
+                print('')
+                self.scanned_daw_files.append(single_daw_file)
+
+        for single_ref_file in self.all_ref_files:
+            if single_ref_file not in self.scanned_ref_files:
+                values += "NONE ," + path.abspath(single_ref_file)
+                values += "," + "," + "," + "," + ''
+                values += "\n"
+
+                print('')
+                print "COULD NOT MATCH FILES: " + single_ref_file
+                print('')
+                self.scanned_ref_files.append(single_ref_file)
+        print(self.all_daw_files)
+        print(self.all_ref_files)
 
         seconds_content = str(floor(time() - timer))
         manifest_info = {'current_date': current_date, 'initiated': initiated, 'seconds_content': seconds_content,
@@ -286,37 +331,46 @@ class DirsHandlerCore(object):
             print self.Interstitial.messages['illegalPaths']
             return
 
-        daw_directories = self.populate(self.getDawDirsCore(index_daw).getCoreDawText())
-        print str(len(daw_directories)) + self.Interstitial.messages['WAV_found'] + path.abspath(self.getDawDirsCore(index_daw).getCoreDawText())
+        self.daw_directories = []
+        self.ref_directories = []
 
-        ref_directories = self.populate(self.getRefDirsCore(index_ref).getCoreRefText())
-        print str(len(ref_directories)) + self.Interstitial.messages['WAV_found'] + path.abspath(self.getRefDirsCore(index_ref).getCoreRefText())
+        self.daw_directories = self.populate(self.getDawDirsCore(index_daw).getCoreDawText())
+        print str(len(self.daw_directories)) + self.Interstitial.messages['WAV_found'] + path.abspath(self.getDawDirsCore(index_daw).getCoreDawText())
+
+        self.ref_directories = self.populate(self.getRefDirsCore(index_ref).getCoreRefText())
+        print str(len(self.ref_directories)) + self.Interstitial.messages['WAV_found'] + path.abspath(self.getRefDirsCore(index_ref).getCoreRefText())
 
         try:
             q_action.processEvents()
         except:
             pass
 
-        all_ref_files = []
-        all_daw_files = []
 
-        for index in xrange(len(daw_directories)):
-            all_daw_files.append(daw_directories[index])
+        self.unmatched_flag = False
+        for index in xrange(len(self.daw_directories)):
+            self.all_daw_files.append(self.daw_directories[index])
 
-        for index in xrange(len(ref_directories)):
-            all_ref_files.append(ref_directories[index])
-
+        for index in xrange(len(self.ref_directories)):
+            self.all_ref_files.append(self.ref_directories[index])
 
         # Process Each File In The Tester Array
-        for index in xrange(len(daw_directories)):
+        for index in xrange(len(self.daw_directories)):
             found = False
-            unmatched_flag = False
-            if daw_directories[index] in self.scanned_daw_files:
+
+            print('Started************************')
+            print(self.daw_directories[index])
+
+            if self.daw_directories[index] in self.scanned_daw_files:
+                print(self.daw_directories[index] + ' Continured()()()()()()()()')
                 continue
 
-            for e in xrange(len(ref_directories)):
-                if ref_directories[e] in self.scanned_ref_files:
+            print('ref')
+            for e in xrange(len(self.ref_directories)):
+                if self.ref_directories[e] in self.scanned_ref_files:
+                    print(self.ref_directories[e] + ' Continured()()()()()()()()')
                     continue
+
+                print(self.ref_directories[e])
                 try:
                     q_action.processEvents()
                 except:
@@ -324,22 +378,22 @@ class DirsHandlerCore(object):
 
                 # If We Haven't Already Processed This File, Process It
 
-                if ref_directories[e] not in targeted_done:
+                if self.ref_directories[e] not in targeted_done:
 
                     # find the offset and align the waveforms
-                    toff = self.offs(daw_directories[index], ref_directories[e])
+                    toff = self.offs(self.daw_directories[index], self.ref_directories[e])
 
                     try:
-                        tester_file_obj = Sndfile(daw_directories[index], 'r')
+                        tester_file_obj = Sndfile(self.daw_directories[index], 'r')
                     except:
-                        print('Corrupted File : '+ daw_directories[index])
+                        print('Corrupted File : '+ self.daw_directories[index])
                         return
                         pass
 
                     try:
-                        target_file_obj = Sndfile(ref_directories[e], 'r')
+                        target_file_obj = Sndfile(self.ref_directories[e], 'r')
                     except:
-                        print('Corrupted File : ' + ref_directories[e])
+                        print('Corrupted File : ' +self. ref_directories[e])
                         return
                         pass
 
@@ -355,15 +409,16 @@ class DirsHandlerCore(object):
 
                     if np.array_equal(numpy_matrix_of_track1, numpy_matrix_of_track2):
                         print('')
-                        print "MATCH: " + daw_directories[index] + " matches " + ref_directories[e]
+                        print "MATCH: " + self.daw_directories[index] + " matches " + self.ref_directories[e]
 
                         try:
                             q_action.processEvents()
                         except:
                             pass
+
                         # mark files as done
-                        test_done_for_files.append(daw_directories[index])
-                        targeted_done.append(ref_directories[e])
+                        test_done_for_files.append(self.daw_directories[index])
+                        targeted_done.append(self.ref_directories[e])
 
                         # we can't read the entire file into RAM at once
                         # so instead we're breaking it into one-second parts
@@ -383,9 +438,9 @@ class DirsHandlerCore(object):
                                     for m in xrange(len(track_one_response)):
                                         if not np.array_equal(track_one_response[m], track_two_response[m]):
 
-                                            # we found it! print a message and we're done with these files
+                                            # We found it! print a message and we're done with these files
                                             errs = (n * tester_file_obj.samplerate) + m + 1000
-                                            print self.Interstitial.messages['errorFoundBw'] + daw_directories[index] + " and " + ref_directories[e] + " at sample " + str(errs)
+                                            print self.Interstitial.messages['errorFoundBw'] +self.daw_directories[index] + " and " + self.ref_directories[e] + " at sample " + str(errs)
 
                                             try:
                                                 q_action.processEvents()
@@ -401,18 +456,19 @@ class DirsHandlerCore(object):
                                 break
 
                         # Append Metadata For Output
-                        values += path.abspath(daw_directories[index]) + "," + path.abspath(ref_directories[e]) + ","
-                        values += datetime.datetime.fromtimestamp(stat(daw_directories[index]).st_ctime).strftime("%Y-%m-%d %H:%M:%S") + ","
-                        values += str(stat(daw_directories[index]).st_size) + "," + str(tester_file_obj.channels) + "," + str(tester_file_obj.samplerate) + ","
+                        values += path.abspath(self.daw_directories[index]) + "," + path.abspath(self.ref_directories[e]) + ","
+                        values += datetime.datetime.fromtimestamp(stat(self.daw_directories[index]).st_ctime).strftime("%Y-%m-%d %H:%M:%S") + ","
+                        values += str(stat(self.daw_directories[index]).st_size) + "," + str(tester_file_obj.channels) + "," + str(tester_file_obj.samplerate) + ","
                         values += str(datetime.timedelta(seconds=int(tester_file_obj.nframes / tester_file_obj.samplerate))) + "," + str(errs) + ","
                         values += str(datetime.timedelta(seconds=int(errs/tester_file_obj.samplerate)))
 
                         values += "\n"
                         found = True
                         unmatched_flag = False
-
-                        self.scanned_daw_files.append(daw_directories[index])
-                        self.scanned_ref_files.append(ref_directories[e])
+                        print('added file ' + self.daw_directories[index])
+                        print('added file ' + self.ref_directories[e])
+                        self.scanned_daw_files.append(self.daw_directories[index])
+                        self.scanned_ref_files.append(self.ref_directories[e])
 
                     else:
                         unmatched_flag = True
@@ -420,50 +476,15 @@ class DirsHandlerCore(object):
 
                     if found:
                         break
-
+            print('------------------------------------------------------------------------------------------')
             # if found:
             #     break
 
 
-            if unmatched_flag:
-                values += path.abspath(daw_directories[index]) + ", NONE " + ","
-                values += "," + "," + "," + ''
-                values += "\n"
 
-                print('')
-                print "COULD NOT MATCH FILES: " + daw_directories[index]
-                print('')
-
-                self.scanned_daw_files.append(daw_directories[index])
-
-
-
-        for single_daw_file in all_daw_files:
-            if single_daw_file not in self.scanned_daw_files:
-                values += path.abspath(single_daw_file) + ", NONE "
-                values += "," + "," + "," + "," + ''
-                values += "\n"
-
-                print('')
-                print "COULD NOT MATCH FILES: " + single_daw_file
-                print('')
-
-                self.scanned_daw_files.append(single_daw_file)
-
-        for single_ref_file in all_ref_files:
-            if single_ref_file not in self.scanned_ref_files:
-                values += "NONE ," + path.abspath(single_ref_file)
-                values += "," + "," + "," + "," + ''
-                values += "\n"
-
-                print('')
-                print "COULD NOT MATCH FILES: " + single_ref_file
-                print('')
-
-                self.scanned_ref_files.append(single_ref_file)
 
         # Create Header Information For Manifest
-        manifest_info = {'testers': daw_directories, 'file_count': file_count, 'values': values}
+        manifest_info = {'testers': self.daw_directories, 'file_count': file_count, 'values': values}
         return {'manifest_info': manifest_info}
 
     def writeManifestFile(self, file_path, manifest_content):
