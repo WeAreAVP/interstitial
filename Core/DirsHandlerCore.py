@@ -47,7 +47,6 @@ class DirsHandlerCore(object):
     def setNumberOfDawCore(self, number_of_dirs_daw):
         """
         Set Number Of Reference Dirs
-
         @return daw_dirs_core:String
         """
         self.number_of_daw_core = number_of_dirs_daw
@@ -56,7 +55,6 @@ class DirsHandlerCore(object):
     def setNumberOfRefCore(self, number_of_dirs_ref):
         """
         Set Number Of Daw Dirs
-
         @return number_of_ref_core:String
         """
         self.number_of_ref_core = number_of_dirs_ref
@@ -64,7 +62,6 @@ class DirsHandlerCore(object):
     def getDawDirsCore(self, index):
         """
         Set Daw Dirs Core
-
         @return None
         """
         return self.daw_dirs_core[index]
@@ -72,7 +69,6 @@ class DirsHandlerCore(object):
     def setDawDirsCore(self, text, index):
         """
         Set Daw Dirs Core
-
         @return None
         """
         new_daw = DAWDirsCore.DAWDirsCore()
@@ -85,7 +81,6 @@ class DirsHandlerCore(object):
     def setRefDirsCore(self, text, index):
         """
         Set Ref Dirs Core
-
         @return None
         """
         new_ref = ReferenceDirsCore.ReferenceDirsCore()
@@ -98,19 +93,16 @@ class DirsHandlerCore(object):
     def getRefDirsCore(self, index):
         """
         Set Ref Dirs Core
-
         @return None
         """
         return self.reference_dirs_core[index]
 
     def mono(self, numpy_matrix):
         """
-
         mono(numpy matrix ar)
         reduces an n-dimensional matrix to a 1-dimensional list if n > 1
         if n = 1, returns it
         @param numpy_matrix: Numpy Matrix
-
         @return: numpy_matrix
         """
 
@@ -179,9 +171,7 @@ class DirsHandlerCore(object):
     def specialCharacterHandler(self, string_to_be_handled):
         """
         Method to handle all special characters
-
         @param string_to_be_handled: String To Be Handled
-
         @return:  String - Fixed characters String
         """
         try:self.Fixity = SharedApp.SharedApp.App
@@ -202,11 +192,9 @@ class DirsHandlerCore(object):
     def run_executor(self, manifest_path, q_action=None, is_unit_test=False):
         '''
         Run Executor For all Directories
-
         @param manifest_path: Manifest File Path
         @param q_action: QCoreApplication Object
         @param is_unit_test: Is call generated from Unit test
-
         @return manifest_file_path/{manifest_info, manifest_file_path}: Sting/List
         '''
         testers = 0
@@ -475,10 +463,8 @@ class DirsHandlerCore(object):
     def writeManifestFile(self, file_path, manifest_content):
         """
         Write Manifest File
-
         @param file_path: Manifest File Path(String)
         @param manifest_content: Manifest Content (Tuple)
-
         @return:Manifest Content(String)
         """
 
@@ -494,7 +480,6 @@ class DirsHandlerCore(object):
         """
         Generate Manifest Content
         @param template_of_manifest_file_lines: Lines Template Of Manifest File
-
         @return:manifest_content
         """
 
@@ -549,7 +534,6 @@ class DirsHandlerCore(object):
         @param string: Template String
         @param find_string: Find String string to be replaced with
         @param replace_with_string: String to be replaced with
-
         @return: String
         """
 
