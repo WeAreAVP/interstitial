@@ -194,15 +194,11 @@ class InterstitialGUI(QMainWindow):
                 self.notification_gui.showWarning(self,'Invalid Data', self.Interstitial.messages['ref_empty_msg'])
                 return
 
-<<<<<<< HEAD
-        report_detail_dialog_box = QDialog(self)
-=======
             if not os.path.isdir(self.dirs_handler_gui.reference_dirs_gui[index_ref].getGuiRefText()):
                 self.notification_gui.showWarning(self,'Invalid Path', self.Interstitial.messages['invalid_path_ref'])
                 return
 
         report_detail_dialog_box = QDialog(self, Qt.CustomizeWindowHint | Qt.WindowTitleHint | Qt.WindowMinMaxButtonsHint)
->>>>>>> 2e830864a6efbfb1521e85ee3821d904ad3007c4
 
         report_detail_dialog_box.setWindowTitle(self.Interstitial.messages['InterErrorDetectTitle'])
         report_detail_dialog_box.setWindowIcon(QIcon(self.Interstitial.Configuration.getLogoSignSmall()))
