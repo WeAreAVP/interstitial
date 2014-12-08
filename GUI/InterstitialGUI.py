@@ -7,7 +7,7 @@
 # Created on May 14, 2014
 # @author: Furqan Wasi <furqan@avpreserve.com>
 
-import sys
+import sys, os
 
 from PySide.QtCore import *
 from PySide.QtGui import *
@@ -184,9 +184,18 @@ class InterstitialGUI(QMainWindow):
             if self.dirs_handler_gui.daw_dirs_gui[index_daw].getGuiDawText() == '':
                 self.notification_gui.showWarning(self,'Invalid Data', self.Interstitial.messages['daw_empty_msg'])
                 return
+
+            if not os.path.isdir(self.dirs_handler_gui.daw_dirs_gui[index_daw].getGuiDawText()):
+                self.notification_gui.showWarning(self,'Invalid Path', self.Interstitial.messages['invalid_path_daw'])
+                return
+
         for index_ref in xrange(0, self.dirs_handler_gui.number_of_ref_dirs):
             if self.dirs_handler_gui.reference_dirs_gui[index_ref].getGuiRefText() == '':
                 self.notification_gui.showWarning(self,'Invalid Data', self.Interstitial.messages['ref_empty_msg'])
+                return
+
+            if not os.path.isdir(self.dirs_handler_gui.reference_dirs_gui[index_ref].getGuiRefText()):
+                self.notification_gui.showWarning(self,'Invalid Path', self.Interstitial.messages['invalid_path_ref'])
                 return
 
         report_detail_dialog_box = QDialog(self, Qt.CustomizeWindowHint | Qt.WindowTitleHint | Qt.WindowMinMaxButtonsHint)
