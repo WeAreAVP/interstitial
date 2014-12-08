@@ -534,6 +534,7 @@ class DirsHandlerCore(object):
         @param string: Template String
         @param find_string: Find String string to be replaced with
         @param replace_with_string: String to be replaced with
+
         @return: String
         """
 
