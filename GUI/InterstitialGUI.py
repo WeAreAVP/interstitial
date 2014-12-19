@@ -52,7 +52,7 @@ class InterstitialGUI(QMainWindow):
         self.vbox = QHBoxLayout()
         self.group_box = QGroupBox(self.Interstitial.label['manifestDest'])
 
-        self.setWindowTitle(self.Interstitial.messages['InterErrorDetectTitle'])
+        self.setWindowTitle(self.Interstitial.messages['InterErrorDetectTitle']+' '+self.Interstitial.Configuration.getApplicationVersion())
         self.setWindowIcon(QIcon(self.Interstitial.Configuration.getLogoSignSmall()))
 
         self.setMaximumWidth(self.Interstitial.Configuration.getMainWindowWidth())
@@ -196,6 +196,10 @@ class InterstitialGUI(QMainWindow):
 
             if not os.path.isdir(self.dirs_handler_gui.reference_dirs_gui[index_ref].getGuiRefText()):
                 self.notification_gui.showWarning(self,'Invalid Path', self.Interstitial.messages['invalid_path_ref'])
+                return
+
+        if not os.path.isdir(self.manifest_dir_text.text()):
+                self.notification_gui.showWarning(self,'Invalid Path', self.Interstitial.messages['invalid_path_destination'])
                 return
 
         report_detail_dialog_box = QDialog(self, Qt.CustomizeWindowHint | Qt.WindowTitleHint | Qt.WindowMinMaxButtonsHint)

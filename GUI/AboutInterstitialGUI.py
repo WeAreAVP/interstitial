@@ -34,7 +34,7 @@ class AboutInterstitialGUI(QDialog):
         self.parent_win = parent_win
         self.setWindowModality(Qt.WindowModal)
 
-        self.parent_win.setWindowTitle('About Intersitial')
+        self.parent_win.setWindowTitle('About Intersitial' +' '+self.Interstitial.Configuration.getApplicationVersion())
 
         self.setWindowIcon(QIcon(self.Interstitial.Configuration.getLogoSignSmall()))
         self.AboutInterstitialLayout = QVBoxLayout()
@@ -149,7 +149,7 @@ class AboutInterstitialGUI(QDialog):
         except:
             pass
 
-        self.parent_win.setWindowTitle(self.Interstitial.messages['InterErrorDetectTitle'])
+        self.parent_win.setWindowTitle(self.Interstitial.messages['InterErrorDetectTitle'] + ' ' + self.Interstitial.Configuration.getApplicationVersion() )
         self.destroy()
         self.close()
 

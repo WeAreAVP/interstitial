@@ -30,7 +30,7 @@ class Configuration(object):
         self.logo_sign_small = 'avpreserve-2.png'
         self.unit_test_folder = self.base_path
         self.fixtures_folder = self.unit_test_folder + 'assets' + sep + 'tests' + sep
-
+        self.application_version = '0.2'
         if name == 'posix':
             self.os_type = 'linux'
 
@@ -53,6 +53,8 @@ class Configuration(object):
             self.base_path = self.base_path.replace('Main.app', '')
 
             self.main_window_width = 630
+
+    def getApplicationVersion(self):return str(self.application_version)
 
     def getAppBasePath(self):
         """

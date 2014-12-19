@@ -17,8 +17,9 @@ message['wroteManifest'] = 'Wrote manifest to: '
 message['illegalPath'] = "Illegal path: "
 message['daw_empty_msg'] = 'One or more "DAW" Field(s) are empty.Please provide valid path and try again.'
 message['ref_empty_msg'] = 'One or more "Reference" Field(s) are empty.Please provide valid path and try again.'
-message['invalid_path_daw'] = 'One or more given DAW Path(s) are invalid or dose not exist.'
-message['invalid_path_ref'] = 'One or more given REF Path(s) are invalid or dose not exist.'
+message['invalid_path_daw'] = 'One or more given DAW Path(s) are invalid or does not exist.'
+message['invalid_path_ref'] = 'One or more given REF Path(s) are invalid or does not exist.'
+message['invalid_path_destination'] = 'Manifest Destination path is invalid or does not exist.'
 
 # Widgets labels
 
